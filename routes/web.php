@@ -12,6 +12,5 @@
 */
 
 Route::get('/', function () {
-    return view('welcome'); //this was the default
-    //return User::all();
+    return view('welcome');
 });
