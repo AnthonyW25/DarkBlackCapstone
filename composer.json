@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "name": "DARKBlack/laravel",
+    "description": "DarkBlack Capstone Application",
+    "keywords": ["darkblack", "capstone"],
     "license": "MIT",
     "type": "project",
     "require": {
