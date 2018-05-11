@@ -15,7 +15,8 @@
                     @endif
 
                     You are logged in!</br>
-                    HELLO WORLD!
+                    HELLO WORLD!</br>
+                        <a href="{{ url('/dashboard') }}">View Dev Dashboard</a>
                 </div>
             </div>
         </div>
