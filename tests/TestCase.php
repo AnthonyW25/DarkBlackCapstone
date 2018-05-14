@@ -10,9 +10,14 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
+    public $user;
+
     public function setUp()
     {
         parent::setUp();
+
+        // create a user we can use
+        $this->user = $this->createUser();
 
         // For each test we will setup a fresh testing database
 
