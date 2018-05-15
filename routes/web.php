@@ -36,3 +36,6 @@ Route::get('dashboard', 'HomeController@dashboard')->name('dashboard');
 Auth::routes();
 
 Route::get('create', 'HomeController@create')->name('create');
+
+Route::resource('expenseitem', 'ExpenseItemController');
+Route::resource('expense', 'ExpenseController');
