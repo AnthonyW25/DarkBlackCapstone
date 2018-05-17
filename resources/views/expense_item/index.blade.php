@@ -4,13 +4,35 @@
     <h2>Expense List</h2>
 @stop
 
+
+<?php
+
+session_start();
+
+if (isset($_GET['expense_id']))
+{
+    $expense_id = $_GET['expense_id'];
+    $_SESSION['expense_id'] = $expense_id;
+}
+else
+{
+    $expense_id = $_SESSION['expense_id'];
+}
+?>
+
+
 @section('content')
+
+<script type="text/javascript">
+            localStorage.getItem(variableName);
+</script>
     
     <a href="{{ url('/expense') }}" class="btn btn-primary">Back to Expenses</a>
     <table class="table table-bordered table-responsive" style="margin-top: 10px;">
         <thead>
             <tr>
-                <th>ID</th>
+                <th>ID    
+                </th>
                 <th>expense_id</th>
                 <th>description</th>
                 <th>category</th>
@@ -19,10 +41,21 @@
                 <th>PST</th>
                 <th>created at</th>
                 <th>updated at</th>
-                <th colspan="3"><a href="expenseitem/create" class="btn btn-primary">Add new</a></th>
+                <th colspan="3"><form method="get" action="/expenseitem/create">
+                    <input type="hidden"  name = "expense_id" value='<?php
+                    echo $expense_id;
+                    ?>'>
+                    <input type="submit" value="Add Item">
+                    </form></th>
+                
+                
             </tr>
         </thead>
         <tbody>
+        	<?php
+        		$expense_items = DB::table('expense_items')
+                        ->where('expense_id', '=', $_SESSION['expense_id'])->orderBy('updated_at','DESC')->get();
+        	?>
         @foreach($expense_items as $expense_item)
             <tr>
                 <td>{{ $expense_item->id }}</td>

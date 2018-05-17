@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\expense_item;
+use App\expense;
 
 class ExpenseItemController extends Controller
 {
@@ -15,6 +16,7 @@ class ExpenseItemController extends Controller
     public function index()
     {
         $expense_items = expense_item::orderBy('updated_at','DESC')->get();
+
         return view('expense_item.index', compact('expense_items'));
     }
 
@@ -36,6 +38,9 @@ class ExpenseItemController extends Controller
      */
     public function store(Request $request)
     {   
+        $this->validate($request, [
+            'description'=>'Required',
+            'category'=>'Required']);
         $expense_item = $request->all();
         expense_item::create($expense_item);
         return redirect('expenseitem');
@@ -72,7 +77,10 @@ class ExpenseItemController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    {   
+        $this->validate($request, [
+            'description'=>'Required',
+            'category'=>'Required']);
         $expense_item = expense_item::find($id);
         $expense_itemUpdate = $request->all();
         $expense_item->update($expense_itemUpdate);
