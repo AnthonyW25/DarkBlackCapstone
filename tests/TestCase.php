@@ -16,9 +16,6 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        // create a user we can use
-        $this->user = $this->createUser();
-
         // For each test we will setup a fresh testing database
 
         // Run the migrations
@@ -26,6 +23,9 @@ abstract class TestCase extends BaseTestCase
 
         // Call the database seeder, setup any standard records we need
         Artisan::call('db:seed');
+
+        // create a user we can use
+        $this->user = $this->createUser();
     }
 
     public function tearDown()
