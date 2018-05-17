@@ -1,5 +1,8 @@
 @extends('layouts.app')
+<?php
 
+session_start();
+?>
 @section('header')
     <h2>add Expense</h2>
 @stop
@@ -20,6 +23,7 @@
                         {!! Form::open(['url'=>'expenseitem']) !!}
                             <table>
                                 <tr>
+                                    <th>{!! Form::label('expense_id', 'Expense Id') !!}</th>
                                     <th>{!! Form::label('description', 'Description') !!}</th>
                                     <th>{!! Form::label('category', 'Category') !!}</th>
                                     <th>{!! Form::label('amount', 'Amount') !!}</th>
@@ -28,6 +32,7 @@
                                 </tr>
                                 <!--//This should be in a loop that automatically fill our certain data-->
                                 <tr>
+                                    <td>{!! Form::text('expense_id', null)!!}</td>
                                     <td>{!! Form::text('description', null)!!}
                                         {!! $errors->has('description')?$errors->first('description'):'' !!}</td>
                                     <td>{!! Form::text('category', null)!!}
@@ -47,7 +52,6 @@
                                     <td></td>
                                 </tr>
                             </table>
-                        </form>
                     </div>
                 </div>
             </div>

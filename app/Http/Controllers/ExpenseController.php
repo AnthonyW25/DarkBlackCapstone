@@ -36,6 +36,9 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {   
+        $this->validate($request, [
+            'supplier'=>'Required',
+            'invoice'=>'Required']);
         $expense = $request->all();
         expense::create($expense);
         return redirect('expense');
@@ -49,7 +52,8 @@ class ExpenseController extends Controller
      */
     public function show($id)
     {
-        //
+        $expense = expense::find($id);
+        return $expense;
     }
 
     /**
@@ -73,6 +77,10 @@ class ExpenseController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+            'supplier'=>'Required',
+            'invoice'=>'Required']);
+
         $expense = expense::find($id);
         $expenseUpdate = $request->all();
         $expense->update($expenseUpdate);

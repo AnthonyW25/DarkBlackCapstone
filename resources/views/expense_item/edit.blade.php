@@ -1,5 +1,8 @@
 @extends('layouts.app')
+<?php
 
+session_start();
+?>
 @section('header')
     <h2>Edit Expense</h2>
 @stop
