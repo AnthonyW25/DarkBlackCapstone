@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Expense;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,12 +15,12 @@ class ExpenseControllerTest extends TestCase
         $this->actingAs($this->user)
             ->get('/expense')
             ->assertSuccessful()
-            ->assertSee('expenses');
+            ->assertSee('Expense List');
 
         // Also should see a list of existing expenses
 
         // Create an Expense we can expect to see
-        $expense = expense::create([
+        $expense = Expense::create([
             'supplier' => 'Test Supplier',
             // other expense details
         ]);
