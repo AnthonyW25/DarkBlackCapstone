@@ -19,23 +19,13 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-
-//New route for getting the dashboard
-
-Auth::routes();
-
 Route::get('dashboard', 'HomeController@dashboard')->name('dashboard');
-
-Auth::routes();
 
 Route::get('create', 'HomeController@create')->name('create');
 
-Route::resource('expenseitem', 'ExpenseItemController');
-Route::resource('expense', 'ExpenseController');
+// BE EXPLICIT ABOUT YOUR ROUTING, IT MAKES IT EASIER FOR OTHERS TO READ
+//Route::resource('expenseitem', 'ExpenseItemController');
+//Route::resource('expense', 'ExpenseController');
+
+Route::get('/expense', 'ExpenseController@index');
+Route::get('/expense/{id}', 'ExpenseController@show');

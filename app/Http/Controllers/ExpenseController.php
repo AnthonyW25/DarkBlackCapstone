@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\expense;
+use App\Expense;
 
 class ExpenseController extends Controller
 {
@@ -14,7 +14,12 @@ class ExpenseController extends Controller
      */
     public function index()
     {
-        $expenses = expense::orderBy('updated_at','DESC')->get();
+        // We have access to the Expense Items via a relationship we setup in the Expense model
+        // Fetch the items with the expense
+        $expenses = Expense::with('items')
+            ->orderBy('updated_at', 'DESC')
+            ->get();
+
         return view('expense.index', compact('expenses'));
     }
 
@@ -31,72 +36,77 @@ class ExpenseController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
         $this->validate($request, [
-            'supplier'=>'Required',
-            'invoice'=>'Required']);
-        $expense = $request->all();
-        expense::create($expense);
+            'supplier' => 'Required',
+            'invoice'  => 'Required']);
+
+        Expense::create($request->all());
+
         return redirect('expense');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $expense = expense::find($id);
+        $expense = Expense::find($id);
+
         return $expense;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $expense = expense::find($id);
+        $expense = Expense::find($id);
+
         return view('expense.edit', compact('expense'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'supplier'=>'Required',
-            'invoice'=>'Required']);
+            'supplier' => 'Required',
+            'invoice'  => 'Required']);
 
-        $expense = expense::find($id);
-        $expenseUpdate = $request->all();
-        $expense->update($expenseUpdate);
+        $expense = Expense::find($id);
+
+        $expense->update($request->all());
+
         return redirect('expense');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $expense = expense::find($id);
+        $expense = Expense::find($id);
         $expense->delete();
+
         return redirect('expense');
     }
 }
