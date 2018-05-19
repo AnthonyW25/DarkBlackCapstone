@@ -26,6 +26,8 @@ abstract class TestCase extends BaseTestCase
 
         // create a user we can use
         $this->user = $this->createUser();
+
+        $this->withoutExceptionHandling();
     }
 
     public function tearDown()
