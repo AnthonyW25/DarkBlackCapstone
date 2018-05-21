@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\expense_item;
-use App\expense;
+use App\ExpenseItem;
+use App\Expense;
 
 class ExpenseItemController extends Controller
 {
@@ -15,7 +15,7 @@ class ExpenseItemController extends Controller
      */
     public function index()
     {
-        $expense_items = expense_item::orderBy('updated_at','DESC')->get();
+        $expense_items = ExpenseItem::orderBy('updated_at','DESC')->get();
 
         return view('expense_item.index', compact('expense_items'));
     }
@@ -42,7 +42,7 @@ class ExpenseItemController extends Controller
             'description'=>'Required',
             'category'=>'Required']);
         $expense_item = $request->all();
-        expense_item::create($expense_item);
+        ExpenseItem::create($expense_item);
         return redirect('expenseitem');
     }
 
@@ -65,7 +65,7 @@ class ExpenseItemController extends Controller
      */
     public function edit($id)
     {
-        $expense_item = expense_item::find($id);
+        $expense_item = ExpenseItem::find($id);
         return view('expense_item.edit', compact('expense_item'));
     }
 
@@ -81,7 +81,7 @@ class ExpenseItemController extends Controller
         $this->validate($request, [
             'description'=>'Required',
             'category'=>'Required']);
-        $expense_item = expense_item::find($id);
+        $expense_item = ExpenseItem::find($id);
         $expense_itemUpdate = $request->all();
         $expense_item->update($expense_itemUpdate);
         return redirect('expenseitem');
@@ -95,8 +95,9 @@ class ExpenseItemController extends Controller
      */
     public function destroy($id)
     {
-        $expense_item = expense_item::find($id);
+        $expense_item = ExpenseItem::find($id);
         $expense_item->delete();
         return redirect('expenseitem');
     }
+  
 }

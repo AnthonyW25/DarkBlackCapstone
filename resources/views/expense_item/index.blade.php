@@ -20,12 +20,8 @@ else
 }
 ?>
 
-
 @section('content')
 
-<script type="text/javascript">
-            localStorage.getItem(variableName);
-</script>
     
     <a href="{{ url('/expense') }}" class="btn btn-primary">Back to Expenses</a>
     <table class="table table-bordered table-responsive" style="margin-top: 10px;">
@@ -42,13 +38,11 @@ else
                 <th>created at</th>
                 <th>updated at</th>
                 <th colspan="3"><form method="get" action="/expenseitem/create">
-                    <input type="hidden"  name = "expense_id" value='<?php
+                    <input type="hidden" name = "expense_id" value='<?php
                     echo $expense_id;
                     ?>'>
-                    <input type="submit" value="Add Item">
+                    <input type="submit" class="btn btn-success" value="Add Item">
                     </form></th>
-                
-                
             </tr>
         </thead>
         <tbody>

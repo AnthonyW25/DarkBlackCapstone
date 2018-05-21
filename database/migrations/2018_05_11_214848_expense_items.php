@@ -15,12 +15,12 @@ class ExpenseItems extends Migration
     {   Schema::dropIfExists('expense_items');
         Schema::create('expense_items', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('expense_id')->default('2');
-            $table->char('description', 100);
-            $table->char('category', 100);
-            $table->integer('amount');
-            $table->integer('gst');
-            $table->integer('pst');
+            $table->integer('expense_id');
+            $table->char('description', 100)->default('N/A');
+            $table->char('category', 100)->default('N/A');
+            $table->integer('amount')->default('0');
+            $table->integer('gst')->default('0');
+            $table->integer('pst')->default('0');
             $table->timestamps();       
         });
 

@@ -23,7 +23,7 @@ session_start();
                         {!! Form::model($expense_item, ['route'=>['expenseitem.update', $expense_item->id], 'method'=>'PATCH']) !!}
                             <table>
                                 <tr> 
-                                    <th>{!! Form::label('expense_id', 'expense_id') !!}</th>
+                                    <!--<th>{!! Form::label('expense_id', 'expense_id') !!}</th>-->
                                     <th>{!! Form::label('description', 'Description') !!}</th>
                                     <th>{!! Form::label('category', 'Category') !!}</th>
                                     <th>{!! Form::label('amount', 'Amount') !!}</th>
@@ -32,7 +32,7 @@ session_start();
                                 </tr>
                                 <!--//This should be in a loop that automatically fill our certain data-->
                                 <tr>
-                                    <td>{!! Form::text('expense_id', null)!!}</td>
+                                    <!--<td>{!! Form::text('expense_id', null)!!}</td>-->
                                     <td>{!! Form::text('description', null)!!}
                                         {!! $errors->has('description')?$errors->first('description'):'' !!}</td>
                                     <td>{!! Form::text('category', null)!!}

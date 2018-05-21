@@ -18,7 +18,7 @@ class Expenses extends Migration
             $table->integer('user_id')->default('29');
             $table->integer('site_id')->default('1');
             $table->char('supplier', 100);
-            $table->char('invoice', 100);
+            $table->char('invoice', 100)->default('N/A');
             $table->timestamps();
         });
 

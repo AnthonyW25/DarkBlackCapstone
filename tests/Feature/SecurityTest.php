@@ -11,6 +11,9 @@ class SecurityTest extends TestCase
     /** @test */
     public function secure_controller_requires_login()
     {
+        // turn this on, because exception handling is what does the redirect in this case
+        $this->withExceptionHandling();
+
         $this->get('/home')
             ->assertRedirect('/login')
             ->assertStatus(302);

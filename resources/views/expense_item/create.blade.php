@@ -2,6 +2,16 @@
 <?php
 
 session_start();
+
+if (isset($_GET['expense_id']))
+{
+    $expense_id = $_GET['expense_id'];
+    $_SESSION['expense_id'] = $expense_id;
+}
+else
+{
+    $expense_id = $_SESSION['expense_id'];
+}
 ?>
 @section('header')
     <h2>add Expense</h2>
@@ -32,7 +42,7 @@ session_start();
                                 </tr>
                                 <!--//This should be in a loop that automatically fill our certain data-->
                                 <tr>
-                                    <td>{!! Form::text('expense_id', null)!!}</td>
+                                    <td>{!! Form::text('expense_id', null, ['readonly'])!!}</td>
                                     <td>{!! Form::text('description', null)!!}
                                         {!! $errors->has('description')?$errors->first('description'):'' !!}</td>
                                     <td>{!! Form::text('category', null)!!}
