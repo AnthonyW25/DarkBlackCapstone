@@ -10,7 +10,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Enter A New Expense</div>
+                    <div class="card-header">Edit Expense</div>
                     <div class="card-body">
                         @if (session('status'))
                             <div class="alert alert-success">
@@ -27,7 +27,7 @@
                                 <!--//This should be in a loop that automatically fill our certain data-->
                                 <tr>
                         
-                                    <td>{!! Form::text('suppplier', null)!!}
+                                    <td>{!! Form::text('supplier', null)!!}
                                         {!! $errors->has('supplier')?$errors->first('supplier'):'' !!}</td>
                                     <td>{!! Form::text('invoice', null)!!}
                                         {!! $errors->has('invoice')?$errors->first('invoice'):'' !!}</td>

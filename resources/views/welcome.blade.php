@@ -79,7 +79,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    DARKBlack
+                    <b>DARK</b>Black
                 </div>
             </div>
         </div>
