@@ -30,85 +30,52 @@
                 <th>{{ $expense->supplier }}</th>
 
                 {{--We have access to the expense items through the relationship we defined in the Expense model--}}
-
+                <td><br>
                 @foreach($expense->items as $item)
-                    <td>{{ $expense->id }}</td>
-                    <td>{{ $expense->invoice }}</td>
-                    {{--etc--}}
+                    {{ $item->description }}<br>
                 @endforeach
-                <td>
-                {{--<?php}}
-                        /*
-                         * Don't do anything like this in a View
-                         * Views should be "dumb" they just display information given to them
-                         * Calculations and "work" should be done in the Controller or Model
-                         */
-
-//                        $_SESSION['expense_id'] = $expense->id;
-//                        $total = 0;
-//                        $totalgst = 0;
-//                        $totalpst = 0;
-//                        $expense_items = DB::table('expense_items')
-//                        ->where('expense_id', '=', $_SESSION['expense_id'])->orderBy('updated_at','DESC')->get();
-//                        foreach ($expense_items as $expense_item){
-//                            $description = $expense_item->description;
-//                            $category = $expense_item->category;
-//                            $amount = $expense_item->amount;
-//                            $total += $amount;
-//                            $gst = $expense_item->gst;
-//                            $totalgst += $gst;
-//                            $pst = $expense_item->pst;
-//                            $totalpst += $pst;
-                            ?>
-
-                    {{--NO NEED FOR ALL THESE CSRF FIELDS, ONE IS NEEDED INSIDE A FORM--}}
-                            {{csrf_field()}}
-                    {{--USE BLADE TEMPLATE--}}
-                    {{ $description }}
-                    {{--REFACTOR EVERYTHING BELOW--}}
-                {{--<?php}} echo $description;?><br>
-<!--                -->{{--<?php}} //} ?><!-- -->
                 </td>
                 <td><br>
-                {{--<?php}}
-                     foreach ($expense_items as $expense_item){    
-                            $category = $expense_item->category;
-                            ?>                             
-                            {{csrf_field()}}
-                {{--<?php}} echo $category;?><br>
-                {{--<?php}} } ?>
+                @foreach($expense->items as $item)
+                    {{ $item->category }}<br>
+                @endforeach
                 </td>
-                <td>
-                    <b>{{--<?php}} echo $total;?></b>
-                    <br>
-                    {{--<?php}}
-                     foreach ($expense_items as $expense_item){    
-                            $amount = $expense_item->amount;
-                            ?>                             
-                            {{csrf_field()}}
-                {{--<?php}} echo $amount;?><br>
-                {{--<?php}} } ?></td>
-                <td>
-                    <b>{{--<?php}} echo $totalgst;?></b><br>
-                {{--<?php}}
-                     foreach ($expense_items as $expense_item){    
-                            $gst = $expense_item->gst;
-                            ?>                             
-                            {{csrf_field()}}
-                {{--<?php}} echo $gst;?><br>
-                {{--<?php}} } ?>
+                <td><br>
+                @foreach($expense->items as $item)
+                    {{ "$" . $item->amount }}<br>
+                @endforeach
                 </td>
-                <td><b>{{--<?php}} echo $totalpst;?></b><br>
-                    {{--<?php}}
-                     foreach ($expense_items as $expense_item){    
+                <td><br>
+                @foreach($expense->items as $item)
+                    {{ "$" . $item->gst }}<br>
+                @endforeach
+                </td>
+                <td><br>
+                @foreach($expense->items as $item)
+                    {{ "$" . $item->pst }}<br>
+                @endforeach
+                </td>
+<!--
+                        * Don't do anything like this in a View
+                         * Views should be "dumb" they just display information given to them
+                         * Calculations and "work" should be done in the Controller or Model
+                     $_SESSION['expense_id'] = $expense->id;
+                        $total = 0;
+                        $totalgst = 0;
+                      $totalpst = 0;
+                        $expense_items = DB::table('expense_items')
+                       ->where('expense_id', '=', $_SESSION['expense_id'])->orderBy('updated_at','DESC')->get();
+                       foreach ($expense_items as $expense_item){
+                            $description = $expense_item->description;
+                        $category = $expense_item->category;
+                          $amount = $expense_item->amount;
+                            $total += $amount;
+                           $gst = $expense_item->gst;
+                            $totalgst += $gst;
                             $pst = $expense_item->pst;
-                            ?>                             
-                            {{csrf_field()}}
-                {{--<?php}} echo $pst;?><br>
-                {{--<?php}} } ?>
-                
-                </td>
-
+                           $totalpst += $pst;
+                  -->         
+        
                 <td>{{ $expense->created_at }}</td>
                 <td>{{ $expense->updated_at }}</td>
                 <td>
@@ -120,12 +87,8 @@
                     {!! Form::close() !!}
                 </td>
                 <td>
-
-{{--                    <!--<a href="{{ url('/expenseitem') }}" class="btn btn-success" formaction="">Edit //Items</a></td>-->--}}
                 
                     <form method="get" action="/expenseitem">
-                    {{--<input type="hidden" name="expense_id" value="{{--<?php}} echo $_SESSION['expense_id'];?>">--}}
-
                     <input type="hidden" name="expense_id" value="{{ $expense->id }}">
                     <input type="submit" class="btn btn-success" value="Manage Items">
                     </form>
