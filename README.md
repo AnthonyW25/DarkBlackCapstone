@@ -8,3 +8,7 @@ If you get the “can’t find driver” error when trying to register/login whe
 	•Should work now
 	
 heroku app: https://thawing-lowlands-75710.herokuapp.com/
+
+how to run the tests: ./vendor/bin/phpunit ./tests/feature/**insert test filename**
+
+

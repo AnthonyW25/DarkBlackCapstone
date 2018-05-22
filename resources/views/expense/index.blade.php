@@ -55,7 +55,7 @@
                     {{ "$" . $item->pst }}<br>
                 @endforeach
                 </td>
-<!--
+                <!--
                         * Don't do anything like this in a View
                          * Views should be "dumb" they just display information given to them
                          * Calculations and "work" should be done in the Controller or Model
