@@ -49,6 +49,7 @@ class ExpenseController extends Controller
 
         Expense::create($request->all());
 
+
         return redirect('/expense');
     }
 
@@ -93,7 +94,8 @@ class ExpenseController extends Controller
 
         $expense = Expense::find($id);
 
-        $expense->update($request->all());//Original:$expense->update($request->all());
+
+        $expense->update($request->all());
 
         return redirect('expense');
     }
@@ -107,8 +109,10 @@ class ExpenseController extends Controller
     public function destroy($id)
     {
         $expense = Expense::find($id);
+
         $expenseItem = ExpenseItem::where('expense_id', '=', $id);
         $expenseItem->delete();
+
         $expense->delete();
 
         return redirect('expense');

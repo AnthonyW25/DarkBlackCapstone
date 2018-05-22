@@ -10,6 +10,6 @@ class Expense extends Model
 
      public function items()
      {
-         return $this->hasMany(ExpenseItem::class, 'expense_id', 'id');
+         return $this->hasMany('App/ExpenseItem', 'expense_id', 'id');
      }
 }
