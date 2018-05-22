@@ -113,4 +113,22 @@ class ExpenseController extends Controller
 
         return redirect('expense');
     }
+
+    public static function amountTotal($id){
+    	$expense = Expense::find($id);
+        $expense_item = ExpenseItem::where('expense_id', '=', $id)->sum('expense_items.amount');
+        return $expense_item;
+    }
+
+     public static function amountGst($id){
+    	$expense = Expense::find($id);
+        $expense_item = ExpenseItem::where('expense_id', '=', $id)->sum('expense_items.gst');
+        return $expense_item;
+    }
+
+     public static function amountPst($id){
+    	$expense = Expense::find($id);
+        $expense_item = ExpenseItem::where('expense_id', '=', $id)->sum('expense_items.pst');
+        return $expense_item;
+    }
 }
