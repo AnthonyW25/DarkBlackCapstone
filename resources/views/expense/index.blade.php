@@ -11,7 +11,7 @@
                 <th>invoice</th>
                 <th>date</th>
                 <th>supplier</th>
-                <th>description</th>
+                <th>the expense details</th>
                 <th>category</th>
                 <th>total</th>
                 <th>GST</th>
@@ -30,6 +30,7 @@
                 <th>{{ $expense->supplier }}</th>
 
                 {{--We have access to the expense items through the relationship we defined in the Expense model--}}
+
                 @foreach($expense->items as $item)
                     <td>{{ $expense->id }}</td>
                     <td>{{ $expense->invoice }}</td>
@@ -107,6 +108,7 @@
                 {{--<?php}} } ?>
                 
                 </td>
+
                 <td>{{ $expense->created_at }}</td>
                 <td>{{ $expense->updated_at }}</td>
                 <td>
@@ -118,10 +120,12 @@
                     {!! Form::close() !!}
                 </td>
                 <td>
+
 {{--                    <!--<a href="{{ url('/expenseitem') }}" class="btn btn-success" formaction="">Edit //Items</a></td>-->--}}
                 
                     <form method="get" action="/expenseitem">
                     {{--<input type="hidden" name="expense_id" value="{{--<?php}} echo $_SESSION['expense_id'];?>">--}}
+
                     <input type="hidden" name="expense_id" value="{{ $expense->id }}">
                     <input type="submit" class="btn btn-success" value="Manage Items">
                     </form>

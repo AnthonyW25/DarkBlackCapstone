@@ -10,7 +10,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Enter A New Expense</div>
+                    <div class="card-header">Create an Expense</div>
                     <div class="card-body">
                         @if (session('status'))
                             <div class="alert alert-success">
@@ -29,10 +29,7 @@
                                         {!! $errors->has('supplier')?$errors->first('supplier'):'' !!}</td>
                                     <td>{!! Form::text('invoice', null)!!}
                                         {!! $errors->has('invoice')?$errors->first('invoice'):'' !!}</td>
-
-
                                 </tr>
-
                                 <tr>
                                     <td></td>
                                     <td></td>

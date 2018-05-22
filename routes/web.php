@@ -24,6 +24,7 @@ Route::get('dashboard', 'HomeController@dashboard')->name('dashboard');
 Route::get('create', 'HomeController@create')->name('create');
 
 // BE EXPLICIT ABOUT YOUR ROUTING, IT MAKES IT EASIER FOR OTHERS TO READ
+
 //Route::resource('expenseitem', 'ExpenseItemController');
 //Route::resource('expense', 'ExpenseController');
 
