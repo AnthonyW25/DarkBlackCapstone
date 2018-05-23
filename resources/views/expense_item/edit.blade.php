@@ -30,7 +30,7 @@ session_start();
                                     <th>{!! Form::label('gst', 'GST') !!}</th>
                                     <th>{!! Form::label('pst', 'PST') !!}</th>
                                 </tr>
-                                <!--//This should be in a loop that automatically fill our certain data-->
+
                                 <tr>
                                     <!--<td>{!! Form::text('expense_id', null)!!}</td>-->
                                     <td>{!! Form::text('description', null)!!}
