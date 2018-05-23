@@ -23,6 +23,9 @@ class ExpenseController extends Controller
             ->get();
 
         return view('expense.index', compact('expenses'));
+
+        //access user stuff
+        //Auth::user();
     }
 
     /**
