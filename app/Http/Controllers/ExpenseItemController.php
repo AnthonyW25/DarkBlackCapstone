@@ -99,5 +99,4 @@ class ExpenseItemController extends Controller
         $expense_item->delete();
         return redirect('expenseitem');
     }
-  
 }

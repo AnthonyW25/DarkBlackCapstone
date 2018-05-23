@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-
+<?php use App\Http\Controllers\ExpenseController; ?>
     <h2>Expense List</h2>
 
     <table class="table table-bordered table-responsive" style="margin-top: 10px;">
@@ -40,41 +40,23 @@
                     {{ $item->category }}<br>
                 @endforeach
                 </td>
-                <td><br>
+                <td><b>{{ "$" .ExpenseController::amountTotal($expense->id)}}</b><br>
                 @foreach($expense->items as $item)
                     {{ "$" . $item->amount }}<br>
                 @endforeach
                 </td>
-                <td><br>
+                <td><b>{{ "$" .ExpenseController::amountGst($expense->id)}}</b><br>
                 @foreach($expense->items as $item)
                     {{ "$" . $item->gst }}<br>
                 @endforeach
                 </td>
-                <td><br>
+                <td><b>{{ "$" .ExpenseController::amountPst($expense->id)}}</b><br>
                 @foreach($expense->items as $item)
                     {{ "$" . $item->pst }}<br>
                 @endforeach
-                </td>
-                <!--
-                        * Don't do anything like this in a View
-                         * Views should be "dumb" they just display information given to them
-                         * Calculations and "work" should be done in the Controller or Model
-                     $_SESSION['expense_id'] = $expense->id;
-                        $total = 0;
-                        $totalgst = 0;
-                      $totalpst = 0;
-                        $expense_items = DB::table('expense_items')
-                       ->where('expense_id', '=', $_SESSION['expense_id'])->orderBy('updated_at','DESC')->get();
-                       foreach ($expense_items as $expense_item){
-                            $description = $expense_item->description;
-                        $category = $expense_item->category;
-                          $amount = $expense_item->amount;
-                            $total += $amount;
-                           $gst = $expense_item->gst;
-                            $totalgst += $gst;
-                            $pst = $expense_item->pst;
-                           $totalpst += $pst;
-                  -->         
+
+                </td>    
+
         
                 <td>{{ $expense->created_at }}</td>
                 <td>{{ $expense->updated_at }}</td>

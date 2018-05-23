@@ -81,12 +81,17 @@ class ExpenseControllerTest extends TestCase
     }
 
     /** @test */
-    // public function edit()
-    // {
-    //     $this->actingAs($this->user)
-    //         ->get('expense/edit')
-    //         ->assertSee('Edit Expense');
-    // }
+    public function edit()
+    {
+        $expense = Expense::create([
+            'supplier' => 'Test Supplier',
+            // other expense details
+        ]);
+
+        $this->actingAs($this->user)
+            ->get('expense/1/edit')
+            ->assertSee('Edit Expense');
+    }
 
     /** @test */
     public function update()
