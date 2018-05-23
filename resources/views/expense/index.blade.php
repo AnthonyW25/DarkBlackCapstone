@@ -1,15 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-<?php use App\Http\Controllers\ExpenseController; ?>
-    <h2>Expense List</h2>
+<?php 
+    use App\Http\Controllers\ExpenseController;
+    use App\Http\Controllers\SaleController;
+ ?>
+    <h1>Expense List</h1>
 
     <table class="table table-bordered table-responsive" style="margin-top: 10px;">
         <thead>
             <tr>
                 <th>id</th>
                 <th>invoice</th>
-                <th>date</th>
                 <th>supplier</th>
                 <th>the expense details</th>
                 <th>category</th>
@@ -26,7 +28,6 @@
             <tr>
                 <th>{{ $expense->id }}</th>
                 <th>{{ $expense->invoice }}</th>
-                <th>{{ $expense->created_at }}</th>
                 <th>{{ $expense->supplier }}</th>
 
                 {{--We have access to the expense items through the relationship we defined in the Expense model--}}
@@ -58,8 +59,8 @@
                 </td>    
 
         
-                <td>{{ $expense->created_at }}</td>
-                <td>{{ $expense->updated_at }}</td>
+                <td>{{ $expense->created_at->format('d/m/Y') }}</td>
+                <td>{{ $expense->updated_at->format('d/m/Y') }}</td>
                 <td>
  
                     <a href="{{ route('expense.edit', $expense->id) }}" class="btn btn-success">Edit</a></td>
@@ -76,6 +77,61 @@
                     </form>
             </tr>
       @endforeach
+        </tbody>
+    </table>
+
+
+
+
+    <!------------------------------------ COGS Table ------------------------>
+    <br>
+    <h1>Cost Of Goods Sold (COGS)</h1>
+
+    <table class="table table-bordered table-responsive" style="margin-top: 10px;">
+        <thead>
+            <tr>
+                <th></th>
+                <th colspan="3">4 Weeks</th>
+                <th colspan="3">Expenses This Week</th>
+            </tr>
+            <tr>
+                <th></th>
+                <th>Expenses</th>
+                <th>Target</th>
+                <th>Actual</th>
+                <th>Budget</th>
+                <th>Actual</th>
+                <th>Remaining</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Food</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Alcohol</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Beverages</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
         </tbody>
     </table>
 @endsection
