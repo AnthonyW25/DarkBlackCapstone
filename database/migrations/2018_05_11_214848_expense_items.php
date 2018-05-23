@@ -19,8 +19,8 @@ class ExpenseItems extends Migration
             $table->char('description', 100)->default('N/A');
             $table->char('category', 100)->default('N/A');
             $table->integer('amount')->default('0');
-            $table->integer('gst')->default('0');
-            $table->integer('pst')->default('0');
+            $table->integer('gst')->default('0')->nullable();
+            $table->integer('pst')->default('0')->nullable();
             $table->timestamps();       
         });
 
