@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Expense;
 use App\ExpenseItem;
+use Illuminate\Support\Facades\Auth;
 
 
 class ExpenseController extends Controller
@@ -46,6 +47,7 @@ class ExpenseController extends Controller
         $this->validate($request, [
             'supplier' => 'Required',
             'invoice'  => 'Required']);
+        //dd(Auth::user());
 
         Expense::create($request->all());
 

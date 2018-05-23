@@ -54,7 +54,9 @@
                 @foreach($expense->items as $item)
                     {{ "$" . $item->pst }}<br>
                 @endforeach
+
                 </td>    
+
         
                 <td>{{ $expense->created_at }}</td>
                 <td>{{ $expense->updated_at }}</td>
