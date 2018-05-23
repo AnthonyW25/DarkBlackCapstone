@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Expense;
 use App\ExpenseItem;
+use App\Sale;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -23,7 +24,8 @@ class ExpenseController extends Controller
             ->orderBy('updated_at', 'DESC')
             ->get();
 
-        return view('expense.index', compact('expenses'));
+        $sales = Sale::orderBy('id','DESC')->get();
+        return view('expense.index', compact('expenses', 'sales'));
 
         //access user stuff
         //Auth::user();
@@ -125,6 +127,27 @@ class ExpenseController extends Controller
         return $expense_item;
     }
 
+
+    public static function foodTotal($id){
+        $expense = Expense::find($id);
+        $expense_item = ExpenseItem::where('expense_id', '=', $id)->where('category', '=', 'Food' )->sum('expense_items.amount');
+        return $expense_item;
+    }
+
+    public static function beverageTotal($id){
+        $expense = Expense::find($id);
+        $expense_item = ExpenseItem::where('expense_id', '=', $id)->where('category', '=', 'Beverage' )->sum('expense_items.amount');
+        return $expense_item;
+    }
+
+
+    public static function alcoholTotal($id){
+        $expense = Expense::find($id);
+        $expense_item = ExpenseItem::where('expense_id', '=', $id)->where('category', '=', 'Alcohol' )->sum('expense_items.amount');
+        return $expense_item;
+    }
+
+
      public static function amountGst($id){
     	$expense = Expense::find($id);
         $expense_item = ExpenseItem::where('expense_id', '=', $id)->sum('expense_items.gst');
@@ -135,5 +158,9 @@ class ExpenseController extends Controller
     	$expense = Expense::find($id);
         $expense_item = ExpenseItem::where('expense_id', '=', $id)->sum('expense_items.pst');
         return $expense_item;
+    }
+
+    public static function total_seven_days($id){
+        $sales = Sale::find($id);
     }
 }

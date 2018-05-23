@@ -18,7 +18,6 @@ else
 @stop
 
 @section('content')
-    
     <div class="table_dashboard">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -45,7 +44,7 @@ else
                                     <td>{!! Form::text('expense_id', null, ['readonly'])!!}</td>
                                     <td>{!! Form::text('description', null)!!}
                                         {!! $errors->has('description')?$errors->first('description'):'' !!}</td>
-                                    <td>{!! Form::text('category', null)!!}
+                                    <td>{!! Form::select('category', ['Food' => 'Food', 'Beverage' => 'Beverage', 'Alcohol'=>'Alcohol']);!!}
                                         {!! $errors->has('category')?$errors->first('category'):'' !!}</td>
                                     <td>{!! Form::text('amount', null)!!}</td>
                                     <td>{!! Form::text('gst', null)!!}</td>

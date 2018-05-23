@@ -17,7 +17,6 @@ class SaleController extends Controller
      */
     public function index()
     {
-        //
     }
 
     /**
@@ -84,5 +83,9 @@ class SaleController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function seven_days($id){
+        $sales = Sale::find($id);
     }
 }

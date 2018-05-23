@@ -4,6 +4,8 @@
 <?php 
     use App\Http\Controllers\ExpenseController;
     use App\Http\Controllers\SaleController;
+
+    $salesInstace = new SaleController;
  ?>
     <h1>Expense List</h1>
 
@@ -105,10 +107,12 @@
             </tr>
         </thead>
         <tbody>
+            @foreach($expenses as $expense)
+            @foreach($sales as $sale)
             <tr>
                 <th>Food</th>
-                <td></td>
-                <td></td>
+                <td><b>{{ "$" .ExpenseController::foodTotal($expense->id)}}</b></td>
+                <td>$33%</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -116,8 +120,8 @@
             </tr>
             <tr>
                 <th>Alcohol</th>
-                <td></td>
-                <td></td>
+                <td><b>{{ "$" .ExpenseController::alcoholTotal($expense->id)}}</b></td>
+                <td>$33%</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -125,13 +129,15 @@
             </tr>
             <tr>
                 <th>Beverages</th>
-                <td></td>
-                <td></td>
+                <td><b>{{ "$" .ExpenseController::beverageTotal($expense->id)}}</b></td>
+                <td>$33%</td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
+            @endforeach
+            @endforeach
         </tbody>
     </table>
 @endsection
