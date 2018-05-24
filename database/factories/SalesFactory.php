@@ -24,10 +24,10 @@ $factory->define(App\Sales::class, function (Faker $faker) {
         'beverage_sales' => $faker->numberBetween($min = 0, $max = 100000),
         //$beverage_sales = 'beverage_sales',
         //$net = $food_sales + $alcohol_sales + $beverage_sales,
-        'net' => 'food_sales',
+        'net' => '1',
         'seven_day_average' => '1',
         'twenty_eight_day_average' => '1',
         'receipts' => '1',
-        'date' => $faker->date($format = 'Y-m-d', $max = 'now'),
+        'date' => $faker->date($format = 'Y-m-d', $min = '2018-5-1', $max = 'now'),
     ];
 });

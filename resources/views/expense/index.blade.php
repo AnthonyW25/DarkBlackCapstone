@@ -107,37 +107,40 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($expenses as $expense)
-            @foreach($sales as $sale)
             <tr>
+                
                 <th>Food</th>
-                <td><b>{{ "$" .ExpenseController::foodTotal($expense->id)}}</b></td>
+                <td><b>{{ "$" .ExpenseController::foodTotal()}}</b></td>
                 <td>$33%</td>
+                <td>
+                    <?php $result = ExpenseController::total_twenty_eight_days()?>
+                        {{(int)$result[0] . "%"}}
+                    </td>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
+                
             </tr>
             <tr>
                 <th>Alcohol</th>
-                <td><b>{{ "$" .ExpenseController::alcoholTotal($expense->id)}}</b></td>
+                <td><b>{{ "$" .ExpenseController::alcoholTotal()}}</b></td>
                 <td>$33%</td>
-                <td></td>
+                <td>{{(int)$result[1] . "%"}}</td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
                 <th>Beverages</th>
-                <td><b>{{ "$" .ExpenseController::beverageTotal($expense->id)}}</b></td>
+                <td><b>{{ "$" .ExpenseController::beverageTotal()}}</b></td>
                 <td>$33%</td>
-                <td></td>
+                <td>{{(int)$result[2] . "%"}}</td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
-            @endforeach
-            @endforeach
+            
+            
         </tbody>
     </table>
 @endsection
