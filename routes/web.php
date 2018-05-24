@@ -27,6 +27,8 @@ Route::get('create', 'HomeController@create')->name('create');
 Route::resource('expenseitem', 'ExpenseItemController');
 Route::resource('expense', 'ExpenseController');
 
+
+
 //new routes
 Route::get('expense/create', 'ExpenseController@create');
 Route::post('expense/create', 'ExpenseController@store');

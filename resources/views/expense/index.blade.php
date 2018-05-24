@@ -4,6 +4,8 @@
 <?php 
     use App\Http\Controllers\ExpenseController;
     use App\Http\Controllers\SaleController;
+
+    $salesInstace = new SaleController;
  ?>
     <h1>Expense List</h1>
 
@@ -106,32 +108,39 @@
         </thead>
         <tbody>
             <tr>
+                
                 <th>Food</th>
+                <td><b>{{ "$" .ExpenseController::foodTotal()}}</b></td>
+                <td>$33%</td>
+                <td>
+                    <?php $result = ExpenseController::total_twenty_eight_days()?>
+                        {{(int)$result[0] . "%"}}
+                    </td>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                
             </tr>
             <tr>
                 <th>Alcohol</th>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td><b>{{ "$" .ExpenseController::alcoholTotal()}}</b></td>
+                <td>$33%</td>
+                <td>{{(int)$result[1] . "%"}}</td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
                 <th>Beverages</th>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td><b>{{ "$" .ExpenseController::beverageTotal()}}</b></td>
+                <td>$33%</td>
+                <td>{{(int)$result[2] . "%"}}</td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
+            
+            
         </tbody>
     </table>
 @endsection
