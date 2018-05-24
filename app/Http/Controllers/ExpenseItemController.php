@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\ExpenseItem;
 use App\Expense;
+use Auth;
 
 class ExpenseItemController extends Controller
 {

@@ -120,8 +120,8 @@
                     <?php 
                     $totalCategory = ExpenseController::categoryTotal();
 
-                    if (isset($totalCategory[0])){
-                        echo "$" . $totalCategory[0];
+                    if (isset($totalCategory['Food'])){
+                        echo "$" . $totalCategory['Food'];
                     }
                         else{echo "$0";}
                     ?> 
@@ -140,8 +140,8 @@
                 <th>Alcohol</th>
                 <td><b>
                     <?php 
-                    if (isset($totalCategory[1])){
-                        echo "$" . $totalCategory[1];
+                    if (isset($totalCategory['Alcohol'])){
+                        echo "$" . $totalCategory['Alcohol'];
                     }
                     else{echo "$0";}
                     ?>
@@ -156,8 +156,8 @@
                 <th>Beverages</th>
                 <td><b>
                   <?php 
-                    if (isset($totalCategory[2])){
-                        echo "$" . $totalCategory[2];
+                    if (isset($totalCategory['Beverage'])){
+                        echo "$" . $totalCategory['Beverage'];
                     }
                     else{echo "$0";}
                     ?> 
