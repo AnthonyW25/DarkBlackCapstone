@@ -36,15 +36,15 @@ class ExpenseControllerTest extends TestCase
             ->assertSee('the expense details');
     }
 
-     /*/**
+    /*/**
 
-     /** @test */
-     public function create()
-     {
+    /** @test */
+    public function create()
+    {
         $this->actingAs($this->user)
-             ->get('/expense/create')
-             ->assertSee('Create an Expense');
-     }
+            ->get('/expense/create')
+            ->assertSee('Create an Expense');
+    }
 
     /** @test */
     public function store()
@@ -52,7 +52,7 @@ class ExpenseControllerTest extends TestCase
         $this->actingAs($this->user)
             ->post('/expense/create', [
                 'supplier' => 'Test Supplier',
-                'invoice' => 'Test Invoice'
+                'invoice'  => 'Test Invoice'
                 // other post variables
             ])
             ->assertRedirect('/expense');
@@ -74,9 +74,8 @@ class ExpenseControllerTest extends TestCase
 
         $this->assertDatabaseHas('expense_items', [
             'expense_id' => $expense->id,
-             // expense_item details
+            // expense_item details
         ]);
-
         // Should also post some invalid data to test the controllers response
     }
 
@@ -89,7 +88,7 @@ class ExpenseControllerTest extends TestCase
         ]);
 
         $this->actingAs($this->user)
-            ->get('expense/1/edit')
+            ->get('/expense/' . $expense->id . '/edit')
             ->assertSee('Edit Expense');
     }
 
@@ -100,7 +99,7 @@ class ExpenseControllerTest extends TestCase
 
         $expense = Expense::create([
             'supplier' => 'Test Supplier',
-            'invoice' => 'Test Invoice'
+            'invoice'  => 'Test Invoice'
             // other expense details
         ]);
 
@@ -112,9 +111,9 @@ class ExpenseControllerTest extends TestCase
         // Post changed data to test the ability to edit
 
         $this->actingAs($this->user)
-            ->post('/expense/'. $expense->id .'/edit', [
-            	'supplier'=>'new name',
-            	'invoice'=>'new invoice'
+            ->post('/expense/' . $expense->id . '/edit', [
+                'supplier' => 'new name',
+                'invoice'  => 'new invoice'
                 // other post variables
             ])
             ->assertRedirect('/expense');
@@ -130,18 +129,17 @@ class ExpenseControllerTest extends TestCase
             'id' => $expense_item->id
             // expense_item details
         ]);
-
         //Should also post some invalid data to test the controllers response
     }
 
-    // /** @test */
-    public function delete()
+    /** @test */
+    public function destroy()
     {
         // create an expense we can delete
 
         $expense = Expense::create([
             'supplier' => 'Test Supplier',
-            'invoice' => 'Test Invoice'
+            'invoice'  => 'Test Invoice'
             // other expense details
         ]);
 
@@ -151,7 +149,7 @@ class ExpenseControllerTest extends TestCase
         ]);
 
         $this->actingAs($this->user)
-            ->post('/expense/delete', [
+            ->post('/expense/' . $expense->id . '/delete', [
                 'id' => $expense->id
             ])
             ->assertRedirect('/expense');
@@ -167,5 +165,22 @@ class ExpenseControllerTest extends TestCase
         ]);
     }
 
-    /*/*/
+    /** @test */
+    public function show()
+    {
+        $expense = Expense::create([
+            'supplier' => 'Test Supplier',
+            'invoice'  => 'Test Invoice'
+            // other expense details
+        ]);
+
+        $expense_item = ExpenseItem::create([
+            'expense_id' => $expense->id,
+            // other expense details
+        ]);
+
+        $this->actingAs($this->user)
+            ->get('/expense/' . $expense->id)
+            ->assertSee($expense->supplier);
+    }
 }

@@ -17,7 +17,10 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-                        {!! Form::model($expense, ['route'=>['expense.update', $expense->id], 'method'=>'PATCH']) !!}
+                            <form method="POST" class="form-horizontal" action="/expense/{{ $expense->id }}/edit">
+
+                                {!! csrf_field() !!}
+
                             <table>
                                 <tr>
                                     <th>{!! Form::label('supplier', 'Supplier') !!}</th>
