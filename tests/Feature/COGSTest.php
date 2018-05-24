@@ -44,18 +44,21 @@ class COGSTest extends TestCase
         // Create an expense
         // TODO: We will need to setup an expense to test frequently, this could be extracted to a method in Test Case for reuse
         $expense = Expense::create([
-            'date' => Carbon::now()->toDateString(), // TODO: The expense table needs a date column
+            'date' => Carbon::now()->toDateString(),
             'supplier' => 'Test Supplier',
             'site_id' => $site->id,
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
+            'invoice' => 'Test Invoice'
             // other expense details
         ]);
 
         ExpenseItem::create([
             'expense_id' => $expense->id,
-            'description' => 'Testing',
+            'description' => 'Testing Food',
             'category' => 'Food',
-            'amount' => '50000' // $500
+            'amount' => '50000', // $500
+            'gst' => '5000', // $50
+            'pst' => '2500' // $25
         ]);
 
         // Should now be able to calculate COGS
@@ -68,6 +71,21 @@ class COGSTest extends TestCase
         // etc..
 
         // Add new Alcohol expense, recalculate cogs and test the values
+        ExpenseItem::create([
+            'expense_id' => $expense->id,
+            'description' => 'Testing Alcohol',
+            'category' => 'Alcohol',
+            'amount' => '500000', // $5000
+            'gst' => '50000', // $500
+            'pst' => '25000' // $250
+        ]);
+
+        // Should now be able to calculate COGS
+        $cogs = new COGS($site);
+
+        $cogs->calculate();
+
+        $this->assertEquals(50000 / (28 * $food_sales), $cogs->twenty_eight_day_food);
 
     }
 }
