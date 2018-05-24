@@ -116,12 +116,21 @@
             <tr>
                 
                 <th>Food</th>
-                <td><b>{{ "$" .ExpenseController::foodTotal()}}</b></td>
+                <td><b>
+                    <?php 
+                    $totalCategory = ExpenseController::categoryTotal();
+
+                    if (isset($totalCategory['Food'])){
+                        echo "$" . $totalCategory['Food'];
+                    }
+                        else{echo "$0";}
+                    ?> 
+                </b></td>
                 <td>$33%</td>
                 <td>
                     <?php $result = ExpenseController::total_twenty_eight_days()?>
-                        {{(int)$result[0] . "%"}}
-                    </td>
+                    {{(int)$result[0] . "%"}}
+                </td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -129,7 +138,14 @@
             </tr>
             <tr>
                 <th>Alcohol</th>
-                <td><b>{{ "$" .ExpenseController::alcoholTotal()}}</b></td>
+                <td><b>
+                    <?php 
+                    if (isset($totalCategory['Alcohol'])){
+                        echo "$" . $totalCategory['Alcohol'];
+                    }
+                    else{echo "$0";}
+                    ?>
+                </b></td>
                 <td>$33%</td>
                 <td>{{(int)$result[1] . "%"}}</td>
                 <td></td>
@@ -138,7 +154,14 @@
             </tr>
             <tr>
                 <th>Beverages</th>
-                <td><b>{{ "$" .ExpenseController::beverageTotal()}}</b></td>
+                <td><b>
+                  <?php 
+                    if (isset($totalCategory['Beverage'])){
+                        echo "$" . $totalCategory['Beverage'];
+                    }
+                    else{echo "$0";}
+                    ?> 
+                </b></td>
                 <td>$33%</td>
                 <td>{{(int)$result[2] . "%"}}</td>
                 <td></td>

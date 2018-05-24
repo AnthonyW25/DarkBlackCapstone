@@ -47,6 +47,7 @@ class ExpenseController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
+            'date' => 'Required',
             'supplier' => 'Required',
             'invoice'  => 'Required']);
 
@@ -92,6 +93,7 @@ class ExpenseController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
+            'date' => 'Required',
             'supplier' => 'Required',
             'invoice'  => 'Required']);
 
@@ -134,33 +136,16 @@ class ExpenseController extends Controller
     }
 
     //add cost of all food expenses
-    public static function foodTotal()
+    public static function categoryTotal()
     {
-        return ExpenseItem::whereRaw('DATE(created_at) BETWEEN (NOW() - INTERVAL 28 DAY) AND NOW()')
-            ->where('category', '=', 'Food')
-            ->sum('expense_items.amount');
-
-        /*
-        What if I don't want 28 days? maybe 7, or 24, or 31
-        The dates should be provided to the method so that it can be flexible and work for any time period
-        */
-
-        // Carbon is a great PHP class for working with dates and times that is included with Laravel.
-        $from = Carbon::now()->subDay(28);
-        $to = Carbon::now();
-
-        // TODO: The Expense table needs a date column. You can't use created_at because a user may enter an expense dated last week
-        /*
-         * Instead of doing a db query for every category query the database once and flip through the records adding up all the categories
-         * eg.
-         */
+        $days_ago = 28;
 
         $totals = [];
-
+        
         $expense_items = DB::table('expenses')
             ->join('expense_items', 'expenses.id', '=', 'expense_items.expense_id')
             ->select('expense_items.*')
-            ->whereBetween('expenses.date', [$from->toDateString(), $to->toDateString()])
+            ->whereRaw('DATE(date) BETWEEN (NOW() - INTERVAL '. $days_ago .' DAY) AND NOW()')
             ->get();
 
         foreach ($expense_items as $item) {
@@ -171,25 +156,11 @@ class ExpenseController extends Controller
                 $totals[$item->category] = $item->amount;
             }
         }
+        return $totals;
 
         // Now you have an array of totals by category and you only went to the db once
     }
 
-    //add cost of all beverage expenses
-    public static function beverageTotal()
-    {
-        return ExpenseItem::whereRaw('DATE(created_at) BETWEEN (NOW() - INTERVAL 28 DAY) AND NOW()')
-            ->where('category', '=', 'Beverage')
-            ->sum('expense_items.amount');
-    }
-
-    //add cost of all alcohol expenses
-    public static function alcoholTotal()
-    {
-        return ExpenseItem::whereRaw('DATE(created_at) BETWEEN (NOW() - INTERVAL 28 DAY) AND NOW()')
-            ->where('category', '=', 'Alcohol')
-            ->sum('expense_items.amount');
-    }
 
     public static function amountGst($id)
     {
@@ -253,11 +224,16 @@ class ExpenseController extends Controller
             $total[2] += $sale->beverage_sales;
             $total[3] = $total[0] + $total[1] + $total[2];
         }
-        $total[0] = $total_food_expense / ($total[0] / 28) * 100;
-        $total[1] = $total_alcohol_expense / ($total[1] / 28) * 100;
-        $total[2] = $total_beverage_expense / ($total[2] / 28) * 100;
-        $total[3] = $total[3] / 28;//28 day sale average; insert this into database
-
-        return $total;
+        if($total[0] == 0 or $total[1] == 0 or $total[2] == 0){
+            return "Sales are missing";
+        }
+        else{
+            $total[0] = $total_food_expense / ($total[0] / 28) * 100;
+            $total[1] = $total_alcohol_expense / ($total[1] / 28) * 100;
+            $total[2] = $total_beverage_expense / ($total[2] / 28) * 100;
+            $total[3] = $total[3] / 28;//28 day sale average; insert this into database
+            return $total;
+        }
+        
     }
 }
