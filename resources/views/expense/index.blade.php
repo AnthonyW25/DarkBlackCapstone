@@ -20,8 +20,8 @@
                 <th>total</th>
                 <th>GST</th>
                 <th>PST</th>
-                <th>created at</th>
-                <th>updated at</th>
+                <th>Date</th>
+                <th></th>
                 <th colspan="3"><a href="expense/create" class="btn btn-primary">Add new Expense</a></th>
             </tr>
         </thead>
@@ -58,11 +58,17 @@
                     {{ "$" . $item->pst }}<br>
                 @endforeach
 
-                </td>    
+                </td>
+                <td>
+                   {{ $expense->date }}
+                </td>
 
         
+                <!--
                 <td>{{ $expense->created_at->format('d/m/Y') }}</td>
                 <td>{{ $expense->updated_at->format('d/m/Y') }}</td>
+                -->
+
                 <td>
  
                     <a href="{{ route('expense.edit', $expense->id) }}" class="btn btn-success">Edit</a></td>

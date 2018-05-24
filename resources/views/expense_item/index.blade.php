@@ -59,8 +59,14 @@ else
                 <td>{{ $expense_item->amount }}</td>
                 <td>{{ $expense_item->gst }}</td>
                 <td>{{ $expense_item->pst }}</td>
+                <td></td>
+                <td></td>
+
+                <!--
                 <td>{{ $expense_item->created_at }}</td>
                 <td>{{ $expense_item->updated_at }}</td>
+                -->
+
                 <td>
                     <a href="{{ route('expenseitem.edit', $expense_item->id) }}" class="btn btn-success">Edit</a></td>
                    <td> {!! Form::open(['method'=>'delete', 'route'=>['expenseitem.destroy', $expense_item->id]]) !!}
