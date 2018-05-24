@@ -21,6 +21,7 @@ class ExpenseItems extends Migration
             $table->integer('amount')->default('0');
             $table->integer('gst')->default('0')->nullable();
             $table->integer('pst')->default('0')->nullable();
+            //$table->date('date');
             $table->timestamps();       
         });
 
