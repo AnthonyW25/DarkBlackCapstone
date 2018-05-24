@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Expense;
 use App\ExpenseItem;
@@ -117,6 +118,13 @@ class ExpenseController extends Controller
         return redirect('expense');
     }
 
+    /*
+     * Everything below this should be placed somewhere else
+     * Most of what you are doing below is querying the db, a good indication that this doesn't belong in the controller
+     * You are querying the ExpenseItem model, so these methods could go there
+     * You could also create a separate class (like the COGS class) to house this logic
+     */
+
     //add cost of all expenses
     public static function amountTotal($id)
     {
@@ -131,6 +139,40 @@ class ExpenseController extends Controller
         return ExpenseItem::whereRaw('DATE(created_at) BETWEEN (NOW() - INTERVAL 28 DAY) AND NOW()')
             ->where('category', '=', 'Food')
             ->sum('expense_items.amount');
+
+        /*
+        What if I don't want 28 days? maybe 7, or 24, or 31
+        The dates should be provided to the method so that it can be flexible and work for any time period
+        */
+
+        // Carbon is a great PHP class for working with dates and times that is included with Laravel.
+        $from = Carbon::now()->subDay(28);
+        $to = Carbon::now();
+
+        // TODO: The Expense table needs a date column. You can't use created_at because a user may enter an expense dated last week
+        /*
+         * Instead of doing a db query for every category query the database once and flip through the records adding up all the categories
+         * eg.
+         */
+
+        $totals = [];
+
+        $expense_items = DB::table('expenses')
+            ->join('expense_items', 'expenses.id', '=', 'expense_items.expense_id')
+            ->select('expense_items.*')
+            ->whereBetween('expenses.date', [$from->toDateString(), $to->toDateString()])
+            ->get();
+
+        foreach ($expense_items as $item) {
+            if (isset($totals[$item->category])) {
+                $totals[$item->category] += $item->amount;
+            }
+            else {
+                $totals[$item->category] = $item->amount;
+            }
+        }
+
+        // Now you have an array of totals by category and you only went to the db once
     }
 
     //add cost of all beverage expenses
