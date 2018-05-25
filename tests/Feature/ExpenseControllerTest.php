@@ -13,6 +13,7 @@ class ExpenseControllerTest extends TestCase
     /** @test */
     public function index()
     {
+
         $this->actingAs($this->user)
             ->get('/expense')
             ->assertSuccessful()
