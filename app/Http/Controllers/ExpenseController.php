@@ -251,7 +251,7 @@ $this->site->id;
         //This is for calculating and storing the twenty-eight day average sales
         $twenty_eight_sales = Sale::whereRaw('DATE(date) BETWEEN (NOW() - INTERVAL 28 DAY) AND NOW()')->get();
 
-        $total = array(0, 0, 0, 0, 0, 0, 0);
+        $total = array(0, 0, 0, 0, 0, 0, 0, 0);
         foreach ($twenty_eight_sales as $sale) {
             $total[0] = $sale->food_sales;//individual food sale
             $total[1] = $sale->alcohol_sales;//individual alcohol sale
@@ -268,12 +268,12 @@ $this->site->id;
             return "Sales are empty";
         }
         else{
-           $total[0] = ($total_food_expense / $total[4]) * 100;//COGS of food
+            $total[0] = ($total_food_expense / $total[4]) * 100;//COGS of food
             $total[1] = ($total_alcohol_expense / $total[5]) * 100;//COGS of alcohol
             $total[2] = ($total_beverage_expense / $total[6]) * 100;//COGS of beverage
-            $total[3] = $total[3]/28;//the variable is now the twenty-eight day average of sales 
+            $total[7] = $total[3]/28;//the variable is now the twenty-eight day average of sales 
 
-            DB::table('sales')->where('id', $sales->id)->update(['twenty_eight_day_average'=>$total[3]]);//storing twenty-eight day evg into the most recent sales(the one the user should be in)
+            DB::table('sales')->where('id', $sales->id)->update(['twenty_eight_day_average'=>$total[7]]);//storing twenty-eight day evg into the most recent sales(the one the user should be in)
 
             return $total; 
         }      
