@@ -117,7 +117,7 @@
                 <th>Food</th>
                 <td><b>
                     <?php 
-                    $totalCategory = ExpenseController::categoryTotal();
+                    $totalCategory = ExpenseController::categoryTotal();//gets the totals of all categories
 
                     if (isset($totalCategory['Food'])){
                         echo "$" . $totalCategory['Food'];
@@ -127,15 +127,16 @@
                 </b></td>
                 <td>{!! Form::number('number', 33) !!} % </td>
                 <td>
-                    <?php $result = ExpenseController::total_twenty_eight_days()?>
-                    <?php
-                        if($result[0] < 1 and $result[0] > 0) {
-                            echo ' < 1%';
-                        }
-                        else {
-                            echo (int)$result[0] . "%";
-                        }
+
+
+                    <?php 
+                    
+                        $twenty_eight_day_result = ExpenseController::total_twenty_eight_days();//we will store the twenty eight day avg ifo into this variable
+                                                                                                //this is so we can output the info to the page 
+                        ExpenseController::total_seven_days();//just rungs the seven day avg function to store it in the database; will not be output to display at the moment
                     ?>
+                    {{(int)$twenty_eight_day_result[0] . "%"}}
+
                 </td>
                 <td></td>
                 <td></td>

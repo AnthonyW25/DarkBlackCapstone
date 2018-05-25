@@ -172,6 +172,7 @@ $this->site->id;
             ->sum('expense_items.pst');
     }
 
+/*-------------------------------------- SEVEN DAY AVERAGE------------------------------------*/
     public static function total_seven_days()
     {
         $total_food_expense = DB::table('expenses')
@@ -195,18 +196,24 @@ $this->site->id;
             ->where('category', '=', 'Beverage')
             ->sum('expense_items.amount');
 
-        $sales = Sale::whereRaw('DATE(date) BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()')->get();
+        $seven_day_sales = Sale::whereRaw('DATE(date) BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()')->get();
         $total = array(0, 0, 0, 0);
-        foreach ($sales as $sale) {
-            $total[0] += $sale->food_sales;
-            $total[1] += $sale->alcohol_sales;
-            $total[2] += $sale->beverage_sales;
-            $total[3] = $total[0] + $total[1] + $total[2];
+        foreach ($seven_day_sales as $sale) {
+            $total[0] = $sale->food_sales;//individual food sale
+            $total[1] = $sale->alcohol_sales;//individual alcohol sale
+            $total[2] = $sale->beverage_sales;//individual beverage sale
+
+            $total[3] += $sale->food_sales + $sale->alcohol_sales + $sale->beverage_sales;//full total
         }
 
         $total[3] = $total[3] / 7;//seven day sale average; insert this into database
+        $sales = Sale::orderBy('id', 'desc')->first();
+        DB::table('sales')->where('id', $sales->id)->update(['seven_day_average'=>$total[3]]);
     }
 
+
+
+/*-------------------------------------- TWENTY EIGHT DAY AVERAGE------------------------------------*/
     //this function stores the tenty-eight day average as well as the net total for that day
     public static function total_twenty_eight_days()
     {
@@ -268,8 +275,6 @@ $this->site->id;
             DB::table('sales')->where('id', $sales->id)->update(['twenty_eight_day_average'=>$total[3]]);//storing twenty-eight day evg into the most recent sales(the one the user should be in)
 
             return $total; 
-        }
-            
-        
+        }      
     }
 }
