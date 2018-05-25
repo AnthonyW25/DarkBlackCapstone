@@ -45,13 +45,14 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
+        $user_info = Auth::user();
+
         $this->validate($request, [
             'date' => 'Required',
             'supplier' => 'Required',
             'invoice'  => 'Required']);
-
-        Expense::create($request->all());
-
+        Expense::create($request->all() + ['user_id' => $user_info->id]);
+       
         return redirect('/expense');
     }
 

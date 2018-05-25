@@ -4,10 +4,9 @@
     <h2>Expense List</h2>
 @stop
 
-
 <?php
 
-session_start();
+session_start(); 
 
 if (isset($_GET['expense_id']))
 {
