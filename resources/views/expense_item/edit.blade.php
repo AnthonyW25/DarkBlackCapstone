@@ -35,7 +35,7 @@ session_start();
                                     <!--<td>{!! Form::text('expense_id', null)!!}</td>-->
                                     <td>{!! Form::text('description', null)!!}
                                         {!! $errors->has('description')?$errors->first('description'):'' !!}</td>
-                                    <td>{!! Form::text('category', null)!!}
+                                    <td>{!! Form::select('category', ['Food' => 'Food', 'Beverage' => 'Beverage', 'Alcohol'=>'Alcohol']);!!}
                                         {!! $errors->has('category')?$errors->first('category'):'' !!}</td>
                                     <td>{!! Form::text('amount', null)!!}</td>
                                     <td>{!! Form::text('gst', null)!!}</td>
