@@ -3,9 +3,8 @@
 @section('content')
 <?php 
     use App\Http\Controllers\ExpenseController;
-    use App\Http\Controllers\SaleController;
 
-    $salesInstace = new SaleController;
+    
  ?>
     <h1>Expense List</h1>
 
@@ -63,11 +62,6 @@
                    {{ $expense->date }}
                 </td>
 
-        
-                <!--
-                <td>{{ $expense->created_at->format('d/m/Y') }}</td>
-                <td>{{ $expense->updated_at->format('d/m/Y') }}</td>
-                -->
 
                 <td>
  

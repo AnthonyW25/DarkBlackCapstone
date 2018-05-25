@@ -23,9 +23,7 @@ class ExpenseController extends Controller
             ->orderBy('updated_at', 'DESC')
             ->get();
 
-        $sales = Sale::orderBy('id', 'DESC')->get();
-
-        return view('expense.index', compact('expenses', 'sales'));
+        return view('expense.index', compact('expenses'));
     }
 
     /**
@@ -130,8 +128,7 @@ class ExpenseController extends Controller
     //add cost of all expenses
     public static function amountTotal($id)
     {
-        return ExpenseItem::whereRaw('DATE(created_at) BETWEEN (NOW() - INTERVAL 28 DAY) AND NOW()')
-            ->where('expense_id', '=', $id)
+        return ExpenseItem::where('expense_id', '=', $id)
             ->sum('expense_items.amount');
     }
 
@@ -164,33 +161,40 @@ class ExpenseController extends Controller
 
     public static function amountGst($id)
     {
-        return ExpenseItem::whereRaw('DATE(created_at) BETWEEN (NOW() - INTERVAL 28 DAY) AND NOW()')
-            ->where('expense_id', '=', $id)
+        return ExpenseItem::where('expense_id', '=', $id)
             ->sum('expense_items.gst');
     }
 
     public static function amountPst($id)
     {
-        return ExpenseItem::whereRaw('DATE(created_at) BETWEEN (NOW() - INTERVAL 28 DAY) AND NOW()')
-            ->where('expense_id', '=', $id)
+        return ExpenseItem::where('expense_id', '=', $id)
             ->sum('expense_items.pst');
     }
 
     public static function total_seven_days()
     {
-        $total_food_expense = ExpenseItem::whereRaw('DATE(created_at) BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()')
+        $total_food_expense = DB::table('expenses')
+            ->join('expense_items', 'expenses.id', '=', 'expense_items.expense_id')
+            ->select('expense_items.*')
+            ->whereRaw('DATE(date) BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()')
             ->where('category', '=', 'Food')
             ->sum('expense_items.amount');
 
-        $total_alcohol_expense = ExpenseItem::whereRaw('DATE(created_at) BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()')
+        $total_alcohol_expense = DB::table('expenses')
+            ->join('expense_items', 'expenses.id', '=', 'expense_items.expense_id')
+            ->select('expense_items.*')
+            ->whereRaw('DATE(date) BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()')
             ->where('category', '=', 'Alcohol')
             ->sum('expense_items.amount');
 
-        $total_beverage_expense = ExpenseItem::whereRaw('DATE(created_at) BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()')
+        $total_beverage_expense = DB::table('expenses')
+            ->join('expense_items', 'expenses.id', '=', 'expense_items.expense_id')
+            ->select('expense_items.*')
+            ->whereRaw('DATE(date) BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()')
             ->where('category', '=', 'Beverage')
             ->sum('expense_items.amount');
 
-        $sales = Sale::whereRaw('DATE(created_at) BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()')->get();
+        $sales = Sale::whereRaw('DATE(date) BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()')->get();
         $total = array(0, 0, 0, 0);
         foreach ($sales as $sale) {
             $total[0] += $sale->food_sales;
@@ -202,38 +206,58 @@ class ExpenseController extends Controller
         $total[3] = $total[3] / 7;//seven day sale average; insert this into database
     }
 
+    //this function stores the tenty-eight day average as well as the net total for that day
     public static function total_twenty_eight_days()
     {
-        $total_food_expense = ExpenseItem::whereRaw('DATE(created_at) BETWEEN (NOW() - INTERVAL 28 DAY) AND NOW()')
+        $total_food_expense =  DB::table('expenses')
+            ->join('expense_items', 'expenses.id', '=', 'expense_items.expense_id')
+            ->select('expense_items.*')
+            ->whereRaw('DATE(date) BETWEEN (NOW() - INTERVAL 28 DAY) AND NOW()')
             ->where('category', '=', 'Food')
             ->sum('expense_items.amount');
 
-        $total_alcohol_expense = ExpenseItem::whereRaw('DATE(created_at) BETWEEN (NOW() - INTERVAL 28 DAY) AND NOW()')
+        $total_alcohol_expense = DB::table('expenses')
+            ->join('expense_items', 'expenses.id', '=', 'expense_items.expense_id')
+            ->select('expense_items.*')
+            ->whereRaw('DATE(date) BETWEEN (NOW() - INTERVAL 28 DAY) AND NOW()')
             ->where('category', '=', 'Alcohol')
-            ->sum('expense_items.amount');
+            ->sum('expense_items.amount');;
 
-        $total_beverage_expense = ExpenseItem::whereRaw('DATE(created_at) BETWEEN (NOW() - INTERVAL 28 DAY) AND NOW()')
+        $total_beverage_expense = DB::table('expenses')
+            ->join('expense_items', 'expenses.id', '=', 'expense_items.expense_id')
+            ->select('expense_items.*')
+            ->whereRaw('DATE(date) BETWEEN (NOW() - INTERVAL 28 DAY) AND NOW()')
             ->where('category', '=', 'Beverage')
             ->sum('expense_items.amount');
 
-        $sales = Sale::whereRaw('DATE(created_at) BETWEEN (NOW() - INTERVAL 28 DAY) AND NOW()')->get();
+         //net sale for that day
+         $net_sales = 0;
+
+         $sales = Sale::orderBy('id', 'desc')->first();
+
+        $net_sales += $sales->food_sales + $sales->alcohol_sales + $sales->beverage_sales;
+        
+        DB::table('sales')->where('id', $sales->id)->update(['net'=>$net_sales]);
+
+        //This is for calculating and storing the twenty-eight day average sales
+        $twenty_eight_sales = Sale::whereRaw('DATE(date) BETWEEN (NOW() - INTERVAL 28 DAY) AND NOW()')->get();
         $total = array(0, 0, 0, 0);
-        foreach ($sales as $sale) {
+        foreach ($twenty_eight_sales as $sale) {
             $total[0] += $sale->food_sales;
             $total[1] += $sale->alcohol_sales;
             $total[2] += $sale->beverage_sales;
-            $total[3] = $total[0] + $total[1] + $total[2];
+            $total[3] += $sale->food_sales + $sale->alcohol_sales + $sale->beverage_sales;
         }
-        if($total[0] == 0 or $total[1] == 0 or $total[2] == 0){
-            return "Sales are missing";
-        }
-        else{
+        DB::table('sales')->where('id', $sales->id)->update(['twenty_eight_day_average'=>$total[3]]);//storing twenty-eight day evg into the most recent sales(the one the user should be in)
+
             $total[0] = $total_food_expense / ($total[0] / 28) * 100;
             $total[1] = $total_alcohol_expense / ($total[1] / 28) * 100;
             $total[2] = $total_beverage_expense / ($total[2] / 28) * 100;
-            $total[3] = $total[3] / 28;//28 day sale average; insert this into database
+            $total[3] = $total[3];//the variable is now the twenty-eight day average of sales 
+
+            
+
             return $total;
-        }
         
     }
 }
