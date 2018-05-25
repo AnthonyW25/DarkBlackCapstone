@@ -1,7 +1,7 @@
 @extends('layouts.app')
 <?php
 
-session_start();
+session_start(); 
 
 if (isset($_GET['expense_id']))
 {
