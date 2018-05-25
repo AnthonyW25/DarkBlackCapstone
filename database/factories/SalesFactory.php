@@ -18,12 +18,8 @@ $factory->define(App\Sales::class, function (Faker $faker) {
 
         'site_id' => '1',
         'food_sales' => $faker->numberBetween($min = 0, $max = 1000000),
-        //$food_sales = 'food_sales',
         'alcohol_sales' => $faker->numberBetween($min = 0, $max = 100000),
-        //$alcohol_sales = 'alcohol_sales',
         'beverage_sales' => $faker->numberBetween($min = 0, $max = 100000),
-        //$beverage_sales = 'beverage_sales',
-        //$net = $food_sales + $alcohol_sales + $beverage_sales,
         'net' => '1',
         'seven_day_average' => '1',
         'twenty_eight_day_average' => '1',
