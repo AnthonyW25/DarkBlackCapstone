@@ -3,8 +3,8 @@
 @section('content')
 <?php 
     use App\Http\Controllers\ExpenseController;
-
-    
+    use App\Http\Controllers\SaleController;
+    $salesInstace = new SaleController;
  ?>
     <h1>Expense List</h1>
 

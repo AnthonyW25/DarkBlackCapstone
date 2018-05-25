@@ -23,7 +23,8 @@ class ExpenseController extends Controller
             ->orderBy('updated_at', 'DESC')
             ->get();
 
-        return view('expense.index', compact('expenses'));
+        $sales = Sale::orderBy('id', 'DESC')->get();
+        return view('expense.index', compact('expenses', 'sales'));
     }
 
     /**
@@ -241,21 +242,26 @@ class ExpenseController extends Controller
 
         //This is for calculating and storing the twenty-eight day average sales
         $twenty_eight_sales = Sale::whereRaw('DATE(date) BETWEEN (NOW() - INTERVAL 28 DAY) AND NOW()')->get();
-        $total = array(0, 0, 0, 0);
+
+        $total = array(0, 0, 0, 0, 0, 0, 0);
         foreach ($twenty_eight_sales as $sale) {
-            $total[0] += $sale->food_sales;
-            $total[1] += $sale->alcohol_sales;
-            $total[2] += $sale->beverage_sales;
-            $total[3] += $sale->food_sales + $sale->alcohol_sales + $sale->beverage_sales;
+            $total[0] = $sale->food_sales;//individual food sale
+            $total[1] = $sale->alcohol_sales;//individual alcohol sale
+            $total[2] = $sale->beverage_sales;//individual beverage sale
+
+            $total[3] += $sale->food_sales + $sale->alcohol_sales + $sale->beverage_sales;//full total
+
+            $total[4] += $sale->food_sales;//full food total
+            $total[5] += $sale->alcohol_sales;//full alcohol total
+            $total[6] += $sale->beverage_sales;//full beverage total
         }
-        DB::table('sales')->where('id', $sales->id)->update(['twenty_eight_day_average'=>$total[3]]);//storing twenty-eight day evg into the most recent sales(the one the user should be in)
-
-            $total[0] = $total_food_expense / ($total[0] / 28) * 100;
-            $total[1] = $total_alcohol_expense / ($total[1] / 28) * 100;
-            $total[2] = $total_beverage_expense / ($total[2] / 28) * 100;
-            $total[3] = $total[3];//the variable is now the twenty-eight day average of sales 
-
             
+            $total[0] = ($total_food_expense / $total[4]) * 100;//COGS of food
+            $total[1] = ($total_alcohol_expense / $total[5]) * 100;//COGS of alcohol
+            $total[2] = ($total_beverage_expense / $total[6]) * 100;//COGS of beverage
+            $total[3] = $total[3]/28;//the variable is now the twenty-eight day average of sales 
+
+            DB::table('sales')->where('id', $sales->id)->update(['twenty_eight_day_average'=>$total[3]]);//storing twenty-eight day evg into the most recent sales(the one the user should be in)
 
             return $total;
         
