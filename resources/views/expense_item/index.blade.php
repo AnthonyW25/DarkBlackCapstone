@@ -7,8 +7,6 @@
 
 <?php
 
-session_start();
-
 if (isset($_GET['expense_id']))
 {
     $expense_id = $_GET['expense_id'];

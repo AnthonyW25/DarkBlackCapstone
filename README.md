@@ -7,8 +7,13 @@ If you get the “can’t find driver” error when trying to register/login whe
 	•Remove ;
 	•Should work now
 	
-heroku app: https://thawing-lowlands-75710.herokuapp.com/
+Heroku app: https://thawing-lowlands-75710.herokuapp.com/
 
-how to run the tests: ./vendor/bin/phpunit ./tests/feature/**insert test filename**
+How to run the tests: ./vendor/bin/phpunit ./tests/feature/**insert test filename**
+
+After running tests: php artisan migrate:refresh 
+                     php artisan db:seed --class=SalesTableSeeder
+                     
+If tests are failing: composer dump-autoload
 
 

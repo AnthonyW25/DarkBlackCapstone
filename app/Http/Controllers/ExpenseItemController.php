@@ -16,6 +16,17 @@ class ExpenseItemController extends Controller
      */
     public function index()
     {
+        //$expense_id = $request->get('expense_id');
+
+//        if (isset($_GET['expense_id']))
+//        {
+//            $expense_id = $_GET['expense_id'];
+//            $_SESSION['expense_id'] = $expense_id;
+//        }
+//        else
+//        {
+//            $expense_id = $_SESSION['expense_id'];
+//        }
         $expense_items = ExpenseItem::orderBy('updated_at','DESC')->get();
 
         return view('expense_item.index', compact('expense_items'));
@@ -28,6 +39,8 @@ class ExpenseItemController extends Controller
      */
     public function create()
     {
+        //$expense_id = $request->get('expense_id');
+
         return view('expense_item.create');
     }
 

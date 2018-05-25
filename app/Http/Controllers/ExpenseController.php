@@ -112,7 +112,7 @@ class ExpenseController extends Controller
     public function destroy($id)
     {
         Expense::destroy($id);
-
+$this->site->id;
         ExpenseItem::where('expense_id', '=', $id)
             ->delete();
 

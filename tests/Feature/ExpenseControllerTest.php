@@ -34,7 +34,7 @@ class ExpenseControllerTest extends TestCase
 
         $this->actingAs($this->user)
             ->get('/expense')
-            ->assertSee('the expense details');
+            ->assertSee('Expense Items');
     }
 
     /*/**
