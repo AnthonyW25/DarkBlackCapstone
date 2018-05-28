@@ -14,9 +14,11 @@ class COGS
 {
     public $site;
 
+    public $seven_day_beverage;
     public $seven_day_food;
     public $seven_day_alcohol;
     public $seven_day_total;
+    public $twenty_eight_day_beverage;
     public $twenty_eight_day_food;
     public $twenty_eight_day_alcohol;
     public $twenty_eight_day_total;
