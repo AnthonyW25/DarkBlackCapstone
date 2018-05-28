@@ -20,6 +20,10 @@ class DatabaseSeeder extends Seeder
             'remember_token' => str_random(10),
         ]);
 
+        $this->call([
+            SalesTableSeeder::class
+        ]);
+
         // Later we may setup other default items we need for manual testing
     }
 }
