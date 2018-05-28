@@ -70,8 +70,7 @@
         </nav>
 
         <main class="py-4">
-            @yield('create')
-            @yield('index')
+
             @yield('content')
         </main>
     </div>

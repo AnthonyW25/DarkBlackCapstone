@@ -1,5 +1,4 @@
 
-@section('create')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
@@ -17,8 +16,8 @@ $(document).ready(function(){
 });
 </script>
 <!------------- end of Scripts------------->
-<button id="show" class="btn btn-primary">Add expense</button>
-<div id="tr1" style="display:none">
+<!--<button id="show" class="btn btn-primary">Add expense</button>-->
+<div id="tr1">
     {!! Form::open(['url'=>'expense']) !!}
         <table>
             <tr>
@@ -33,19 +32,10 @@ $(document).ready(function(){
                 <td>{!! Form::text('invoice', null)!!}
                     {!! $errors->has('invoice')?$errors->first('invoice'):'' !!}</td>
                 <td>{!! Form::date('date', now()) !!} </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td>{!! Form::submit('Save', ['class'=>'btn btn-primary']) !!}<button id="hide" class="btn btn-danger">Cancel</button></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{!! Form::submit('Save', ['class'=>'btn btn-primary']) !!}</td>
             </tr>
         </table>
 
 {!! Form::close() !!}
     </div>
 
-@stop
