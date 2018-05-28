@@ -62,7 +62,9 @@ $(document).ready(function(){
                 <th>GST</th>
                 <th>PST</th>
                 <th>Date</th>
-
+                <th><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+  Add new Expense
+</button></th>
                 <th colspan="3"></th>
             </tr>
         </thead>
