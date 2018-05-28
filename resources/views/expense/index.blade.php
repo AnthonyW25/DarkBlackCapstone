@@ -1,6 +1,6 @@
 @extends('layouts.app')
-
-@section('content')
+@extends('expense.create')
+@section('index')
 <?php 
     use App\Http\Controllers\ExpenseController;
     use App\Http\Controllers\SaleController;
@@ -21,7 +21,7 @@
                 <th>PST</th>
                 <th>Date</th>
 
-                <th colspan="3"><a href="expense/create" class="btn btn-primary">Add new Expense</a></th>
+                <th colspan="3"></th>
             </tr>
         </thead>
         <tbody>
