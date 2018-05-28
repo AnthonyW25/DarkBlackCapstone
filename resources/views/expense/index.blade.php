@@ -1,11 +1,53 @@
 @extends('layouts.app')
-@extends('expense.create')
-@section('index')
+
+@section('content')
 <?php 
     use App\Http\Controllers\ExpenseController;
     use App\Http\Controllers\SaleController;
     $salesInstace = new SaleController;
  ?>
+<!-- Remember to include jQuery :) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+
+<!-- jQuery Modal -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('#exampleModalLabel').on('shown.bs.modal', function () {
+  $('#exampleModal').trigger('focus')
+})
+
+
+});
+</script>
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        @include('expense.create')
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<!---------------------- end Modal --------------------------->
     <h1>Expense List</h1>
 
     <table class="table table-bordered table-responsive" style="margin-top: 10px;">
@@ -20,7 +62,9 @@
                 <th>GST</th>
                 <th>PST</th>
                 <th>Date</th>
-
+                <th><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+  Add new Expense
+</button></th>
                 <th colspan="3"></th>
             </tr>
         </thead>
