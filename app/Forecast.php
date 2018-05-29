@@ -10,9 +10,10 @@ namespace App;
 
 class Forecast
 {
+    public $date;
     public $site;
 
-    public function __construct(Site $site)
+    public function __construct(Site $site, $date = null)
     {
         $this->site = $site;
     }
