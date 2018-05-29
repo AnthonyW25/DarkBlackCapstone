@@ -146,7 +146,7 @@ $(document).ready(function(){
                 <th  bgcolor="#b3b3b3" >DARKBlack</th>
                 <th colspan="4"><center>COGS for the Last 4 Weeks</center></th>
                 <th colspan="3">Expenses This Week</th>
-                <th>Sales Forecast</th>
+
 
             </tr>
             <tr>
@@ -158,7 +158,7 @@ $(document).ready(function(){
                 <th>Budget</th>
                 <th>Actual</th>
                 <th>Remaining</th>
-                <th>7 Days</th>
+
             </tr>
         </thead>
         <tbody>
@@ -204,7 +204,7 @@ $(document).ready(function(){
                 <td></td>
                 <td></td>
                 <td></td>
-                <td rowspan="3">{{"$" . (int)$twenty_eight_day_result[7]}}</td>
+
                 
             </tr>
             <tr>
@@ -279,5 +279,34 @@ $(document).ready(function(){
 
             
         </tbody>
+    </table>
+
+    <!------------------------------------ Forecast Table ------------------------>
+    <br>
+    <h1>Upcoming Sales Forecast</h1>
+
+    <table class="table table-bordered table-responsive" style="margin-top: 10px;">
+        <thead>
+            <tr>
+                <th colspan="3">Sales Forecast</th>
+            </tr>
+            <tr>
+                <th>Average Daily Sales Over Previous 7 Days</th>
+                <th>Sales Forecast Adjustment</th>
+                <th>Projected Sales </th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <!-- This displays the 7 day average of the past week -->
+            <td rowspan="3">{{"$" . (int)$twenty_eight_day_result[7]}}</td>
+            <td>{!! Form::number('number', 0) !!} %</td>
+            <td>This should show the expected daily sales forecast for upcoming week</td>
+        </tr>
+
+        </tbody>
+
+
+
     </table>
 @endsection
