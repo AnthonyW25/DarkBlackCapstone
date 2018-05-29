@@ -3,6 +3,7 @@
 @section('content')
 <?php 
     use App\Http\Controllers\ExpenseController;
+    use App\COGS;
     use App\Http\Controllers\SaleController;
     $salesInstace = new SaleController;
  ?>
@@ -31,7 +32,7 @@ $(document).ready(function(){
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">Add Expense</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -62,10 +63,11 @@ $(document).ready(function(){
                 <th>GST</th>
                 <th>PST</th>
                 <th>Date</th>
-                <th><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-  Add new Expense
-</button></th>
-                <th colspan="3"></th>
+                <th colspan="3" >
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                    Add new Expense
+                    </button>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -144,6 +146,8 @@ $(document).ready(function(){
                 <th  bgcolor="#b3b3b3" >DARKBlack</th>
                 <th colspan="4"><center>COGS for the Last 4 Weeks</center></th>
                 <th colspan="3">Expenses This Week</th>
+                <th>Sales Forecast</th>
+
             </tr>
             <tr>
                 <th>Category</th>
@@ -154,6 +158,7 @@ $(document).ready(function(){
                 <th>Budget</th>
                 <th>Actual</th>
                 <th>Remaining</th>
+                <th>7 Days</th>
             </tr>
         </thead>
         <tbody>
@@ -168,11 +173,11 @@ $(document).ready(function(){
 
                     /*we will store the twenty eight day avg 
                     ifo into this variable;this is so we can output the info to the page*/
-                    $twenty_eight_day_result = ExpenseController::total_twenty_eight_days();
-                                            
+                    $cogs = new COGS();
+                    $twenty_eight_day_result = $cogs->total_twenty_eight_days();                       
                     /*just runs the seven day avg function to store it in the database
                     will not be output to display at the moment*/                                                    
-                    ExpenseController::total_seven_days();
+                    $cogs->total_seven_days();
 
 
                     if (isset($totalCategory['Food'])){
@@ -199,6 +204,7 @@ $(document).ready(function(){
                 <td></td>
                 <td></td>
                 <td></td>
+                <td rowspan="3">{{"$" . (int)$twenty_eight_day_result[7]}}</td>
                 
             </tr>
             <tr>
@@ -269,6 +275,8 @@ $(document).ready(function(){
                 <td><b>{{"$" . $totalExpenses}}</b></td>
                 <td><b>{{"$" . (int)$twenty_eight_day_result[3]}}</b></td>
             </tr>
+
+
             
         </tbody>
     </table>
