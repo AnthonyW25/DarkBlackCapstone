@@ -104,7 +104,7 @@ class ExpenseController extends Controller
         return redirect('expense');
     }
 
-    /**
+    /**s
      * Remove the specified resource from storage.
      *
      * @param  int $id
@@ -113,19 +113,112 @@ class ExpenseController extends Controller
     public function destroy($id)
     {
         Expense::destroy($id);
-$this->site->id;
+        $this->site->id;
         ExpenseItem::where('expense_id', '=', $id)
             ->delete();
 
         return redirect('expense');
     }
 
-    /*
-     * Everything below this should be placed somewhere else
-     * Most of what you are doing below is querying the db, a good indication that this doesn't belong in the controller
-     * You are querying the ExpenseItem model, so these methods could go there
-     * You could also create a separate class (like the COGS class) to house this logic
+    
+    //--------------------------------item controller--------------------------------------------------------------------------
+     public function itemIndex(Request $request)
+    {
+        $expense_id = $request->get('expense_id');
+
+        $expense_items = ExpenseItem::orderBy('updated_at','DESC')
+            ->where('expense_id', '=', $expense_id)->orderBy('updated_at','DESC')
+            ->get();
+
+        return view('expense_item.index', compact('expense_items'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
      */
+    public function itemCreate()
+    {
+        
+        return view('expense_item.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function itemStore(Request $request)
+    {   
+        $expense_id = $request->get('expense_id');
+
+        $this->validate($request, [
+            'description'=>'Required',
+            'category'=>'Required']);
+        $expense_item = $request->all();
+        ExpenseItem::create($expense_item + ['expense_id' => $expense_id]);
+        return redirect('expense');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function itemShow($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function itemEdit($id)
+    {
+        $expense_item = ExpenseItem::find($id);
+        return view('expense_item.edit', compact('expense_item'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function itemUpdate(Request $request, $id)
+    {   
+        $this->validate($request, [
+            'description'=>'Required',
+            'category'=>'Required']);
+        $expense_item = ExpenseItem::find($id);
+        $expense_itemUpdate = $request->all();
+        $expense_item->update($expense_itemUpdate);
+        return redirect('expense');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function itemDestroy($id)
+    {
+        $expense_item = ExpenseItem::find($id);
+        $expense_item->delete();
+        return redirect('expenseitem');
+        
+    }
+    
+//---------------------------------------end item controller----------------------------------------------------------
+    
 
     //add cost of all expenses
     public static function amountTotal($id)
@@ -159,6 +252,7 @@ $this->site->id;
 
         // Now you have an array of totals by category and you only went to the db once
     }
+
 
     public static function amountGst($id)
     {
