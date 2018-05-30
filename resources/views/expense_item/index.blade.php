@@ -21,7 +21,6 @@
 ?>
 
 
-
 @section('content')
     <a href="{{ url('/expense') }}" class="btn btn-primary">Back to Expenses</a>
     <table class="table table-bordered table-responsive" style="margin-top: 10px;">
@@ -44,10 +43,14 @@
             </tr>
         </thead>
         <tbody>
-        	<?php
-        		$expense_items = DB::table('expense_items')
-                        ->where('expense_id', '=', $_SESSION['expense_id'])->orderBy('updated_at','DESC')->get();
-        	?>
+            <?php 
+
+            $expense_items = DB::table('expense_items')
+                ->where('expense_id', '=', $_SESSION['expense_id'])
+                ->orderBy('updated_at', 'DESC')
+                ->get()
+
+            ?>
         @foreach($expense_items as $expense_item)
             <tr>
                 <td>{{ $expense_item->id }}</td>

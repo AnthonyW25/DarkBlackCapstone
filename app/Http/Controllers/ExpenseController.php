@@ -140,7 +140,6 @@ class ExpenseController extends Controller
      */
     public function itemCreate()
     {
-        
         return view('expense_item.create');
     }
 
@@ -152,13 +151,13 @@ class ExpenseController extends Controller
      */
     public function itemStore(Request $request)
     {   
-        $expense_id = $request->get('expense_id');
-
         $this->validate($request, [
             'description'=>'Required',
             'category'=>'Required']);
         $expense_item = $request->all();
-        ExpenseItem::create($expense_item + ['expense_id' => $expense_id]);
+
+        ExpenseItem::create($expense_item);
+
         return redirect('expenseitem');
     }
 
@@ -228,29 +227,27 @@ class ExpenseController extends Controller
     }
 
     //add cost of all food expenses
-    public static function categoryTotal()
+    public static function categoryTotal($from_date, $to_date)
     {
-        $days_ago = 28;
+        $expense_holder = [];//holds all expenses
 
-        $totals = [];
-        
+
         $expense_items = DB::table('expenses')
             ->join('expense_items', 'expenses.id', '=', 'expense_items.expense_id')
             ->select('expense_items.*')
-            ->whereRaw('DATE(date) BETWEEN (NOW() - INTERVAL '. $days_ago .' DAY) AND NOW()')
+            ->whereBetween('date', array($from_date, $to_date))
             ->get();
 
         foreach ($expense_items as $item) {
-            if (isset($totals[$item->category])) {
-                $totals[$item->category] += $item->amount;
+            if (isset($expense_holder[$item->category])) {
+                $expense_holder[$item->category] += $item->amount;
             }
             else {
-                $totals[$item->category] = $item->amount;
+                $expense_holder[$item->category] = $item->amount;
             }
         }
-        return $totals;
 
-        // Now you have an array of totals by category and you only went to the db once
+        return $expense_holder;
     }
 
 
