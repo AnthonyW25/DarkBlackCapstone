@@ -160,7 +160,6 @@ $this->site->id;
         // Now you have an array of totals by category and you only went to the db once
     }
 
-
     public static function amountGst($id)
     {
         return ExpenseItem::where('expense_id', '=', $id)
@@ -174,108 +173,5 @@ $this->site->id;
     }
 
 /*-------------------------------------- SEVEN DAY AVERAGE------------------------------------*/
-    public static function total_seven_days()
-    {
-        $total_food_expense = DB::table('expenses')
-            ->join('expense_items', 'expenses.id', '=', 'expense_items.expense_id')
-            ->select('expense_items.*')
-            ->whereRaw('DATE(date) BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()')
-            ->where('category', '=', 'Food')
-            ->sum('expense_items.amount');
-
-        $total_alcohol_expense = DB::table('expenses')
-            ->join('expense_items', 'expenses.id', '=', 'expense_items.expense_id')
-            ->select('expense_items.*')
-            ->whereRaw('DATE(date) BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()')
-            ->where('category', '=', 'Alcohol')
-            ->sum('expense_items.amount');
-
-        $total_beverage_expense = DB::table('expenses')
-            ->join('expense_items', 'expenses.id', '=', 'expense_items.expense_id')
-            ->select('expense_items.*')
-            ->whereRaw('DATE(date) BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()')
-            ->where('category', '=', 'Beverage')
-            ->sum('expense_items.amount');
-
-        $seven_day_sales = Sale::whereRaw('DATE(date) BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()')->get();
-        $total = array(0, 0, 0, 0);
-        foreach ($seven_day_sales as $sale) {
-            $total[0] = $sale->food_sales;//individual food sale
-            $total[1] = $sale->alcohol_sales;//individual alcohol sale
-            $total[2] = $sale->beverage_sales;//individual beverage sale
-
-            $total[3] += $sale->food_sales + $sale->alcohol_sales + $sale->beverage_sales;//full total
-        }
-
-        $total[3] = $total[3] / 7;//seven day sale average; insert this into database
-        $sales = Sale::orderBy('id', 'desc')->first();
-        DB::table('sales')->where('id', $sales->id)->update(['seven_day_average'=>$total[3]]);
-    }
-
-
-
-/*-------------------------------------- TWENTY EIGHT DAY AVERAGE------------------------------------*/
-    //this function stores the tenty-eight day average as well as the net total for that day
-    public static function total_twenty_eight_days()
-    {
-        $total_food_expense =  DB::table('expenses')
-            ->join('expense_items', 'expenses.id', '=', 'expense_items.expense_id')
-            ->select('expense_items.*')
-            ->whereRaw('DATE(date) BETWEEN (NOW() - INTERVAL 28 DAY) AND NOW()')
-            ->where('category', '=', 'Food')
-            ->sum('expense_items.amount');
-
-        $total_alcohol_expense = DB::table('expenses')
-            ->join('expense_items', 'expenses.id', '=', 'expense_items.expense_id')
-            ->select('expense_items.*')
-            ->whereRaw('DATE(date) BETWEEN (NOW() - INTERVAL 28 DAY) AND NOW()')
-            ->where('category', '=', 'Alcohol')
-            ->sum('expense_items.amount');
-
-        $total_beverage_expense = DB::table('expenses')
-            ->join('expense_items', 'expenses.id', '=', 'expense_items.expense_id')
-            ->select('expense_items.*')
-            ->whereRaw('DATE(date) BETWEEN (NOW() - INTERVAL 28 DAY) AND NOW()')
-            ->where('category', '=', 'Beverage')
-            ->sum('expense_items.amount');
-
-         //net sale for that day
-        $net_sales = 0;
-
-        $sales = Sale::orderBy('id', 'desc')->first();
-        
-        $net_sales = $sales->food_sales + $sales->alcohol_sales + $sales->beverage_sales;
-        
-        DB::table('sales')->where('id', $sales->id)->update(['net'=>$net_sales]);
-
-        //This is for calculating and storing the twenty-eight day average sales
-        $twenty_eight_sales = Sale::whereRaw('DATE(date) BETWEEN (NOW() - INTERVAL 28 DAY) AND NOW()')->get();
-
-        $total = array(0, 0, 0, 0, 0, 0, 0);
-        foreach ($twenty_eight_sales as $sale) {
-            $total[0] = $sale->food_sales;//individual food sale
-            $total[1] = $sale->alcohol_sales;//individual alcohol sale
-            $total[2] = $sale->beverage_sales;//individual beverage sale
-
-            $total[3] += $sale->food_sales + $sale->alcohol_sales + $sale->beverage_sales;//full total
-
-            $total[4] += $sale->food_sales;//full food total
-            $total[5] += $sale->alcohol_sales;//full alcohol total
-            $total[6] += $sale->beverage_sales;//full beverage total
-        }
-            
-        if($total[4] == 0 or $total[5] == 0 or $total[6] == 0){
-            return "Sales are empty";
-        }
-        else{
-           $total[0] = ($total_food_expense / $total[4]) * 100;//COGS of food
-            $total[1] = ($total_alcohol_expense / $total[5]) * 100;//COGS of alcohol
-            $total[2] = ($total_beverage_expense / $total[6]) * 100;//COGS of beverage
-            $total[3] = $total[3]/28;//the variable is now the twenty-eight day average of sales 
-
-            DB::table('sales')->where('id', $sales->id)->update(['twenty_eight_day_average'=>$total[3]]);//storing twenty-eight day evg into the most recent sales(the one the user should be in)
-
-            return $total; 
-        }      
-    }
+    
 }

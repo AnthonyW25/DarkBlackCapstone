@@ -3,9 +3,52 @@
 @section('content')
 <?php 
     use App\Http\Controllers\ExpenseController;
+    use App\COGS;
     use App\Http\Controllers\SaleController;
     $salesInstace = new SaleController;
  ?>
+<!-- Remember to include jQuery :) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+
+<!-- jQuery Modal -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('#exampleModalLabel').on('shown.bs.modal', function () {
+  $('#exampleModal').trigger('focus')
+})
+
+
+});
+</script>
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add Expense</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        @include('expense.create')
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<!---------------------- end Modal --------------------------->
     <h1>Expense List</h1>
 
     <table class="table table-bordered table-responsive" style="margin-top: 10px;">
@@ -20,8 +63,11 @@
                 <th>GST</th>
                 <th>PST</th>
                 <th>Date</th>
-
-                <th colspan="3"><a href="expense/create" class="btn btn-primary">Add new Expense</a></th>
+                <th colspan="3" >
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                    Add new Expense
+                    </button>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -97,18 +143,22 @@
     <table class="table table-bordered table-responsive" style="margin-top: 10px;">
         <thead>
             <tr>
-                <th></th>
-                <th colspan="3">4 Weeks</th>
+                <th  bgcolor="#b3b3b3" >DARKBlack</th>
+                <th colspan="4"><center>COGS for the Last 4 Weeks</center></th>
                 <th colspan="3">Expenses This Week</th>
+
+
             </tr>
             <tr>
-                <th></th>
+                <th>Category</th>
                 <th>Expenses</th>
+                <th>Sales</th>
                 <th>Target</th>
                 <th>Actual</th>
                 <th>Budget</th>
                 <th>Actual</th>
                 <th>Remaining</th>
+
             </tr>
         </thead>
         <tbody>
@@ -116,87 +166,147 @@
                 
                 <th>Food</th>
                 <td><b>
+
                     <?php 
                     $totalCategory = ExpenseController::categoryTotal();//gets the totals of all categories
+                    $totalExpenses = 0;
+
+                    /*we will store the twenty eight day avg 
+                    ifo into this variable;this is so we can output the info to the page*/
+                    $cogs = new COGS();
+                    $twenty_eight_day_result = $cogs->total_twenty_eight_days();                       
+                    /*just runs the seven day avg function to store it in the database
+                    will not be output to display at the moment*/                                                    
+                    $cogs->total_seven_days();
+
 
                     if (isset($totalCategory['Food'])){
                         echo "$" . $totalCategory['Food'];
+                        $totalExpenses += $totalCategory['Food'];
                     }
                         else{echo "$0";}
                     ?> 
                 </b></td>
+                <td><b>{{"$" . $twenty_eight_day_result[4]}}</b></td>
                 <td>{!! Form::number('number', 33) !!} % </td>
                 <td>
 
-
                     <?php 
-                    
-                        $twenty_eight_day_result = ExpenseController::total_twenty_eight_days();//we will store the twenty eight day avg ifo into this variable
-                                                                                                //this is so we can output the info to the page 
-                        ExpenseController::total_seven_days();//just rungs the seven day avg function to store it in the database; will not be output to display at the moment
+                        if($twenty_eight_day_result[0] < 1 and $twenty_eight_day_result[0] > 0) {
+                            echo ' < 1%';
+                        }
+                        else {
+                            echo (int)$twenty_eight_day_result[0] . "%";
+                        }
                     ?>
-                    {{(int)$twenty_eight_day_result[0] . "%"}}
 
                 </td>
                 <td></td>
                 <td></td>
                 <td></td>
+
                 
             </tr>
             <tr>
                 <th>Alcohol</th>
                 <td><b>
+
                     <?php 
                     if (isset($totalCategory['Alcohol'])){
                         echo "$" . $totalCategory['Alcohol'];
+                        $totalExpenses += $totalCategory['Alcohol'];
                     }
                     else{echo "$0";}
                     ?>
+
                 </b></td>
+                <td><b>{{"$" . $twenty_eight_day_result[5]}}</b></td>
                 <td>33%</td>
                 <td>
-                    <?php $result = ExpenseController::total_twenty_eight_days()?>
+
                     <?php
-                    if($result[0] < 1 and $result[0] > 0) {
+                    if($twenty_eight_day_result[1] < 1 and $twenty_eight_day_result[1] > 0) {
                         echo ' < 1%';
                     }
                     else {
-                        echo (int)$result[1] . "%";
+                        echo (int)$twenty_eight_day_result[1] . "%";
                     }
                     ?>
+
                 </td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
+
                 <th>Beverages</th>
                 <td><b>
+                  
                   <?php 
                     if (isset($totalCategory['Beverage'])){
                         echo "$" . $totalCategory['Beverage'];
+                        $totalExpenses += $totalCategory['Beverage'];
                     }
                     else{echo "$0";}
                     ?> 
+
                 </b></td>
+                <td><b>{{"$" . $twenty_eight_day_result[6]}}</b></td>
                 <td>33%</td>
                 <td>
-                    <?php $result = ExpenseController::total_twenty_eight_days()?>
+
                     <?php
-                    if($result[0] < 1 and $result[0] > 0) {
+                    if($twenty_eight_day_result[2] < 1 and $twenty_eight_day_result[2] > 0) {
                         echo ' < 1%';
                     }
                     else {
-                        echo (int)$result[2] . "%";
+                        echo (int)$twenty_eight_day_result[2] . "%";
                     }
                     ?>
+
                 </td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
-            
+            <tr>
+                <th>Total</th>
+                <td><b>{{"$" . $totalExpenses}}</b></td>
+                <td><b>{{"$" . (int)$twenty_eight_day_result[3]}}</b></td>
+            </tr>
+
+
             
         </tbody>
+    </table>
+
+    <!------------------------------------ Forecast Table ------------------------>
+    <br>
+    <h1>Upcoming Sales Forecast</h1>
+
+    <table class="table table-bordered table-responsive" style="margin-top: 10px;">
+        <thead>
+            <tr>
+                <th colspan="3">Sales Forecast</th>
+            </tr>
+            <tr>
+                <th>Average Daily Sales Over Previous 7 Days</th>
+                <th>Sales Forecast Adjustment</th>
+                <th>Projected Sales </th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <!-- This displays the 7 day average of the past week -->
+            <td rowspan="3">{{"$" . (int)$twenty_eight_day_result[7]}}</td>
+            <td>{!! Form::number('number', 0) !!} %</td>
+            <td>This should show the expected daily sales forecast for upcoming week</td>
+        </tr>
+
+        </tbody>
+
+
+
     </table>
 @endsection
