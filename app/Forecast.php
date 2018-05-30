@@ -12,9 +12,13 @@ class Forecast
 {
     public $date;
     public $site;
+    public $growth_rate;
+    public $seven_day;
 
     public function __construct(Site $site, $date = null)
     {
         $this->site = $site;
     }
+
+
 }
