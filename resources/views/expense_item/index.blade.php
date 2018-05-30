@@ -5,8 +5,6 @@
 @stop
 
 <?php
-
-
 session_start(); 
 
 if (isset($_GET['expense_id']))
@@ -44,10 +42,14 @@ else
             </tr>
         </thead>
         <tbody>
-        	<?php
-        		$expense_items = DB::table('expense_items')
-                        ->where('expense_id', '=', $_SESSION['expense_id'])->orderBy('updated_at','DESC')->get();
-        	?>
+            <?php 
+
+            $expense_items = DB::table('expense_items')
+                ->where('expense_id', '=', $_SESSION['expense_id'])
+                ->orderBy('updated_at', 'DESC')
+                ->get()
+
+            ?>
         @foreach($expense_items as $expense_item)
             <tr>
                 <td>{{ $expense_item->id }}</td>
