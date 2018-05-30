@@ -4,10 +4,10 @@
     <h2>Expense List</h2>
 @stop
 
-
 <?php
 
-session_start();
+
+session_start(); 
 
 if (isset($_GET['expense_id']))
 {
@@ -35,8 +35,6 @@ else
                 <th>amount</th>
                 <th>GST</th>
                 <th>PST</th>
-                <th>created at</th>
-                <th>updated at</th>
                 <th colspan="3"><form method="get" action="/expenseitem/create">
                     <input type="hidden" name = "expense_id" value='<?php
                     echo $expense_id;
@@ -56,11 +54,10 @@ else
                 <td>{{ $expense_item->expense_id }}</td>
                 <td>{{ $expense_item->description }}</td>
                 <td>{{ $expense_item->category }}</td>
-                <td>{{ $expense_item->amount }}</td>
-                <td>{{ $expense_item->gst }}</td>
-                <td>{{ $expense_item->pst }}</td>
-                <td>{{ $expense_item->created_at }}</td>
-                <td>{{ $expense_item->updated_at }}</td>
+                <td>{{ "$" . $expense_item->amount }}</td>
+                <td>{{ "$" . $expense_item->gst }}</td>
+                <td>{{ "$" . $expense_item->pst }}</td>
+
                 <td>
                     <a href="{{ route('expenseitem.edit', $expense_item->id) }}" class="btn btn-success">Edit</a></td>
                    <td> {!! Form::open(['method'=>'delete', 'route'=>['expenseitem.destroy', $expense_item->id]]) !!}

@@ -8,6 +8,8 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\DB;
+
 class Site
 {
     /*
@@ -19,15 +21,51 @@ class Site
 
     public $sample_data = [];
 
-    public function foodSales($from_date, $to_date)
+    public function alcoholExpenses($from_date, $to_date)
     {
-        // return the sum of all the food sales between the two dates
-        return 28 * 1000000; // just an example for testing
+        return DB::table('expenses')
+            ->join('expense_items', 'expenses.id', '=', 'expense_items.expense_id')
+            ->whereBetween('date', [$from_date, $to_date])
+            ->where('category', '=', 'Alcohol')
+            ->sum('expense_items.amount');
+    }
+
+    public function alcoholSales($from_date, $to_date)
+    {
+        return Sale::where('site_id', $this->id)
+            ->whereBetween('date', [$from_date, $to_date])
+            ->sum('alcohol_sales');
     }
 
     public function foodExpenses($from_date, $to_date)
     {
-        // return the sum of all the food expenses between the two dates
-        return 50000; // just an example for testing
+        return DB::table('expenses')
+            ->join('expense_items', 'expenses.id', '=', 'expense_items.expense_id')
+            ->whereBetween('date', [$from_date, $to_date])
+            ->where('category', '=', 'Food')
+            ->sum('expense_items.amount');
+    }
+
+    public function foodSales($from_date, $to_date)
+    {
+        return Sale::where('site_id', $this->id)
+            ->whereBetween('date', [$from_date, $to_date])
+            ->sum('food_sales');
+    }
+
+    public function beverageExpenses($from_date, $to_date)
+    {
+        return DB::table('expenses')
+            ->join('expense_items', 'expenses.id', '=', 'expense_items.expense_id')
+            ->whereBetween('date', [$from_date, $to_date])
+            ->where('category', '=', 'Beverage')
+            ->sum('expense_items.amount');
+    }
+
+    public function beverageSales($from_date, $to_date)
+    {
+        return Sale::where('site_id', $this->id)
+            ->whereBetween('date', [$from_date, $to_date])
+            ->sum('alcohol_sales');
     }
 }

@@ -13,6 +13,7 @@ class ExpenseControllerTest extends TestCase
     /** @test */
     public function index()
     {
+
         $this->actingAs($this->user)
             ->get('/expense')
             ->assertSuccessful()
@@ -33,7 +34,7 @@ class ExpenseControllerTest extends TestCase
 
         $this->actingAs($this->user)
             ->get('/expense')
-            ->assertSee('the expense details');
+            ->assertSee('Expense Items');
     }
 
     /*/**
@@ -52,7 +53,8 @@ class ExpenseControllerTest extends TestCase
         $this->actingAs($this->user)
             ->post('/expense/create', [
                 'supplier' => 'Test Supplier',
-                'invoice'  => 'Test Invoice'
+                'invoice'  => 'Test Invoice',
+                'date' => '2018-05-23'
                 // other post variables
             ])
             ->assertRedirect('/expense');
@@ -99,7 +101,9 @@ class ExpenseControllerTest extends TestCase
 
         $expense = Expense::create([
             'supplier' => 'Test Supplier',
-            'invoice'  => 'Test Invoice'
+            'invoice'  => 'Test Invoice',
+            'date' => '2018-05-23'
+
             // other expense details
         ]);
 
@@ -113,7 +117,8 @@ class ExpenseControllerTest extends TestCase
         $this->actingAs($this->user)
             ->post('/expense/' . $expense->id . '/edit', [
                 'supplier' => 'new name',
-                'invoice'  => 'new invoice'
+                'invoice'  => 'new invoice',
+                'date' => '2018-05-23'
                 // other post variables
             ])
             ->assertRedirect('/expense');

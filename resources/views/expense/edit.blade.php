@@ -25,15 +25,17 @@
                                 <tr>
                                     <th>{!! Form::label('supplier', 'Supplier') !!}</th>
                                     <th>{!! Form::label('invoice', 'Invoice') !!}</th>
+                                    <th>{!! Form::label('date', 'Date') !!}</th>
 
                                 </tr>
                                 <!--//This should be in a loop that automatically fill our certain data-->
                                 <tr>
                         
-                                    <td>{!! Form::text('supplier', null)!!}
+                                    <td>{!! Form::text('supplier', $expense->supplier)!!}
                                         {!! $errors->has('supplier')?$errors->first('supplier'):'' !!}</td>
-                                    <td>{!! Form::text('invoice', null)!!}
+                                    <td>{!! Form::text('invoice', $expense->invoice)!!}
                                         {!! $errors->has('invoice')?$errors->first('invoice'):'' !!}</td>
+                                    <td>{!! Form::date('date', $expense->date) !!} </td>
 
                                 </tr>
 

@@ -22,7 +22,7 @@ abstract class TestCase extends BaseTestCase
         Artisan::call('migrate:refresh');
 
         // Call the database seeder, setup any standard records we need
-        Artisan::call('db:seed');
+        Artisan::call('db:seed', ['--class' => 'SalesTableSeeder']);
 
         // create a user we can use
         $this->user = $this->createUser();
