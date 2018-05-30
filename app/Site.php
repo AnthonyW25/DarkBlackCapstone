@@ -21,6 +21,7 @@ class Site
 
     public $sample_data = [];
 
+
     public function foodSales($from_date, $to_date)
     {
         return Sale::where('site_id', $this->id)
@@ -41,4 +42,5 @@ class Site
             ->whereBetween('date', array($from_date, $to_date))
             ->sum('beverage_sales');
     } 
+
 }

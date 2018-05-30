@@ -155,7 +155,9 @@ class ExpenseController extends Controller
             'description'=>'Required',
             'category'=>'Required']);
         $expense_item = $request->all();
+
         ExpenseItem::create($expense_item);
+
         return redirect('expenseitem');
     }
 
