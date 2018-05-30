@@ -2,10 +2,10 @@
 
 @section('content')
 <?php 
+    use Carbon\Carbon;
     use App\Http\Controllers\ExpenseController;
     use App\COGS;
-    use App\Http\Controllers\SaleController;
-    $salesInstace = new SaleController;
+    use App\Site;
  ?>
 <!-- Remember to include jQuery :) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
@@ -168,35 +168,38 @@ $(document).ready(function(){
                 <td><b>
 
                     <?php 
-                    $totalCategory = ExpenseController::categoryTotal();//gets the totals of all categories
-                    $totalExpenses = 0;
+                    $site = new Site();
+                    $today = Carbon::now();
 
-                    /*we will store the twenty eight day avg 
-                    ifo into this variable;this is so we can output the info to the page*/
-                    $cogs = new COGS();
-                    $twenty_eight_day_result = $cogs->total_twenty_eight_days();                       
-                    /*just runs the seven day avg function to store it in the database
-                    will not be output to display at the moment*/                                                    
-                    $cogs->total_seven_days();
+                    $seven_days_ago = $today->copy()->subDay(7);
 
+                    $twenty_eight_days_ago = $today->copy()->subDay(28);
 
-                    if (isset($totalCategory['Food'])){
-                        echo "$" . $totalCategory['Food'];
-                        $totalExpenses += $totalCategory['Food'];
+                    $total_expenses = 0;
+                    //gets the totals of all categories for 28 days, soon the user will be able to decide the days
+                    $expenses_for_days = ExpenseController::categoryTotal($twenty_eight_days_ago->toDateString(), $today->toDateString());
+
+               
+                    $cogs = new COGS($site);
+                    $cogs->calculate();
+                                                
+                    if (isset($expenses_for_days['Food'])){
+                        $total_expenses += $expenses_for_days['Food'];
+                        echo "$" . $expenses_for_days['Food'];
                     }
                         else{echo "$0";}
                     ?> 
                 </b></td>
-                <td><b>{{"$" . $twenty_eight_day_result[4]}}</b></td>
+                <td><b>{{"$" . $site->foodSales($twenty_eight_days_ago->toDateString(), $today->toDateString())}}</b></td>
                 <td>{!! Form::number('number', 33) !!} % </td>
                 <td>
 
                     <?php 
-                        if($twenty_eight_day_result[0] < 1 and $twenty_eight_day_result[0] > 0) {
+                        if($cogs->twenty_eight_day_food < 1 and $cogs->twenty_eight_day_food > 0) {
                             echo ' < 1%';
                         }
                         else {
-                            echo (int)$twenty_eight_day_result[0] . "%";
+                            echo (int)$cogs->twenty_eight_day_food . "%";
                         }
                     ?>
 
@@ -212,26 +215,26 @@ $(document).ready(function(){
                 <td><b>
 
                     <?php 
-                    if (isset($totalCategory['Alcohol'])){
-                        echo "$" . $totalCategory['Alcohol'];
-                        $totalExpenses += $totalCategory['Alcohol'];
+                    if (isset($expenses_for_days['Alcohol'])){
+                        $total_expenses += $expenses_for_days['Alcohol'];
+                        echo "$" . $expenses_for_days['Alcohol'];
                     }
                     else{echo "$0";}
                     ?>
 
                 </b></td>
-                <td><b>{{"$" . $twenty_eight_day_result[5]}}</b></td>
+                <td><b>{{"$" . $site->alcoholSales($twenty_eight_days_ago->toDateString(), $today->toDateString())}}</b></td>
                 <td>33%</td>
                 <td>
 
                     <?php
-                    if($twenty_eight_day_result[1] < 1 and $twenty_eight_day_result[1] > 0) {
-                        echo ' < 1%';
-                    }
-                    else {
-                        echo (int)$twenty_eight_day_result[1] . "%";
-                    }
-                    ?>
+                        if($cogs->twenty_eight_day_alcohol < 1 and $cogs->twenty_eight_day_alcohol > 0) {
+                            echo ' < 1%';
+                        }
+                        else {
+                            echo (int)$cogs->twenty_eight_day_alcohol . "%";
+                        }
+                    ?> 
 
                 </td>
                 <td></td>
@@ -244,25 +247,25 @@ $(document).ready(function(){
                 <td><b>
                   
                   <?php 
-                    if (isset($totalCategory['Beverage'])){
-                        echo "$" . $totalCategory['Beverage'];
-                        $totalExpenses += $totalCategory['Beverage'];
+                    if (isset($expenses_for_days['Beverage'])){
+                        $total_expenses += $expenses_for_days['Beverage'];
+                        echo "$" . $expenses_for_days['Beverage'];
                     }
                     else{echo "$0";}
                     ?> 
 
                 </b></td>
-                <td><b>{{"$" . $twenty_eight_day_result[6]}}</b></td>
+                <td><b>{{"$" . $site->beverageSales($twenty_eight_days_ago->toDateString(), $today->toDateString())}}</b></td>
                 <td>33%</td>
                 <td>
 
-                    <?php
-                    if($twenty_eight_day_result[2] < 1 and $twenty_eight_day_result[2] > 0) {
-                        echo ' < 1%';
-                    }
-                    else {
-                        echo (int)$twenty_eight_day_result[2] . "%";
-                    }
+              <?php
+                    if($cogs->twenty_eight_day_beverage < 1 and $cogs->twenty_eight_day_beverage > 0) {
+                            echo ' < 1%';
+                        }
+                        else {
+                            echo (int)$cogs->twenty_eight_day_beverage . "%";
+                        }
                     ?>
 
                 </td>
@@ -272,8 +275,8 @@ $(document).ready(function(){
             </tr>
             <tr>
                 <th>Total</th>
-                <td><b>{{"$" . $totalExpenses}}</b></td>
-                <td><b>{{"$" . (int)$twenty_eight_day_result[3]}}</b></td>
+                <td><b>{{"$" . $total_expenses}}</b></td>
+                <td><b>{{"$" . ($site->alcoholSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) + $site->foodSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) +  $site->beverageSales($twenty_eight_days_ago->toDateString(), $today->toDateString()))}}</b></td>
             </tr>
 
 
@@ -299,7 +302,7 @@ $(document).ready(function(){
         <tbody>
         <tr>
             <!-- This displays the 7 day average of the past week -->
-            <td rowspan="3">{{"$" . (int)$twenty_eight_day_result[7]}}</td>
+            <td rowspan="3">{{"$" . $cogs->seven_day_avg}}</td>
             <td>{!! Form::number('number', 0) !!} %</td>
             <td>This should show the expected daily sales forecast for upcoming week</td>
         </tr>
