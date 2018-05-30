@@ -159,7 +159,7 @@ class ExpenseController extends Controller
             'category'=>'Required']);
         $expense_item = $request->all();
         ExpenseItem::create($expense_item + ['expense_id' => $expense_id]);
-        return redirect('expense');
+        return redirect('expenseitem');
     }
 
     /**

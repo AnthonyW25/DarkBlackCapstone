@@ -97,7 +97,7 @@ class COGSTest extends TestCase
         $this->assertEquals(50000 / $site->foodSales($twenty_eight_days_ago->toDateString(), $now->toDateString()), $cogs->twenty_eight_day_food);
         $this->assertEquals(123400 / $site->alcoholSales($seven_days_ago->toDateString(), $now->toDateString()), $cogs->seven_day_alcohol);
         $this->assertEquals(123400 / $site->alcoholSales($twenty_eight_days_ago->toDateString(), $now->toDateString()), $cogs->twenty_eight_day_alcohol);
-        
+
 //        $seven_days_stuff = $cogs->total_seven_days();
 //        $twenty_eight_days_stuff = $cogs->total_twenty_eight_days();
 
