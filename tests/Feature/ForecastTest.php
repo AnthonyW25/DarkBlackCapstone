@@ -12,11 +12,19 @@ class ForecastTest extends TestCase
     /** @test */
     public function it_exists()
     {
+        new Forecast(new Site()); // Not sure why, but need to call this for the tests below to find the class
+
         $this->assertClassHasAttribute('site', 'app\Forecast');
         $this->assertClassHasAttribute('date', 'app\Forecast');
         $this->assertClassHasAttribute('growth_rate', 'app\Forecast');
         $this->assertClassHasAttribute('seven_day', 'app\Forecast');
     }
+
+    // TODO: Development suggestion
+    // Comment out all the tests and start with only one test that is failing, make that pass, then uncomment the next section
+    // That's Test Driven Development
+    // I should be able to see a series of commits, each one with a piece of test uncommented and the code to make it pass
+    // I've tried to write the tests in a rational order, they should guide you to create the code you need a step at a time
 
     /** @test */
     public function provides_seven_day_forecast()
