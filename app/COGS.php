@@ -54,7 +54,9 @@ class COGS
         $twenty_eight_days_ago = $today->copy()->subDay(28);
 
         //---------------SEVEN DAY COGS-----------------------------------------------------------------------------------------
-        
+
+        // Nice. This is the right idea. Let another class be responsible for providing Expense Data
+        // Things below are looking much neater and easier to understand
         $seven_day_cogs = ExpenseController::categoryTotal($seven_days_ago->toDateString(), $today->toDateString());
 
         if (isset($seven_day_cogs['Food'])){

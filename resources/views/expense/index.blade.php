@@ -3,8 +3,10 @@
 
 @section('content')
 <?php 
+    session_start();
     use Carbon\Carbon;
     use App\Http\Controllers\ExpenseController;
+    use App\Forecast;
     use App\COGS;
     use App\Site;
  ?>
@@ -19,11 +21,7 @@ $(document).ready(function(){
   $('#exampleModal').trigger('focus')
 })
 
-
-});
 </script>
-
-<!-- Button trigger modal -->
 
 
 <!-- Modal -->
@@ -182,6 +180,7 @@ $(document).ready(function(){
 
                
                     $cogs = new COGS($site);
+                    $forecast = new Forecast($site);
                     $cogs->calculate();
                                                 
                     if (isset($expenses_for_days['Food'])){
@@ -304,8 +303,37 @@ $(document).ready(function(){
         <tr>
             <!-- This displays the 7 day average of the past week -->
             <td rowspan="3">{{"$" . $cogs->seven_day_avg}}</td>
-            <td>{!! Form::number('number', 0) !!} %</td>
-            <td>This should show the expected daily sales forecast for upcoming week</td>
+            <?php
+                if (isset($_GET['subject']))
+                {
+                    $fore_percent = $_GET['subject'];
+                    $_SESSION['subject'] = $fore_percent;
+                    $forecast->forecastCalculation($fore_percent);
+                }
+                else
+                {
+                    $forecast->getPercentage();
+                    $fore_percent = $forecast->growth_rate;
+                    $forecast->forecastCalculation($fore_percent);
+                }
+            ?>
+            <td><form name="form" action="" method="get">
+                <input type="number" name="subject" id="subject" value={{$fore_percent}}>
+                <input type="submit" name="my_form_submit_button" 
+                    value="SCALE"/>
+                </form>
+            </td>
+            <td><?php
+                    if(isset($_GET['subject'])){
+                        $fore_percent = $_GET['subject'];
+                        echo "$" . (int)$forecast->seven_day;
+                    }
+                    else{
+                        $fore_percent = $forecast->growth_rate;
+                        echo "$" . (int)$forecast->seven_day;
+                    }
+                    
+?></td>
         </tr>
 
         </tbody>
