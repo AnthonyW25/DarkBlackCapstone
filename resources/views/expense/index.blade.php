@@ -302,13 +302,14 @@ $(document).ready(function(){
         <tbody>
         <tr>
             <!-- This displays the 7 day average of the past week -->
-            <td rowspan="3">{{"$" . $cogs->seven_day_avg}}</td>
+            <td rowspan="3">{{"$" . $cogs->twenty_eight_day_avg}}</td>
             <?php
                 if (isset($_GET['subject']))
                 {
                     $fore_percent = $_GET['subject'];
-                    $forecast->forecastCalculation($fore_percent);
-                    $forecast->getPercentage();
+                    $forecast->growth($fore_percent);
+                    $forecast->forecastCalculation();
+                    
                 }
                 else
                 {
@@ -325,11 +326,11 @@ $(document).ready(function(){
             <td><?php
                     if(isset($_GET['subject'])){
                         $fore_percent = $_GET['subject'];
-                        echo "$" . (int)$forecast->growth_rate;
+                        echo "$" . (int)$forecast->seven_day;
                     }
                     else{
                         $fore_percent = $forecast->growth_rate;
-                        echo "$" . (int)$forecast->growth_rate;
+                        echo "$" . (int)$forecast->seven_day;
                     }
                     
 ?></td>
