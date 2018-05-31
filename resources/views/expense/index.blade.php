@@ -307,14 +307,13 @@ $(document).ready(function(){
                 if (isset($_GET['subject']))
                 {
                     $fore_percent = $_GET['subject'];
-                    $_SESSION['subject'] = $fore_percent;
                     $forecast->forecastCalculation($fore_percent);
+                    $forecast->getPercentage();
                 }
                 else
                 {
                     $forecast->getPercentage();
                     $fore_percent = $forecast->growth_rate;
-                    $forecast->forecastCalculation($fore_percent);
                 }
             ?>
             <td><form name="form" action="" method="get">
@@ -326,11 +325,11 @@ $(document).ready(function(){
             <td><?php
                     if(isset($_GET['subject'])){
                         $fore_percent = $_GET['subject'];
-                        echo "$" . (int)$forecast->seven_day;
+                        echo "$" . (int)$forecast->growth_rate;
                     }
                     else{
                         $fore_percent = $forecast->growth_rate;
-                        echo "$" . (int)$forecast->seven_day;
+                        echo "$" . (int)$forecast->growth_rate;
                     }
                     
 ?></td>

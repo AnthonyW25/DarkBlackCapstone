@@ -41,6 +41,24 @@ class Site
         return Sale::where('site_id', $this->id)
             ->whereBetween('date', array($from_date, $to_date))
             ->sum('beverage_sales');
+    }
+
+    public function mostRecent28DayAverage(){
+        $sales = Sale::where('site_id', $this->id)
+            ->orderBy('date', 'desc')
+            ->first();
+
+        return $sales->twenty_eight_day_average;
     } 
+
+    public function salesOn($date){
+        $sales = DB::table('sales')
+            ->where('site_id', $this->id)
+            ->where('date', '=', $date)
+            ->first();
+
+        return $sales;
+
+    }
 
 }
