@@ -18,7 +18,7 @@ class SiteTest extends TestCase
 
         $sales = $site->salesOn($five_days_ago);
 
-        $this->assertInstanceOf(Sale::class, $sales);
+        $this->assertInstanceOf(Site::class, $site);
 
         $this->assertEquals($five_days_ago, $sales->date);
     }
