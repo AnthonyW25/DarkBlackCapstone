@@ -1,9 +1,8 @@
-
 @extends('layouts.app')
 
 @section('content')
 <?php 
-    session_start();
+    
     use Carbon\Carbon;
     use App\Http\Controllers\ExpenseController;
     use App\Forecast;
@@ -308,6 +307,7 @@ $(document).ready(function(){
                 {
                     $fore_percent = $_GET['subject'];
                     $forecast->growth($fore_percent);
+                    $forecast->date();
                     $forecast->forecastCalculation();
                     
                 }
@@ -326,10 +326,15 @@ $(document).ready(function(){
             <td><?php
                     if(isset($_GET['subject'])){
                         $fore_percent = $_GET['subject'];
+                    	$forecast->growth($fore_percent);
+                    	$forecast->date();
+                    	$forecast->forecastCalculation();
                         echo "$" . (int)$forecast->seven_day;
                     }
                     else{
-                        $fore_percent = $forecast->growth_rate;
+                        $forecast->getPercentage();
+                        $forecast->forecastCalculation();
+                    	$fore_percent = $forecast->growth_rate;
                         echo "$" . (int)$forecast->seven_day;
                     }
                     
