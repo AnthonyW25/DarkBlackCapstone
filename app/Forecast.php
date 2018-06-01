@@ -32,7 +32,6 @@ class Forecast
         if ( ! is_null($growth_rate)) {
             $this->growth_rate = $growth_rate;
         }
-
         return $this->growth_rate;
     }
 
@@ -42,7 +41,6 @@ class Forecast
         if ( ! is_null($date)) {
             $this->date = $date;
         }
-        
         return $this->date;
     }
 
@@ -75,8 +73,6 @@ class Forecast
         foreach($sales as $sale){
             $this->growth_rate = $sale->forecast_rate;
         }
-
-    	
     }
 }
 

@@ -21,7 +21,6 @@ class Site
 
     public $sample_data = [];
 
-
     public function foodSales($from_date, $to_date)
     {
         return Sale::where('site_id', $this->id)
@@ -58,7 +57,5 @@ class Site
             ->first();
 
         return $sales;
-
     }
-
 }
