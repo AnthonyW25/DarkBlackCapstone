@@ -17,8 +17,6 @@
 
                     You are logged in!<br>
                     HELLO WORLD!<br>
-                        <a href="{{ url('/dashboard') }}">View Dev Dashboard</a>
-                <a href="{{ url('/expenseitem') }}">View Expense Item</a>
                     <a href="{{ url('/expense') }}">View Expenses</a>
                 </div>
             </div>
