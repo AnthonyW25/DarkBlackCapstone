@@ -23,8 +23,7 @@ class ExpenseController extends Controller
             ->orderBy('updated_at', 'DESC')
             ->get();
 
-        $sales = Sale::orderBy('id', 'DESC')->get();
-        return view('expense.index', compact('expenses', 'sales'));
+        return view('expense.index', compact('expenses'));
     }
 
     /**
@@ -263,6 +262,4 @@ class ExpenseController extends Controller
             ->sum('expense_items.pst');
     }
 
-/*-------------------------------------- SEVEN DAY AVERAGE------------------------------------*/
-    
 }
