@@ -189,16 +189,16 @@ $(document).ready(function(){
                         else{echo "$0";}
                     ?> 
                 </b></td>
-                <td><b>{{"$" . $site->foodSales($twenty_eight_days_ago->toDateString(), $today->toDateString())}}</b></td>
+                <td><b>{{"$" . ($site->foodSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) / 100)}}</b></td>
                 <td>{!! Form::number('number', 33) !!} % </td>
                 <td>
 
                     <?php 
-                        if($cogs->twenty_eight_day_food < 1 and $cogs->twenty_eight_day_food > 0) {
+                        if(($cogs->twenty_eight_day_food * 100) < 1 and ($cogs->twenty_eight_day_food > 0 * 100)) {
                             echo ' < 1%';
                         }
                         else {
-                            echo (int)$cogs->twenty_eight_day_food . "%";
+                            echo (int)($cogs->twenty_eight_day_food * 100) . "%";
                         }
                     ?>
 
@@ -222,7 +222,7 @@ $(document).ready(function(){
                     ?>
 
                 </b></td>
-                <td><b>{{"$" . $site->alcoholSales($twenty_eight_days_ago->toDateString(), $today->toDateString())}}</b></td>
+                <td><b>{{"$" . ($site->alcoholSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) / 100)}}</b></td>
                 <td>33%</td>
                 <td>
 
@@ -231,7 +231,7 @@ $(document).ready(function(){
                             echo ' < 1%';
                         }
                         else {
-                            echo (int)$cogs->twenty_eight_day_alcohol . "%";
+                            echo (int)($cogs->twenty_eight_day_alcohol * 100) . "%";
                         }
                     ?> 
 
@@ -254,16 +254,16 @@ $(document).ready(function(){
                     ?> 
 
                 </b></td>
-                <td><b>{{"$" . $site->beverageSales($twenty_eight_days_ago->toDateString(), $today->toDateString())}}</b></td>
+                <td><b>{{"$" . ($site->beverageSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) / 100)}}</b></td>
                 <td>33%</td>
                 <td>
 
               <?php
-                    if($cogs->twenty_eight_day_beverage < 1 and $cogs->twenty_eight_day_beverage > 0) {
+                    if(($cogs->twenty_eight_day_beverage * 100) < 1 and ($cogs->twenty_eight_day_beverage * 100) > 0) {
                             echo ' < 1%';
                         }
                         else {
-                            echo (int)$cogs->twenty_eight_day_beverage . "%";
+                            echo (int)($cogs->twenty_eight_day_beverage * 100) . "%";
                         }
                     ?>
 
@@ -275,7 +275,7 @@ $(document).ready(function(){
             <tr>
                 <th>Total</th>
                 <td><b>{{"$" . $total_expenses}}</b></td>
-                <td><b>{{"$" . ($site->alcoholSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) + $site->foodSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) +  $site->beverageSales($twenty_eight_days_ago->toDateString(), $today->toDateString()))}}</b></td>
+                <td><b>{{"$" . (($site->alcoholSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) + $site->foodSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) +  $site->beverageSales($twenty_eight_days_ago->toDateString(), $today->toDateString())) / 100)}}</b></td>
             </tr>
 
 
@@ -301,7 +301,7 @@ $(document).ready(function(){
         <tbody>
         <tr>
             <!-- This displays the 7 day average of the past week -->
-            <td rowspan="3">{{"$" . $cogs->twenty_eight_day_avg}}</td>
+            <td rowspan="3">{{"$" . ($cogs->twenty_eight_day_avg / 100)}}</td>
             <?php
                 if (isset($_GET['subject']))
                 {
@@ -330,13 +330,13 @@ $(document).ready(function(){
                     	$forecast->growth($fore_percent);
                     	$forecast->date();
                     	$forecast->forecastCalculation();
-                        echo "$" . (int)$forecast->seven_day;
+                        echo "$" . (int)($forecast->seven_day / 100);
                     }
                     else{
                         $forecast->getPercentage();
                         $forecast->forecastCalculation();
                     	$fore_percent = $forecast->growth_rate;
-                        echo "$" . (int)$forecast->seven_day;
+                        echo "$" . (int)($forecast->seven_day / 100);
                     }
                     
 ?></td>
