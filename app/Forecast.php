@@ -21,6 +21,7 @@ class Forecast
     public function __construct(Site $site, $date = null)
     {
         $this->site = $site;
+        $this->date($date);
     }
 
     // DB: Let me help
@@ -41,17 +42,46 @@ class Forecast
         if ( ! is_null($date)) {
             $this->date = $date;
         }
-        else{
-        	$sales = Sale::where('site_id', '=', $this->site->id)
-    			->orderBy('date', 'desc')
-    			->first();
-
-    		$this->date = $sales->date;
-        }
+        
         return $this->date;
     }
 
-    // DB: More help
+    public function forecastCalculation(){
+			$sales = Sale::where('site_id', '=', $this->site->id)
+    			->orderBy('date', 'desc')
+    			->first();
+
+            if(is_null($this->date)){
+                $this->date = $sales->date;
+            }
+            if(is_null($this->growth_rate)){
+                $this->getPercentage();
+            }
+
+			DB::table('sales')
+    			->where('date', '=', $this->date)
+    			->where('site_id', '=', $this->site->id)
+    			->update(['forecast_rate' => $this->growth_rate]);
+
+    		$twenty_eight_day_avg = $sales->twenty_eight_day_average;
+
+    		$this->seven_day = ($twenty_eight_day_avg + ($twenty_eight_day_avg * ($this->growth_rate/100)));  
+    }
+
+    public function getPercentage(){
+    	$sales = DB::table('sales')
+                ->where('date', '=', $this->date)
+                ->where('site_id', '=', $this->site->id)->get();
+        foreach($sales as $sale){
+            $this->growth_rate = $sale->forecast_rate;
+        }
+
+    	
+    }
+}
+
+
+ // DB: More help
     // It's nice not to have to call a specific "calculate the values I want method"
     // instead we want the class to figure out if it has to do some work without being told
     // You will notice in the ForecastTest I do not call a "calculate" method, I just directly access the properties I want
@@ -84,28 +114,3 @@ class Forecast
     // }
 
     // Now we can turn all these methods to private, we only access the public properties of this method, the class knows to do all the work necessary
-
-    public function forecastCalculation(){
-			$sales = Sale::where('site_id', '=', $this->site->id)
-    			->orderBy('date', 'desc')
-    			->first();
-    		
-			DB::table('sales')
-    			->where('date', '=', $this->date)
-    			->where('site_id', '=', $this->site->id)
-    			->update(['forecast_rate' => $this->growth_rate]);
-
-    		$twenty_eight_day_avg = $sales->twenty_eight_day_average;
-
-    		$this->seven_day = ($twenty_eight_day_avg + ($twenty_eight_day_avg * ($this->growth_rate/100)));
-
-    }
-
-    public function getPercentage(){
-    	$sales = Sale::where('site_id', '=', $this->site->id)
-    			->orderBy('date', 'desc')
-    			->first();
-
-    	$this->growth_rate = $sales->forecast_rate;
-    }
-}

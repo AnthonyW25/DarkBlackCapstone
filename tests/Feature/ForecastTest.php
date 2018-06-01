@@ -119,12 +119,10 @@ class ForecastTest extends TestCase
         $date = '2018-05-31';
 
         // Set and save the forecast settings
-
+        // $forecast->forecastCalculation();
         $forecast->growth($growth_rate);
         $forecast->date($date);
-        $forecast->forecastCalculation();
-        
-        
+        $forecast->forecastCalculation();//store date and growth in database
         
         // Those values should be saved in the database
         $this->assertDatabaseHas('sales', [
@@ -136,9 +134,11 @@ class ForecastTest extends TestCase
         // Load the settings
 
         // You may optionally pass in a date to the forecast, which will look for settings on that date
-        $forecast = new Forecast($site, $date);
-
+        $forecast = new Forecast($site, $date);//new forecast, forecasta uto calls date now
+        
+        $forecast->forecastCalculation();
         $forecast->getPercentage();
+
         $this->assertEquals($date, $forecast->date());
         $this->assertEquals($growth_rate, $forecast->growth());
     }
