@@ -198,7 +198,7 @@ class ExpenseController extends Controller
         $expense_item = ExpenseItem::find($id);
         $expense_itemUpdate = $request->all();
         $expense_item->update($expense_itemUpdate);
-        return redirect('expense');
+        return redirect('expenseitem');
     }
 
     /**

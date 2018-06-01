@@ -313,12 +313,13 @@ $(document).ready(function(){
                 }
                 else
                 {
+                	$forecast->forecastCalculation();
                     $forecast->getPercentage();
                     $fore_percent = $forecast->growth_rate;
                 }
             ?>
             <td><form name="form" action="" method="get">
-                <input type="number" name="subject" id="subject" value={{$fore_percent}}>
+                <input type="number" name="subject" id="subject" value="{{$fore_percent}}">
                 <input type="submit" name="my_form_submit_button" 
                     value="SCALE"/>
                 </form>
