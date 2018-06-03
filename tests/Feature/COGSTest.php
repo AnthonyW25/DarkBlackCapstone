@@ -1,7 +1,5 @@
 <?php
-
 namespace Tests\Feature;
-
 use App\COGS;
 use App\Expense;
 use App\ExpenseItem;
@@ -10,7 +8,6 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-
 class COGSTest extends TestCase
 {
     /** @test */
@@ -30,7 +27,6 @@ class COGSTest extends TestCase
         $this->assertClassHasAttribute('twenty_eight_day_alcohol', 'app\COGS');
         $this->assertClassHasAttribute('twenty_eight_day_total', 'app\COGS');
     }
-
     /** @test */
     public function calculate()
     {
@@ -51,7 +47,6 @@ class COGSTest extends TestCase
             'user_id' => $this->user->id,
             'invoice' => 'Test Invoice'
         ]);
-
         ExpenseItem::create([
             'expense_id' => $expense->id,
             'description' => 'Testing Food',
@@ -60,12 +55,11 @@ class COGSTest extends TestCase
             'gst' => '5000', // $50
             'pst' => '2500' // $25
         ]);
-
         // Should now be able to calculate COGS
-        $cogs->calculate();
 
-        $this->assertEquals(50000 / $site->foodSales($seven_days_ago->toDateString(), $now->toDateString()), $cogs->seven_day_food);
-        $this->assertEquals(50000 / $site->foodSales($twenty_eight_days_ago->toDateString(), $now->toDateString()), $cogs->twenty_eight_day_food);
+        $cogs->calculate();
+        $this->assertEquals((50000 / $site->foodSales($seven_days_ago->toDateString(), $now->toDateString())) * 100, $cogs->seven_day_food);
+        $this->assertEquals((50000 / $site->foodSales($twenty_eight_days_ago->toDateString(), $now->toDateString())) * 100, $cogs->twenty_eight_day_food);
         $this->assertEquals(0, $cogs->seven_day_alcohol);
         $this->assertEquals(0, $cogs->twenty_eight_day_alcohol);
 
@@ -82,10 +76,10 @@ class COGSTest extends TestCase
         // Should now be able to calculate COGS
         $cogs->calculate();
 
-        $this->assertEquals(50000 / $site->foodSales($seven_days_ago->toDateString(), $now->toDateString()), $cogs->seven_day_food);
-        $this->assertEquals(50000 / $site->foodSales($twenty_eight_days_ago->toDateString(), $now->toDateString()), $cogs->twenty_eight_day_food);
-        $this->assertEquals(123400 / $site->alcoholSales($seven_days_ago->toDateString(), $now->toDateString()), $cogs->seven_day_alcohol);
-        $this->assertEquals(123400 / $site->alcoholSales($twenty_eight_days_ago->toDateString(), $now->toDateString()), $cogs->twenty_eight_day_alcohol);
+        $this->assertEquals((50000 / $site->foodSales($seven_days_ago->toDateString(), $now->toDateString())) * 100, $cogs->seven_day_food);
+        $this->assertEquals((50000 / $site->foodSales($twenty_eight_days_ago->toDateString(), $now->toDateString())) * 100, $cogs->twenty_eight_day_food);
+        $this->assertEquals((123400 / $site->alcoholSales($seven_days_ago->toDateString(), $now->toDateString())) * 100, $cogs->seven_day_alcohol);
+        $this->assertEquals((123400 / $site->alcoholSales($twenty_eight_days_ago->toDateString(), $now->toDateString())) * 100, $cogs->twenty_eight_day_alcohol);
 
         // Add an expense dated more than 7 days ago, so that it should only affect the 28 day numbers
         $expense = Expense::create([
@@ -96,7 +90,6 @@ class COGSTest extends TestCase
             'invoice' => 'Test Invoice'
             // other expense details
         ]);
-
         ExpenseItem::create([
             'expense_id' => $expense->id,
             'description' => '20 day old invoice',
@@ -105,7 +98,6 @@ class COGSTest extends TestCase
             'gst' => '5000', // $50
             'pst' => '2500' // $25
         ]);
-
         ExpenseItem::create([
             'expense_id' => $expense->id,
             'description' => 'Testing Alcohol',
@@ -114,13 +106,12 @@ class COGSTest extends TestCase
             'gst' => '50000', // $500
             'pst' => '25000' // $250
         ]);
-
         // Should now be able to calculate COGS
         $cogs->calculate();
 
-        $this->assertEquals(50000 / $site->foodSales($seven_days_ago->toDateString(), $now->toDateString()), $cogs->seven_day_food);
-        $this->assertEquals((50000 + 234500) / $site->foodSales($twenty_eight_days_ago->toDateString(), $now->toDateString()), $cogs->twenty_eight_day_food);
-        $this->assertEquals(123400 / $site->alcoholSales($seven_days_ago->toDateString(), $now->toDateString()), $cogs->seven_day_alcohol);
-        $this->assertEquals((123400 + 32100) / $site->alcoholSales($twenty_eight_days_ago->toDateString(), $now->toDateString()), $cogs->twenty_eight_day_alcohol);
+        $this->assertEquals((50000 / $site->foodSales($seven_days_ago->toDateString(), $now->toDateString())) * 100, $cogs->seven_day_food);
+        $this->assertEquals(((50000 + 234500) / $site->foodSales($twenty_eight_days_ago->toDateString(), $now->toDateString())) * 100, $cogs->twenty_eight_day_food);
+        $this->assertEquals((123400 / $site->alcoholSales($seven_days_ago->toDateString(), $now->toDateString()))*100, $cogs->seven_day_alcohol);
+        $this->assertEquals(((123400 + 32100) / $site->alcoholSales($twenty_eight_days_ago->toDateString(), $now->toDateString())) * 100, $cogs->twenty_eight_day_alcohol);
     }
 }

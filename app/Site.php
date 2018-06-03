@@ -21,26 +21,41 @@ class Site
 
     public $sample_data = [];
 
-    public function alcoholSales($from_date, $to_date)
-    {
-        return Sale::where('site_id', $this->id)
-            ->whereBetween('date', [$from_date, $to_date])
-            ->sum('alcohol_sales');
-    }
-
-    public function foodExpenses($from_date, $to_date)
-    {
-        return DB::table('expenses')
-            ->join('expense_items', 'expenses.id', '=', 'expense_items.expense_id')
-            ->whereBetween('date', [$from_date, $to_date])
-            ->where('category', '=', 'Food')
-            ->sum('expense_items.amount');
-    }
-
     public function foodSales($from_date, $to_date)
     {
         return Sale::where('site_id', $this->id)
-            ->whereBetween('date', [$from_date, $to_date])
+            ->whereBetween('date', array($from_date, $to_date))
             ->sum('food_sales');
+    }
+
+    public function alcoholSales($from_date, $to_date)
+    {
+        return Sale::where('site_id', $this->id)
+            ->whereBetween('date', array($from_date, $to_date))
+            ->sum('alcohol_sales');
+    }
+
+    public function beverageSales($from_date, $to_date)
+    {
+        return Sale::where('site_id', $this->id)
+            ->whereBetween('date', array($from_date, $to_date))
+            ->sum('beverage_sales');
+    }
+
+    public function mostRecent28DayAverage(){
+        $sales = Sale::where('site_id', $this->id)
+            ->orderBy('date', 'desc')
+            ->first();
+
+        return $sales->twenty_eight_day_average;
+    } 
+
+    public function salesOn($date){
+        $sales = DB::table('sales')
+            ->where('site_id', $this->id)
+            ->where('date', '=', $date)
+            ->first();
+
+        return $sales;
     }
 }

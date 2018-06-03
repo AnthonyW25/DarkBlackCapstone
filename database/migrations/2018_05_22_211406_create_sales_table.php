@@ -22,6 +22,7 @@ class CreateSalesTable extends Migration
             $table->integer('net')->default('0')->nullable();
             $table->integer('seven_day_average')->default('0')->nullable();
             $table->integer('twenty_eight_day_average')->default('0')->nullable();
+            $table->decimal('forecast_rate')->default('0')->nullable();
             $table->integer('receipts')->default('0')->nullable();
             $table->date('date')->nullable();
             $table->timestamps();

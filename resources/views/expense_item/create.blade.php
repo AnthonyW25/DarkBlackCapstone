@@ -41,7 +41,7 @@ else
                                 </tr>
 
                                 <tr>
-                                    <td>{!! Form::text('expense_id', null, ['readonly'])!!}</td>
+                                    <td>{!! Form::text('expense_id', $expense_id, ['readonly'])!!}</td>
                                     <td>{!! Form::text('description', null)!!}
                                         {!! $errors->has('description')?$errors->first('description'):'' !!}</td>
                                     <td>{!! Form::select('category', ['Food' => 'Food', 'Beverage' => 'Beverage', 'Alcohol'=>'Alcohol']);!!}

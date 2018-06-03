@@ -1,8 +1,5 @@
 @extends('layouts.app')
-<?php
 
-session_start();
-?>
 @section('header')
     <h2>Edit Expense</h2>
 @stop
@@ -20,7 +17,7 @@ session_start();
                                 {{ session('status') }}
                             </div>
                         @endif
-                        {!! Form::model($expense_item, ['route'=>['expenseitem.update', $expense_item->id], 'method'=>'PATCH']) !!}
+                        {!! Form::model($expense_item, ['route'=>['expenseitem.update', $expense_item->id], 'method'=>'POST']) !!}
                             <table>
                                 <tr> 
                                     <!--<th>{!! Form::label('expense_id', 'expense_id') !!}</th>-->

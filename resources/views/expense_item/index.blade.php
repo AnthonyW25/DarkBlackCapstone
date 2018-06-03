@@ -1,3 +1,5 @@
+<?php session_start(); ?>
+
 @extends('layouts.app')
 
 @section('header')
@@ -5,24 +7,19 @@
 @stop
 
 <?php
-
-
-session_start(); 
-
-if (isset($_GET['expense_id']))
-{
-    $expense_id = $_GET['expense_id'];
-    $_SESSION['expense_id'] = $expense_id;
-}
-else
-{
-    $expense_id = $_SESSION['expense_id'];
-}
+    if (isset($_GET['expense_id']))
+    {
+        $expense_id = $_GET['expense_id'];
+        $_SESSION['expense_id'] = $expense_id;
+    }
+    else
+    {
+        $expense_id = $_SESSION['expense_id'];
+    }
 ?>
 
-@section('content')
 
-    
+@section('content')
     <a href="{{ url('/expense') }}" class="btn btn-primary">Back to Expenses</a>
     <table class="table table-bordered table-responsive" style="margin-top: 10px;">
         <thead>
@@ -44,10 +41,14 @@ else
             </tr>
         </thead>
         <tbody>
-        	<?php
-        		$expense_items = DB::table('expense_items')
-                        ->where('expense_id', '=', $_SESSION['expense_id'])->orderBy('updated_at','DESC')->get();
-        	?>
+            <?php 
+
+            $expense_items = DB::table('expense_items')
+                ->where('expense_id', '=', $_SESSION['expense_id'])
+                ->orderBy('updated_at', 'DESC')
+                ->get()
+
+            ?>
         @foreach($expense_items as $expense_item)
             <tr>
                 <td>{{ $expense_item->id }}</td>
@@ -67,4 +68,5 @@ else
             </tr>
       @endforeach
         </tbody>
+    </table>
 @stop
