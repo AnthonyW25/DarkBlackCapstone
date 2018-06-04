@@ -1,11 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<?php 
-    use App\Http\Controllers\ExpenseController;
-    use App\Http\Controllers\SaleController;
-    $salesInstace = new SaleController;
- ?>
+
     <h1>Expense List</h1>
 
     <table class="table table-bordered table-responsive" style="margin-top: 10px;">
@@ -43,20 +39,23 @@
                     {{ $item->category }}<br>
                 @endforeach
                 </td>
-
-                <td><b>{{ "$" .ExpenseController::amountTotal($expense->id)}}</b><br>
+                {{--The expense should know it's own totals. The view should never call methods on a Controller, remember, views are dumb--}}
+                {{--<td><b>{{ "$" .ExpenseController::amountTotal($expense->id)}}</b><br>--}}
+                <td><b>$ {{ $expense->total() }}</b><br>
                 @foreach($expense->items as $item)
                     {{ "$" . $item->amount }}<br>
                 @endforeach
                 </td>
 
-                <td><b>{{ "$" .ExpenseController::amountGst($expense->id)}}</b><br>
+{{--                <td><b>{{ "$" .ExpenseController::amountGst($expense->id)}}</b><br>--}}
+                <td><b>$ {{ $expense->gst() }}</b><br>
                 @foreach($expense->items as $item)
                     {{ "$" . $item->gst }}<br>
                 @endforeach
                 </td>
 
-                <td><b>{{ "$" .ExpenseController::amountPst($expense->id)}}</b><br>
+{{--                <td><b>{{ "$" .ExpenseController::amountPst($expense->id)}}</b><br>--}}
+                <td><b>$ {{ $expense->pst() }}</b><br>
                 @foreach($expense->items as $item)
                     {{ "$" . $item->pst }}<br>
                 @endforeach
@@ -88,7 +87,8 @@
     </table>
 
 
-
+    {{--SPLIT LARGE VIEWS INTO SUB VIEWS AND THEN INCLUDE THEM--}}
+    {{--@include('expense._cogs')--}}
 
     <!------------------------------------ COGS Table ------------------------>
     <br>
@@ -115,14 +115,15 @@
             <tr>
                 
                 <th>Food</th>
-                <td><b>
-                    <?php 
-                    $totalCategory = ExpenseController::categoryTotal();//gets the totals of all categories
-
-                    if (isset($totalCategory['Food'])){
-                        echo "$" . $totalCategory['Food'];
-                    }
-                        else{echo "$0";}
+                <td><b>{{ $totals['Food'] }}
+                    <?php
+                            // Do not use php tags in Blade templates!!
+//                    $totalCategory = ExpenseController::categoryTotal();//gets the totals of all categories
+//
+//                    if (isset($totalCategory['Food'])){
+//                        echo "$" . $totalCategory['Food'];
+//                    }
+//                        else{echo "$0";}
                     ?> 
                 </b></td>
                 <td>{!! Form::number('number', 33) !!} % </td>
@@ -130,12 +131,13 @@
 
 
                     <?php 
-                    
-                        $twenty_eight_day_result = ExpenseController::total_twenty_eight_days();//we will store the twenty eight day avg ifo into this variable
-                                                                                                //this is so we can output the info to the page 
-                        ExpenseController::total_seven_days();//just rungs the seven day avg function to store it in the database; will not be output to display at the moment
+
+                        // Do not do calculations in views!!
+//                        $twenty_eight_day_result = ExpenseController::total_twenty_eight_days();//we will store the twenty eight day avg ifo into this variable
+//                                                                                                //this is so we can output the info to the page
+//                        ExpenseController::total_seven_days();//just rungs the seven day avg function to store it in the database; will not be output to display at the moment
                     ?>
-                    {{(int)$twenty_eight_day_result[0] . "%"}}
+{{--                    {{(int)$twenty_eight_day_result[0] . "%"}}--}}
 
                 </td>
                 <td></td>
@@ -145,24 +147,24 @@
             </tr>
             <tr>
                 <th>Alcohol</th>
-                <td><b>
+                <td><b>{{ $totals['Alcohol'] }}
                     <?php 
-                    if (isset($totalCategory['Alcohol'])){
-                        echo "$" . $totalCategory['Alcohol'];
-                    }
-                    else{echo "$0";}
+//                    if (isset($totalCategory['Alcohol'])){
+//                        echo "$" . $totalCategory['Alcohol'];
+//                    }
+//                    else{echo "$0";}
                     ?>
                 </b></td>
                 <td>33%</td>
                 <td>
-                    <?php $result = ExpenseController::total_twenty_eight_days()?>
+<!--                    --><?php //$result = ExpenseController::total_twenty_eight_days()?>
                     <?php
-                    if($result[0] < 1 and $result[0] > 0) {
-                        echo ' < 1%';
-                    }
-                    else {
-                        echo (int)$result[1] . "%";
-                    }
+//                    if($result[0] < 1 and $result[0] > 0) {
+//                        echo ' < 1%';
+//                    }
+//                    else {
+//                        echo (int)$result[1] . "%";
+//                    }
                     ?>
                 </td>
                 <td></td>
@@ -171,24 +173,24 @@
             </tr>
             <tr>
                 <th>Beverages</th>
-                <td><b>
+                <td><b>{{ $totals['Beverage'] }}
                   <?php 
-                    if (isset($totalCategory['Beverage'])){
-                        echo "$" . $totalCategory['Beverage'];
-                    }
-                    else{echo "$0";}
+//                    if (isset($totalCategory['Beverage'])){
+//                        echo "$" . $totalCategory['Beverage'];
+//                    }
+//                    else{echo "$0";}
                     ?> 
                 </b></td>
                 <td>33%</td>
                 <td>
-                    <?php $result = ExpenseController::total_twenty_eight_days()?>
+<!--                    --><?php //$result = ExpenseController::total_twenty_eight_days()?>
                     <?php
-                    if($result[0] < 1 and $result[0] > 0) {
-                        echo ' < 1%';
-                    }
-                    else {
-                        echo (int)$result[2] . "%";
-                    }
+//                    if($result[0] < 1 and $result[0] > 0) {
+//                        echo ' < 1%';
+//                    }
+//                    else {
+//                        echo (int)$result[2] . "%";
+//                    }
                     ?>
                 </td>
                 <td></td>
