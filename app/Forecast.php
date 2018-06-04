@@ -8,7 +8,7 @@
 
 namespace App;
 use DB;
-
+use Carbon\Carbon;
 class Forecast
 {
     public $date;
@@ -63,7 +63,7 @@ class Forecast
 
     		$twenty_eight_day_avg = $sales->twenty_eight_day_average;
 
-    		$this->seven_day = ($twenty_eight_day_avg + ($twenty_eight_day_avg * ($this->growth_rate/100)));  
+    		$this->seven_day = ($twenty_eight_day_avg + ($twenty_eight_day_avg * ($this->growth_rate/100)));//the total forecast 
     }
 
     public function getPercentage(){
@@ -73,6 +73,31 @@ class Forecast
         foreach($sales as $sale){
             $this->growth_rate = $sale->forecast_rate;
         }
+    }
+
+    public function sevenDay($category){
+        $cogs = new COGS($this->site);
+        self::forecastCalculation();
+
+        $sales = Sale::where('site_id', '=', $this->site->id)
+                ->orderBy('date', 'desc')
+                ->first();
+
+        $today = Carbon::now();
+
+        $twenty_eight_days_ago = Carbon::now()->subDay(28);
+
+        if($category == 'Food'){
+            
+            return $this->seven_day * $cogs->twenty_eight_day_food;
+        }else if($category == 'Alcohol'){
+             
+            return $this->seven_day * $cogs->twenty_eight_day_alcohol;
+        }else{
+             
+            return $this->seven_day * $cogs->twenty_eight_day_beverage;
+        }
+
     }
 }
 

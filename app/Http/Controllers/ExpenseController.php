@@ -32,7 +32,7 @@ class ExpenseController extends Controller
             'Beverage' => 100,
             'Alcohol' => 100,
         ];
-        $totals = self::categoryTotal($twenty_eight_days_ago, $today );
+        $totals = self::categoryTotal($twenty_eight_days_ago->toDateString(), $today->toDateString());
         
         return view('expense.index', compact('expenses', 'totals'));
     }
