@@ -1,52 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<?php 
-    
-    use Carbon\Carbon;
-    use App\Http\Controllers\ExpenseController;
-    use App\Forecast;
-    use App\COGS;
-    use App\Site;
- ?>
-<!-- Remember to include jQuery :) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 
-<!-- jQuery Modal -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-<script>
-$(document).ready(function(){
-    $('#exampleModalLabel').on('shown.bs.modal', function () {
-  $('#exampleModal').trigger('focus')
-})
-
-</script>
-
-
-<!-- Modal -->
-
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Add Expense</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        @include('expense.create')
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-       
-      </div>
-    </div>
-  </div>
-</div>
-
-<!---------------------- end Modal --------------------------->
     <h1>Expense List</h1>
 
     <table class="table table-bordered table-responsive" style="margin-top: 10px;">
@@ -61,11 +16,8 @@ $(document).ready(function(){
                 <th>GST</th>
                 <th>PST</th>
                 <th>Date</th>
-                <th colspan="3" >
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                    Add new Expense
-                    </button>
-                </th>
+
+                <th colspan="3"><a href="expense/create" class="btn btn-primary">Add new Expense</a></th>
             </tr>
         </thead>
         <tbody>
@@ -87,20 +39,23 @@ $(document).ready(function(){
                     {{ $item->category }}<br>
                 @endforeach
                 </td>
-
-                <td><b>{{ "$" .ExpenseController::amountTotal($expense->id)}}</b><br>
+                {{--The expense should know it's own totals. The view should never call methods on a Controller, remember, views are dumb--}}
+                {{--<td><b>{{ "$" .ExpenseController::amountTotal($expense->id)}}</b><br>--}}
+                <td><b>$ {{ $expense->total() }}</b><br>
                 @foreach($expense->items as $item)
                     {{ "$" . $item->amount }}<br>
                 @endforeach
                 </td>
 
-                <td><b>{{ "$" .ExpenseController::amountGst($expense->id)}}</b><br>
+{{--                <td><b>{{ "$" .ExpenseController::amountGst($expense->id)}}</b><br>--}}
+                <td><b>$ {{ $expense->gst() }}</b><br>
                 @foreach($expense->items as $item)
                     {{ "$" . $item->gst }}<br>
                 @endforeach
                 </td>
 
-                <td><b>{{ "$" .ExpenseController::amountPst($expense->id)}}</b><br>
+{{--                <td><b>{{ "$" .ExpenseController::amountPst($expense->id)}}</b><br>--}}
+                <td><b>$ {{ $expense->pst() }}</b><br>
                 @foreach($expense->items as $item)
                     {{ "$" . $item->pst }}<br>
                 @endforeach
@@ -132,7 +87,8 @@ $(document).ready(function(){
     </table>
 
 
-
+    {{--SPLIT LARGE VIEWS INTO SUB VIEWS AND THEN INCLUDE THEM--}}
+    {{--@include('expense._cogs')--}}
 
     <!------------------------------------ COGS Table ------------------------>
     <br>
@@ -141,210 +97,108 @@ $(document).ready(function(){
     <table class="table table-bordered table-responsive" style="margin-top: 10px;">
         <thead>
             <tr>
-                <th  bgcolor="#b3b3b3" >DARKBlack</th>
-                <th colspan="4"><center>COGS for the Last 4 Weeks</center></th>
+                <th></th>
+                <th colspan="3">4 Weeks</th>
                 <th colspan="3">Expenses This Week</th>
-
-
             </tr>
             <tr>
-                <th>Category</th>
+                <th></th>
                 <th>Expenses</th>
-                <th>Sales</th>
                 <th>Target</th>
                 <th>Actual</th>
                 <th>Budget</th>
                 <th>Actual</th>
                 <th>Remaining</th>
-
             </tr>
         </thead>
         <tbody>
             <tr>
                 
                 <th>Food</th>
-                <td><b>
-
-                    <?php 
-                    $site = new Site();
-                    $today = Carbon::now();
-
-                    $seven_days_ago = $today->copy()->subDay(7);
-
-                    $twenty_eight_days_ago = $today->copy()->subDay(28);
-
-                    $total_expenses = 0;
-                    //gets the totals of all categories for 28 days, soon the user will be able to decide the days
-                    $expenses_for_days = ExpenseController::categoryTotal($twenty_eight_days_ago->toDateString(), $today->toDateString());
-
-               
-                    $cogs = new COGS($site);
-                    $forecast = new Forecast($site);
-                    $cogs->calculate();
-                                                
-                    if (isset($expenses_for_days['Food'])){
-                        $total_expenses += $expenses_for_days['Food'];
-                        echo "$" . $expenses_for_days['Food'];
-                    }
-                        else{echo "$0";}
+                <td><b>{{ $totals['Food'] }}
+                    <?php
+                            // Do not use php tags in Blade templates!!
+//                    $totalCategory = ExpenseController::categoryTotal();//gets the totals of all categories
+//
+//                    if (isset($totalCategory['Food'])){
+//                        echo "$" . $totalCategory['Food'];
+//                    }
+//                        else{echo "$0";}
                     ?> 
                 </b></td>
-                <td><b>{{"$" . ($site->foodSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) / 100)}}</b></td>
                 <td>{!! Form::number('number', 33) !!} % </td>
                 <td>
 
+
                     <?php 
-                        if(($cogs->twenty_eight_day_food * 100) < 1 and ($cogs->twenty_eight_day_food > 0 * 100)) {
-                            echo ' < 1%';
-                        }
-                        else {
-                            echo (int)($cogs->twenty_eight_day_food * 100) . "%";
-                        }
+
+                        // Do not do calculations in views!!
+//                        $twenty_eight_day_result = ExpenseController::total_twenty_eight_days();//we will store the twenty eight day avg ifo into this variable
+//                                                                                                //this is so we can output the info to the page
+//                        ExpenseController::total_seven_days();//just rungs the seven day avg function to store it in the database; will not be output to display at the moment
                     ?>
+{{--                    {{(int)$twenty_eight_day_result[0] . "%"}}--}}
 
                 </td>
                 <td></td>
                 <td></td>
                 <td></td>
-
                 
             </tr>
             <tr>
                 <th>Alcohol</th>
-                <td><b>
-
+                <td><b>{{ $totals['Alcohol'] }}
                     <?php 
-                    if (isset($expenses_for_days['Alcohol'])){
-                        $total_expenses += $expenses_for_days['Alcohol'];
-                        echo "$" . $expenses_for_days['Alcohol'];
-                    }
-                    else{echo "$0";}
+//                    if (isset($totalCategory['Alcohol'])){
+//                        echo "$" . $totalCategory['Alcohol'];
+//                    }
+//                    else{echo "$0";}
                     ?>
-
                 </b></td>
-                <td><b>{{"$" . ($site->alcoholSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) / 100)}}</b></td>
                 <td>33%</td>
                 <td>
-
+<!--                    --><?php //$result = ExpenseController::total_twenty_eight_days()?>
                     <?php
-                        if($cogs->twenty_eight_day_alcohol < 1 and $cogs->twenty_eight_day_alcohol > 0) {
-                            echo ' < 1%';
-                        }
-                        else {
-                            echo (int)($cogs->twenty_eight_day_alcohol * 100) . "%";
-                        }
-                    ?> 
-
+//                    if($result[0] < 1 and $result[0] > 0) {
+//                        echo ' < 1%';
+//                    }
+//                    else {
+//                        echo (int)$result[1] . "%";
+//                    }
+                    ?>
                 </td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
-
                 <th>Beverages</th>
-                <td><b>
-                  
+                <td><b>{{ $totals['Beverage'] }}
                   <?php 
-                    if (isset($expenses_for_days['Beverage'])){
-                        $total_expenses += $expenses_for_days['Beverage'];
-                        echo "$" . $expenses_for_days['Beverage'];
-                    }
-                    else{echo "$0";}
+//                    if (isset($totalCategory['Beverage'])){
+//                        echo "$" . $totalCategory['Beverage'];
+//                    }
+//                    else{echo "$0";}
                     ?> 
-
                 </b></td>
-                <td><b>{{"$" . ($site->beverageSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) / 100)}}</b></td>
                 <td>33%</td>
                 <td>
-
-              <?php
-                    if(($cogs->twenty_eight_day_beverage * 100) < 1 and ($cogs->twenty_eight_day_beverage * 100) > 0) {
-                            echo ' < 1%';
-                        }
-                        else {
-                            echo (int)($cogs->twenty_eight_day_beverage * 100) . "%";
-                        }
+<!--                    --><?php //$result = ExpenseController::total_twenty_eight_days()?>
+                    <?php
+//                    if($result[0] < 1 and $result[0] > 0) {
+//                        echo ' < 1%';
+//                    }
+//                    else {
+//                        echo (int)$result[2] . "%";
+//                    }
                     ?>
-
                 </td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
-            <tr>
-                <th>Total</th>
-                <td><b>{{"$" . $total_expenses}}</b></td>
-                <td><b>{{"$" . (($site->alcoholSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) + $site->foodSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) +  $site->beverageSales($twenty_eight_days_ago->toDateString(), $today->toDateString())) / 100)}}</b></td>
-            </tr>
-
-
+            
             
         </tbody>
-    </table>
-
-    <!------------------------------------ Forecast Table ------------------------>
-    <br>
-    <h1>Upcoming Sales Forecast</h1>
-
-    <table class="table table-bordered table-responsive" style="margin-top: 10px;">
-        <thead>
-            <tr>
-                <th colspan="3">Sales Forecast</th>
-            </tr>
-            <tr>
-                <th>Average Daily Sales Over Previous 7 Days</th>
-                <th>Sales Forecast Adjustment</th>
-                <th>Projected Sales </th>
-            </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <!-- This displays the 7 day average of the past week -->
-            <td rowspan="3">{{"$" . ($cogs->twenty_eight_day_avg / 100)}}</td>
-            <?php
-                if (isset($_GET['subject']))
-                {
-                    $fore_percent = $_GET['subject'];
-                    $forecast->growth($fore_percent);
-                    $forecast->date();
-                    $forecast->forecastCalculation();
-                    
-                }
-                else
-                {
-                	$forecast->forecastCalculation();
-                    $forecast->getPercentage();
-                    $fore_percent = $forecast->growth_rate;
-                }
-            ?>
-            <td><form name="form" action="" method="get">
-                <input type="number" name="subject" id="subject" value="{{$fore_percent}}">
-                <input type="submit" name="my_form_submit_button" 
-                    value="SCALE"/>
-                </form>
-            </td>
-            <td><?php
-                    if(isset($_GET['subject'])){
-                        $fore_percent = $_GET['subject'];
-                    	$forecast->growth($fore_percent);
-                    	$forecast->date();
-                    	$forecast->forecastCalculation();
-                        echo "$" . (int)($forecast->seven_day / 100);
-                    }
-                    else{
-                        $forecast->getPercentage();
-                        $forecast->forecastCalculation();
-                    	$fore_percent = $forecast->growth_rate;
-                        echo "$" . (int)($forecast->seven_day / 100);
-                    }
-                    
-?></td>
-        </tr>
-
-        </tbody>
-
-
-
     </table>
 @endsection

@@ -11,10 +11,10 @@ namespace App;
 use Carbon\Carbon;
 use App\Http\Controllers\ExpenseController;
 use DB;
+
 class COGS
 {
     public $site;
-
 
     // COGS
     public $seven_day_beverage;
@@ -30,7 +30,6 @@ class COGS
     public $twenty_eight_day_avg;
     public $seven_day_avg;
 
-
     /*
      * For any give site, which has daily sales and expenses
      * The COGS class will calculate the Food, Alcohol, and Total COGS for the previous 7 and 28 day periods
@@ -42,7 +41,6 @@ class COGS
         $this->site = $site;
     }
 
-    
     //calculates cost of goods and average    
      public function calculate()
     {
