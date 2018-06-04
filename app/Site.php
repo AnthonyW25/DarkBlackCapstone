@@ -7,9 +7,9 @@
  */
 
 namespace App;
-
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-
+use App\COGS;
 class Site
 {
     /*
@@ -58,5 +58,26 @@ class Site
 
         return $sales;
     }
-    
+
+    public function salesRatio($category){
+        //sales * actual cogs
+        $site = new Site();
+        $cogs = new COGS($site);
+
+        $today = Carbon::now();
+
+        $twenty_eight_days_ago = Carbon::now()->subDay(28);
+
+        //decides which COGS to use depending on what the $category was
+        if($category == 'Food'){
+            $total_sales = self::foodSales($twenty_eight_days_ago, $today); 
+            return $total_sales * $cogs->twenty_eight_day_food;
+        }else if($category == 'Alcohol'){
+             $total_sales  = self::alcoholSales($twenty_eight_days_ago, $today);
+            return $total_sales * $cogs->twenty_eight_day_alcohol;
+        }else{
+             $total_sales = self::beverageSales($twenty_eight_days_ago, $today);
+            return $total_sales * $cogs->twenty_eight_day_beverage;
+        }
+    }
 }
