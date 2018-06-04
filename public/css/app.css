@@ -3,6 +3,8 @@ select#category{
 	width:159px;
 	height:29px;
 }
+input#date {
+    width: 140px;}
 /*!
  * Bootstrap v4.0.0 (https://getbootstrap.com)
  * Copyright 2011-2018 The Bootstrap Authors
