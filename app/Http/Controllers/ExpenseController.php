@@ -129,7 +129,7 @@ class ExpenseController extends Controller
             ->where('expense_id', '=', $expense_id)->orderBy('updated_at','DESC')
             ->get();
 
-        return view('expense_item.index', compact('expense_items'));
+        return view('expense_item.index', compact('expense_items', 'expense_id'));
     }
 
     /**
@@ -137,9 +137,10 @@ class ExpenseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function itemCreate()
+    public function itemCreate(Request $request)
     {
-        return view('expense_item.create');
+    	$expense_id = $request->get('expense_id');
+        return view('expense_item.create', compact('expense_id'));
     }
 
     /**
@@ -155,9 +156,9 @@ class ExpenseController extends Controller
             'category'=>'Required']);
         $expense_item = $request->all();
 
-        ExpenseItem::create($expense_item);
+        $expense_item = ExpenseItem::create($request->all());
 
-        return redirect('expenseitem');
+        return redirect('expenseitem?expense_id=' . $expense_item->expense_id);
     }
 
     /**
@@ -196,9 +197,10 @@ class ExpenseController extends Controller
             'description'=>'Required',
             'category'=>'Required']);
         $expense_item = ExpenseItem::find($id);
-        $expense_itemUpdate = $request->all();
-        $expense_item->update($expense_itemUpdate);
-        return redirect('expenseitem');
+        
+        $expense_item->update($request->all());
+
+        return redirect('expenseitem?expense_id=' . $expense_item->expense_id);
     }
 
     /**
@@ -210,8 +212,9 @@ class ExpenseController extends Controller
     public function itemDestroy($id)
     {
         $expense_item = ExpenseItem::find($id);
+        $expense_id = $expense_item->expense_id;
         $expense_item->delete();
-        return redirect('expenseitem');
+        return redirect('expenseitem?expense_id=' . $expense_id);
         
     }
     
