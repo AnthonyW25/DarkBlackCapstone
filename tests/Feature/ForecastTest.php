@@ -172,4 +172,21 @@ class ForecastTest extends TestCase
         
         $this->assertEquals($sales->twenty_eight_day_average * (1 + $growth_rate / 100), $forecast->seven_day);
     }
+
+    /** @test */
+    public function provides_forecast_by_category()
+    {
+        // Setup some Sales Data
+        // The Site will provide all the necessary Sales Data
+        $site = new Site();
+
+        $forecast = new Forecast($site);
+        $forecast->forecastCalculation();// we have to run this function to set the seven_day -- for now
+
+        // The Food Forecast is the total forecast times the ratio (or sales mix) of the site
+        // because the forecast defaults to a straight line it will just be the most recent 28 day \average
+        $this->assertEquals($site->mostRecent28DayAverage() * $site->salesRatio('Food'), $forecast->sevenDay('Food'));
+        $this->assertEquals($site->mostRecent28DayAverage() * $site->salesRatio('Beverage'), $forecast->sevenDay('Beverage'));
+        $this->assertEquals($site->mostRecent28DayAverage() * $site->salesRatio('Alcohol'), $forecast->sevenDay('Alcohol'));
+    }
 }

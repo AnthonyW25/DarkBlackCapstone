@@ -23,7 +23,13 @@ class ExpenseController extends Controller
             ->orderBy('updated_at', 'DESC')
             ->get();
 
-        return view('expense.index', compact('expenses'));
+        $totals = [
+            'Food' => 100,
+            'Beverage' => 100,
+            'Alcohol' => 100,
+        ];
+
+        return view('expense.index', compact('expenses', 'totals'));
     }
 
     /**
@@ -261,5 +267,4 @@ class ExpenseController extends Controller
         return ExpenseItem::where('expense_id', '=', $id)
             ->sum('expense_items.pst');
     }
-
 }

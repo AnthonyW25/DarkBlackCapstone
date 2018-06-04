@@ -34,6 +34,7 @@ class COGSTest extends TestCase
         $site = new Site();
 
         $cogs = new COGS($site);
+
         $twenty_eight_days_ago = Carbon::now()->subDay(28);
         $seven_days_ago = Carbon::now()->subDay(7);
         $now = Carbon::now();
@@ -74,6 +75,7 @@ class COGSTest extends TestCase
 
         // Should now be able to calculate COGS
         $cogs->calculate();
+
         $this->assertEquals((50000 / $site->foodSales($seven_days_ago->toDateString(), $now->toDateString())) * 100, $cogs->seven_day_food);
         $this->assertEquals((50000 / $site->foodSales($twenty_eight_days_ago->toDateString(), $now->toDateString())) * 100, $cogs->twenty_eight_day_food);
         $this->assertEquals((123400 / $site->alcoholSales($seven_days_ago->toDateString(), $now->toDateString())) * 100, $cogs->seven_day_alcohol);
