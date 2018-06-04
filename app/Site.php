@@ -58,4 +58,5 @@ class Site
 
         return $sales;
     }
+    
 }

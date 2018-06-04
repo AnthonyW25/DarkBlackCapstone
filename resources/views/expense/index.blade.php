@@ -1,5 +1,21 @@
 @extends('layouts.app')
+<?php
+ use Carbon\Carbon;
+    use App\Http\Controllers\ExpenseController;
+    use App\Forecast;
+    use App\COGS;
+    use App\Site;  
 
+    $site = new Site();
+    $today = Carbon::now();
+    $seven_days_ago = $today->copy()->subDay(7);
+    $twenty_eight_days_ago = $today->copy()->subDay(28);
+    
+
+    $cogs = new COGS($site);
+    $forecast = new Forecast($site);
+    $cogs->calculate();
+?>
 @section('content')
 
     <h1>Expense List</h1>
@@ -93,17 +109,17 @@
     <!------------------------------------ COGS Table ------------------------>
     <br>
     <h1>Cost Of Goods Sold (COGS)</h1>
-
     <table class="table table-bordered table-responsive" style="margin-top: 10px;">
         <thead>
             <tr>
-                <th></th>
-                <th colspan="3">4 Weeks</th>
+                <th  bgcolor="#b3b3b3" >DARKBlack</th>
+                <th colspan="4"><center>COGS for the Last 4 Weeks</center></th>
                 <th colspan="3">Expenses This Week</th>
             </tr>
             <tr>
-                <th></th>
+                <th>Category</th>
                 <th>Expenses</th>
+                <th>Sales</th>
                 <th>Target</th>
                 <th>Actual</th>
                 <th>Budget</th>
@@ -115,30 +131,20 @@
             <tr>
                 
                 <th>Food</th>
-                <td><b>{{ $totals['Food'] }}
-                    <?php
-                            // Do not use php tags in Blade templates!!
-//                    $totalCategory = ExpenseController::categoryTotal();//gets the totals of all categories
-//
-//                    if (isset($totalCategory['Food'])){
-//                        echo "$" . $totalCategory['Food'];
-//                    }
-//                        else{echo "$0";}
-                    ?> 
+                <td><b>
+                    {{"$"}}{{isset($totals['Food']) ? $totals['Food']:0}}
                 </b></td>
+                <td><b>{{"$" . ($site->foodSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) / 100)}}</b></td>
                 <td>{!! Form::number('number', 33) !!} % </td>
                 <td>
-
-
                     <?php 
-
-                        // Do not do calculations in views!!
-//                        $twenty_eight_day_result = ExpenseController::total_twenty_eight_days();//we will store the twenty eight day avg ifo into this variable
-//                                                                                                //this is so we can output the info to the page
-//                        ExpenseController::total_seven_days();//just rungs the seven day avg function to store it in the database; will not be output to display at the moment
+                        if(($cogs->twenty_eight_day_food * 100) < 1 and ($cogs->twenty_eight_day_food > 0 * 100)) {
+                            echo ' < 1%';
+                        }
+                        else {
+                            echo (int)($cogs->twenty_eight_day_food * 100) . "%";
+                        }
                     ?>
-{{--                    {{(int)$twenty_eight_day_result[0] . "%"}}--}}
-
                 </td>
                 <td></td>
                 <td></td>
@@ -147,25 +153,20 @@
             </tr>
             <tr>
                 <th>Alcohol</th>
-                <td><b>{{ $totals['Alcohol'] }}
-                    <?php 
-//                    if (isset($totalCategory['Alcohol'])){
-//                        echo "$" . $totalCategory['Alcohol'];
-//                    }
-//                    else{echo "$0";}
-                    ?>
+                <td><b>
+                    {{"$"}}{{isset($totals['Alcohol']) ? $totals['Alcohol']:0}}
                 </b></td>
+                <td><b>{{"$" . ($site->alcoholSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) / 100)}}</b></td>
                 <td>33%</td>
                 <td>
-<!--                    --><?php //$result = ExpenseController::total_twenty_eight_days()?>
                     <?php
-//                    if($result[0] < 1 and $result[0] > 0) {
-//                        echo ' < 1%';
-//                    }
-//                    else {
-//                        echo (int)$result[1] . "%";
-//                    }
-                    ?>
+                        if($cogs->twenty_eight_day_alcohol < 1 and $cogs->twenty_eight_day_alcohol > 0) {
+                            echo ' < 1%';
+                        }
+                        else {
+                            echo (int)($cogs->twenty_eight_day_alcohol * 100) . "%";
+                        }
+                    ?> 
                 </td>
                 <td></td>
                 <td></td>
@@ -173,31 +174,30 @@
             </tr>
             <tr>
                 <th>Beverages</th>
-                <td><b>{{ $totals['Beverage'] }}
-                  <?php 
-//                    if (isset($totalCategory['Beverage'])){
-//                        echo "$" . $totalCategory['Beverage'];
-//                    }
-//                    else{echo "$0";}
-                    ?> 
+                <td><b>
+                {{"$"}}{{isset($totals['Beverage']) ? $totals['Beverage']:0}} 
                 </b></td>
+                <td><b>{{"$" . ($site->beverageSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) / 100)}}</b></td>
                 <td>33%</td>
                 <td>
-<!--                    --><?php //$result = ExpenseController::total_twenty_eight_days()?>
-                    <?php
-//                    if($result[0] < 1 and $result[0] > 0) {
-//                        echo ' < 1%';
-//                    }
-//                    else {
-//                        echo (int)$result[2] . "%";
-//                    }
+              <?php
+                    if(($cogs->twenty_eight_day_beverage * 100) < 1 and ($cogs->twenty_eight_day_beverage * 100) > 0) {
+                            echo ' < 1%';
+                        }
+                        else {
+                            echo (int)($cogs->twenty_eight_day_beverage * 100) . "%";
+                        }
                     ?>
                 </td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
-            
+            <tr>
+                <th>Total</th>
+                <td><b>{{"$"}}</b></td>
+                <td><b>{{"$" . (($site->alcoholSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) + $site->foodSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) +  $site->beverageSales($twenty_eight_days_ago->toDateString(), $today->toDateString())) / 100)}}</b></td>
+            </tr>
             
         </tbody>
     </table>

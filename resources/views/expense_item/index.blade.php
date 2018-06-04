@@ -1,23 +1,8 @@
-<?php session_start(); ?>
-
 @extends('layouts.app')
 
 @section('header')
     <h2>Expense List</h2>
 @stop
-
-<?php
-    if (isset($_GET['expense_id']))
-    {
-        $expense_id = $_GET['expense_id'];
-        $_SESSION['expense_id'] = $expense_id;
-    }
-    else
-    {
-        $expense_id = $_SESSION['expense_id'];
-    }
-?>
-
 
 @section('content')
     <a href="{{ url('/expense') }}" class="btn btn-primary">Back to Expenses</a>
@@ -33,22 +18,13 @@
                 <th>GST</th>
                 <th>PST</th>
                 <th colspan="3"><form method="get" action="/expenseitem/create">
-                    <input type="hidden" name = "expense_id" value='<?php
-                    echo $expense_id;
-                    ?>'>
+                    <input type="hidden" name = "expense_id" value='{{$expense_id
+                    }}'>
                     <input type="submit" class="btn btn-success" value="Add Item">
                     </form></th>
             </tr>
         </thead>
         <tbody>
-            <?php 
-
-            $expense_items = DB::table('expense_items')
-                ->where('expense_id', '=', $_SESSION['expense_id'])
-                ->orderBy('updated_at', 'DESC')
-                ->get()
-
-            ?>
         @foreach($expense_items as $expense_item)
             <tr>
                 <td>{{ $expense_item->id }}</td>

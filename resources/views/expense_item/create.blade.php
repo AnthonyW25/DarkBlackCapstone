@@ -1,18 +1,5 @@
 @extends('layouts.app')
-<?php
 
-session_start(); 
-
-if (isset($_GET['expense_id']))
-{
-    $expense_id = $_GET['expense_id'];
-    $_SESSION['expense_id'] = $expense_id;
-}
-else
-{
-    $expense_id = $_SESSION['expense_id'];
-}
-?>
 @section('header')
     <h2>add Expense</h2>
 @stop
