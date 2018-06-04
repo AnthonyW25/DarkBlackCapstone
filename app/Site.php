@@ -20,6 +20,7 @@ class Site
     public $id = 1; // hard code an id that would normally reference the Site record in the DB
 
     public $sample_data = [];
+    public
 
     public function foodSales($from_date, $to_date)
     {
@@ -58,5 +59,8 @@ class Site
 
         return $sales;
     }
-    
+
+    public function salesRatio($category){
+        //sales * actual
+    }
 }
