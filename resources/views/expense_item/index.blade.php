@@ -2,8 +2,6 @@
 
 @extends('layouts.app')
 
-
-
 @section('header')
     <h2>Expense List</h2>
 @stop

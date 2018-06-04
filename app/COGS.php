@@ -108,7 +108,7 @@ class COGS
         }
        
         //-------------INSERT AVERAGES TO DATABASE----------------------------------------------------------
-        $sales = Sale::orderBy('id', 'desc')->first();
+        $sales = Sale::orderBy('date', 'desc')->first();//the most recent sales
 
         $this->seven_day_avg = (int)(($this->site->foodSales($seven_days_ago->toDateString(), $today->toDateString())
             + $this->site->alcoholSales($seven_days_ago->toDateString(), $today->toDateString())
@@ -118,8 +118,8 @@ class COGS
             + $this->site->alcoholSales($twenty_eight_days_ago->toDateString(), $today->toDateString())
             + $this->site->beverageSales($twenty_eight_days_ago->toDateString(), $today->toDateString()))/28);
 
-        DB::table('sales')->where('id', $sales->id)->update(['seven_day_average'=>$this->seven_day_avg]);
-        DB::table('sales')->where('id', $sales->id)->update(['twenty_eight_day_average'=>$this->twenty_eight_day_avg]);
+        DB::table('sales')->where('date', $sales->date)->update(['seven_day_average'=>$this->seven_day_avg]);
+        DB::table('sales')->where('date', $sales->date)->update(['twenty_eight_day_average'=>$this->twenty_eight_day_avg]);
 
     }
     
