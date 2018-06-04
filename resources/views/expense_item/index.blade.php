@@ -1,23 +1,8 @@
-<?php session_start(); ?>
-
 @extends('layouts.app')
 
 @section('header')
     <h2>Expense List</h2>
 @stop
-
-<?php
-    if (isset($_GET['expense_id']))
-    {
-        $expense_id = $_GET['expense_id'];
-        $_SESSION['expense_id'] = $expense_id;
-    }
-    else
-    {
-        $expense_id = $_SESSION['expense_id'];
-    }
-?>
-
 
 @section('content')
     <a href="{{ url('/expense') }}" class="btn btn-primary">Back to Expenses</a>

@@ -23,12 +23,17 @@ class ExpenseController extends Controller
             ->orderBy('updated_at', 'DESC')
             ->get();
 
+        $today = Carbon::now();
+
+        $twenty_eight_days_ago = Carbon::now()->subDay(28);
+
         $totals = [
             'Food' => 100,
             'Beverage' => 100,
             'Alcohol' => 100,
         ];
-
+        $totals = self::categoryTotal($twenty_eight_days_ago, $today );
+        
         return view('expense.index', compact('expenses', 'totals'));
     }
 

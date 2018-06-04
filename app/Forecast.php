@@ -92,7 +92,6 @@ class Forecast
     //         return $this->$property;
     //     }
     // }
-
     // private function calculate($property)
     // {
     //     // We only want to calculate the values once, so if we've already done it, just return
