@@ -33,8 +33,9 @@ class ExpenseController extends Controller
             'Alcohol' => 100,
         ];
         $totals = self::categoryTotal($twenty_eight_days_ago->toDateString(), $today->toDateString());
+        $expense_id = Expense::orderBy('id', 'DESC')->pluck('id')->first();
         
-        return view('expense.index', compact('expenses', 'totals'));
+        return view('expense.index', compact('expenses', 'totals','expense_id'));
     }
 
     /**
@@ -62,8 +63,9 @@ class ExpenseController extends Controller
             'supplier' => 'Required',
             'invoice'  => 'Required']);
         Expense::create($request->all() + ['user_id' => $user_info->id]);
+        $expense_id = Expense::orderBy('id', 'DESC')->pluck('id')->first();
        
-        return redirect('/expense');
+        return redirect('expenseitem?expense_id=' . $expense_id);
     }
 
     /**

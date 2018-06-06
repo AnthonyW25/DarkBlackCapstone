@@ -3,8 +3,8 @@
 @section('header')
     <h2>Expense List</h2>
 @stop
-
 @section('content')
+
     <a href="{{ url('/expense') }}" class="btn btn-primary">Back to Expenses</a>
     <table class="table table-bordered table-responsive" style="margin-top: 10px;">
         <thead>
@@ -19,8 +19,8 @@
                 <th>PST</th>
                 <th colspan="3"><form method="get" action="/expenseitem/create">
                     <input type="hidden" name = "expense_id" value='{{$expense_id
-                    }}'>
-                    <input type="submit" class="btn btn-success" value="Add Item">
+                    }}'><!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addItem">Add Item</button>
                     </form></th>
             </tr>
         </thead>
@@ -45,4 +45,23 @@
       @endforeach
         </tbody>
     </table>
+<!-- Modal -->
+<div class="modal fade" id="addItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    
+      <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        
+      </div>
+      <div class="modal-body modal-xl">
+        @include('expense_item.create')  
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end Modal -->
 @stop
