@@ -148,5 +148,4 @@ class BudgetTest extends TestCase
 
         $this->assertEquals($target * $forecast->seven_day / 100, $total / 100);
     }
-
 }
