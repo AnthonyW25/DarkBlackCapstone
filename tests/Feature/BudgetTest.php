@@ -139,13 +139,14 @@ class BudgetTest extends TestCase
         $site = new Site();
 
         $forecast = new Forecast($site);
-
+        
         $budget = new Budget($forecast);
 
         $target = 22.4;
 
-        $total = $budget->cogsTarget($target);
-
-        $this->assertEquals($target * $forecast->seven_day / 100, $total / 100);
+        $budget->cogsTarget($target);
+        //dd($budget->result);
+        //dd($forecast->sevenDay());
+        $this->assertEquals($target * $forecast->seven_day / 100, $budget->result);
     }
 }

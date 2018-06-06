@@ -66,7 +66,7 @@ class ExpenseControllerTest extends TestCase
                 'date' => '2018-05-23'
                 // other post variables
             ])
-            ->assertRedirect('/expense');
+            ->assertRedirect('expenseitem?expense_id=1');
 
         //we should now have records in the expenses and expense_items table
         $this->assertDatabaseHas('expenses', [

@@ -9,6 +9,8 @@
 namespace App;
 use DB;
 use Carbon\Carbon;
+use App\COGS;
+use App\Site;
 class Forecast
 {
     public $date;
@@ -62,7 +64,7 @@ class Forecast
     			->update(['forecast_rate' => $this->growth_rate]);
 
     		$twenty_eight_day_avg = $sales->twenty_eight_day_average;
-
+           
     		$this->seven_day = ($twenty_eight_day_avg + ($twenty_eight_day_avg * ($this->growth_rate/100)));//the total forecast 
     }
 
@@ -75,27 +77,25 @@ class Forecast
         }
     }
 
-    public function sevenDay($category){
-        $cogs = new COGS($this->site);
+    public function sevenDay($category=null){
+        $site = new Site();
+        $cogs = new COGS($site);
+        $cogs->calculate();
+
         self::forecastCalculation();
 
-        $sales = Sale::where('site_id', '=', $this->site->id)
-                ->orderBy('date', 'desc')
-                ->first();
-
-        $today = Carbon::now();
-
-        $twenty_eight_days_ago = Carbon::now()->subDay(28);
-
+        //twenty_eight_day_average * sales ratio for that category
         if($category == 'Food'){
-            
-            return $this->seven_day * $cogs->twenty_eight_day_food;
+            //dd($this->seven_day);
+            return $this->seven_day * $site ->salesRatio('Food');
         }else if($category == 'Alcohol'){
              
-            return $this->seven_day * $cogs->twenty_eight_day_alcohol;
-        }else{
+            return $this->seven_day * $site ->salesRatio('Alcohol');
+        }else if($category == 'Beverage'){
              
-            return $this->seven_day * $cogs->twenty_eight_day_beverage;
+            return $this->seven_day * $site ->salesRatio('Beverage');
+        }else{
+            return $this->seven_day * ($site ->salesRatio('Beverage') + $site ->salesRatio('Alcohol') + $site ->salesRatio('Food'));
         }
 
     }

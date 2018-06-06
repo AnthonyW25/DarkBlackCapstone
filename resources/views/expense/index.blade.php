@@ -31,6 +31,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        
       </div>
     </div>
   </div>
@@ -120,11 +121,140 @@
 
 
     {{--SPLIT LARGE VIEWS INTO SUB VIEWS AND THEN INCLUDE THEM--}}
-    @include('expense._cogs')
+    {{--@include('expense._cogs')--}}
 
-    @include('expense._forecast')
+    <!------------------------------------ COGS Table ------------------------>
+    <br>
+    <h1>Cost Of Goods Sold (COGS)</h1>
+    <table class="table table-bordered table-responsive" style="margin-top: 10px;">
+        <thead>
+            <tr>
+                <th  bgcolor="#b3b3b3" >DARKBlack</th>
+                <th colspan="4"><center>COGS for the Last 4 Weeks</center></th>
+                <th colspan="3">Expenses This Week</th>
+            </tr>
+            <tr>
+                <th>Category</th>
+                <th>Expenses</th>
+                <th>Sales</th>
+                <th>Target</th>
+                <th>Actual</th>
+                <th>Budget</th>
+                <th>Actual</th>
+                <th>Remaining</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                
+                <th>Food</th>
+                <td><b>
+                    {{"$"}}{{isset($totals['Food']) ? $totals['Food']:0}}
+                </b></td>
+                <td><b>{{"$" . ($site->foodSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) / 100)}}</b></td>
+                <td>{!! Form::number('number', 33) !!} % </td>
+                <td>
+                    {{ (int)($cogs->twenty_eight_day_food * 100) . "%"}}
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                
+            </tr>
+            <tr>
+                <th>Alcohol</th>
+                <td><b>
+                    {{"$"}}{{isset($totals['Alcohol']) ? $totals['Alcohol']:0}}
+                </b></td>
+                <td><b>{{"$" . ($site->alcoholSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) / 100)}}</b></td>
+                <td>33%</td>
+                <td>
+                   {{(int)($cogs->twenty_eight_day_alcohol * 100) . "%"}} 
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Beverages</th>
+                <td><b>
+                {{"$"}}{{isset($totals['Beverage']) ? $totals['Beverage']:0}} 
+                </b></td>
+                <td><b>{{"$" . ($site->beverageSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) / 100)}}</b></td>
+                <td>33%</td>
+                <td>
+                    {{(int)($cogs->twenty_eight_day_beverage * 100) . "%"}}
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <td><b>{{"$" . array_sum($totals)}}</b></td>
+                <td><b>{{"$" . (($site->alcoholSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) + $site->foodSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) +  $site->beverageSales($twenty_eight_days_ago->toDateString(), $today->toDateString())) / 100)}}</b></td>
+            </tr>
+            
+        </tbody>
+    </table>
 
+     <!------------------------------------ Forecast Table ------------------------>
+    <br>
+    <h1>Upcoming Sales Forecast</h1>
+    <table class="table table-bordered table-responsive" style="margin-top: 10px;">
+        <thead>
+            <tr>
+                <th colspan="3">Sales Forecast</th>
+            </tr>
+            <tr>
+                <th>Average Daily Sales Over Previous 7 Days</th>
+                <th>Sales Forecast Adjustment</th>
+                <th>Projected Sales </th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <!-- This displays the 7 day average of the past week -->
+            <td rowspan="3">{{"$" . number_format((float)($cogs->twenty_eight_day_avg /100), 2, '.', '')}}</td>
 
-
-
+            <?php
+                if (isset($_GET['subject']))
+                {
+                    $fore_percent = $_GET['subject'];
+                    $forecast->growth($fore_percent);
+                    $forecast->date();
+                    $forecast->forecastCalculation();
+                    
+                }
+                else
+                {
+                    $forecast->forecastCalculation();
+                    $forecast->getPercentage();
+                    $fore_percent = $forecast->growth_rate;
+                }
+            ?>
+            <td><form name="form" action="" method="get">
+                <input type="number" name="subject" id="subject" value="{{$fore_percent}}">
+                <input type="submit" name="my_form_submit_button" 
+                    value="SCALE"/>
+                </form>
+            </td>
+            <td><?php
+                    if(isset($_GET['subject'])){
+                        $fore_percent = $_GET['subject'];
+                        $forecast->growth($fore_percent);
+                        $forecast->date();
+                        $forecast->forecastCalculation();
+                        echo "$" . number_format((float)($forecast->seven_day  /100), 2, '.', '');
+                    }
+                    else{
+                        $forecast->getPercentage();
+                        $forecast->forecastCalculation();
+                        $fore_percent = $forecast->growth_rate;
+                        echo "$" . number_format((float)($forecast->seven_day  /100), 2, '.', '');
+                    }?>
+                    </td>
+        </tr>
+        </tbody>
+    </table>
 @endsection
