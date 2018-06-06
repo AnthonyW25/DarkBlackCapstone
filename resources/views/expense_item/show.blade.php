@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-
-    <a href="{{ url('/expense') }}" class="btn btn-primary">Back to Expenses</a>
+    {!! Form::open(['method'=>'delete', 'route'=>['expense.destroy', $expense_id]]) !!}
+                    {!! Form::submit('Cancel', ['class'=>'btn btn-danger', 'onclick'=>'return confirm("Do you want to Cancel ?")']) !!}
+                    {!! Form::close() !!}
     <table class="table table-bordered table-responsive" style="margin-top: 10px;">
         <thead>
             <tr>

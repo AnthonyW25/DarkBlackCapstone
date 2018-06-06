@@ -65,7 +65,7 @@ class ExpenseController extends Controller
         Expense::create($request->all() + ['user_id' => $user_info->id]);
         $expense_id = Expense::orderBy('id', 'DESC')->pluck('id')->first();
        
-        return redirect('expenseitem?expense_id=' . $expense_id);
+        return redirect('expenseitemadd?expense_id=' . $expense_id);
     }
 
     /**
@@ -180,9 +180,15 @@ class ExpenseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function itemShow($id)
+    public function itemShow(Request $request)
     {
-        //
+        $expense_id = $request->get('expense_id');
+
+        $expense_items = ExpenseItem::orderBy('updated_at','DESC')
+            ->where('expense_id', '=', $expense_id)->orderBy('updated_at','DESC')
+            ->get();
+
+        return view('expense_item.show', compact('expense_items', 'expense_id'));
     }
 
     /**
