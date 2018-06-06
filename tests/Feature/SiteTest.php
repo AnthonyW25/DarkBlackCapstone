@@ -39,7 +39,7 @@ class SiteTest extends TestCase
         $sales = Sale::orderBy('date', 'desc')
             ->limit(28)
             ->get();
-
+            //dd($sales);
         $food_sales = 0;
         $alcohol_sales = 0;
         $beverage_sales = 0;
@@ -49,7 +49,7 @@ class SiteTest extends TestCase
             $food_sales += $sale->food_sales;
             $alcohol_sales += $sale->alcohol_sales;
             $beverage_sales += $sale->beverage_sales;
-            $total_sales += $sale->total_sales;
+            $total_sales += $sale->net;
         }
 
         // Ratios should be reported to 3 decimal places only

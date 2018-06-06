@@ -84,14 +84,15 @@ class Budget
     {
         //$result = 0.0;
         if ($category == 'Food'){
+            
             $this->weekly_food = ($this->forecast->sevenDay($category) * ($this->categoryTarget[$category] / 100));
-            $this->result += $this->weekly_food;
+            $this->result = $this->weekly_food;
         } else if ($category == 'Alcohol') {
             $this->weekly_alcohol = ($this->forecast->sevenDay($category) * ($this->categoryTarget[$category] / 100));
-            $this->result += $this->weekly_alcohol;
+            $this->result = $this->weekly_alcohol;
         } else if ($category == 'Beverage') {
             $this->weekly_beverage = ($this->forecast->sevenDay($category) * ($this->categoryTarget[$category] / 100));
-            $this->result += $this->weekly_beverage;
+            $this->result = $this->weekly_beverage;
         } else {
             $this->result += ($this->forecast->sevenDay($category) * ($this->categoryTarget[$category] / 100));
         }
