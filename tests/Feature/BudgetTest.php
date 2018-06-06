@@ -57,7 +57,10 @@ class BudgetTest extends TestCase
         // Can set a target, if we do not pass in a category the target applies to all categories
         $budget->cogsTarget($target);
 
-        $this->assertEquals($target, $budget->cogsTarget($target));
+        // The cogsTarget function should be both a setter and getter
+        // when a value is passed in it's set's and returns
+        // without a value passed in it either returns a previously set value, or returns an exception if nothing has been set
+        $this->assertEquals($target, $budget->cogsTarget());
         $this->assertEquals($target, $budget->cogsCategoryTarget('Food'));
         $this->assertEquals($target, $budget->cogsCategoryTarget('Alcohol'));
     }
@@ -103,6 +106,7 @@ class BudgetTest extends TestCase
         // two decimals gets rounded to one
         $result = $budget->cogsTarget(33.13); //I added this result variable since the original cogsTarget call was always throwing a null exception
 
+        $this->assertEquals(33.1, $budget->cogsTarget()); // DB: This should now pass
         $this->assertEquals(33.1, $result); //Now checking to see if == result calculated above
         $this->assertEquals(33.1, $budget->cogsCategoryTarget('Food'));
     }
