@@ -1,4 +1,4 @@
-
+<h2>Add Expense</h2>
 {!! Form::open(['url'=>'expense']) !!}
 <table>
     <tr>
