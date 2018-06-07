@@ -9,7 +9,7 @@
 namespace App;
 
 use App\Exceptions\DarkBlackException;
-
+use DB;
 class Budget
 {
     public $forecast;
@@ -29,23 +29,51 @@ class Budget
     public function __construct(Forecast $forecast)
     {
         $this->forecast = $forecast;
+
     }
 
     //This function should set the cogs target to whatever is passed in as wanted target
     // and apply to all the categories
     public function cogsTarget($target = null, $category = null)
-    {
+    {       
             //$target = number_format((float)$target, 1, '.', '');
             if( ! is_null($target)) // If something is in target
             {
                 //$this->cogs_target = $target; //Assign the global cogs_target to whatever was passed in
                 if (!is_null($category)) { //If something is in category
                     $this->categoryTarget[$category] = $target; // Create an index with the name of the category, and give it the passed in target value
+                    $sales = Sale::where('site_id', '=', $this->forecast->site->id)
+                        ->orderBy('date', 'desc')
+                        ->first();
+                        
+                    if($category == 'Food'){
+
+                        DB::table('sales')->where('date', $sales->date)->update(['food_cogs_target'=>$target]);
+
+                    }else if($category == 'Alcohol'){
+
+                        DB::table('sales')->where('date', $sales->date)->update(['alcohol_cogs_target'=>$target]);
+
+                    }else if($category == 'Beverage'){
+                
+                        DB::table('sales')->where('date', $sales->date)->update(['beverage_cogs_target'=>$target]);
+
+                    }else{
+
+                        DB::table('sales')->where('date', $sales->date)->update(['cogs_target'=>$target]);
+                    }
+
+
                     $this->cogsCategoryTarget($category); //Call the method with specified category for the target
                 } else { //If category is null
                     $this->cogs_target = $target; // Assign the cogs target variable the value that was passed in
                     $this->cogsCategoryTarget(); //Call the method with a null category to assign this cogs value to the default categories
                 }
+                $sales = Sale::where('site_id', '=', $this->forecast->site->id)
+                ->orderBy('date', 'desc')
+                ->first();
+
+                DB::table('sales')->where('date', $sales->date)->update(['cogs_target'=>$target]);
             } else { //If the target is null
                 if (isset($this->cogs_target)) { // Check to see if it has been set
                     $this->cogsCategoryTarget(); // If it has, call the method with a null category to assign this cogs value to the default categories
@@ -54,9 +82,27 @@ class Budget
                 }
             }
         //$this->cogs_target = number_format((float)$target, 1, '.', '');
+        
         return number_format((float)$this->cogs_target, 1, '.', '');
     }
 
+
+    public function getCOGS($category){
+         $sales = Sale::where('site_id', '=', $this->forecast->site->id)
+                        ->orderBy('date', 'desc')
+                        ->first();
+    
+        if($category == 'Food'){
+            return $sales->food_cogs_target;
+        }
+        else if($category == 'Alcohol'){
+            return $sales->alcohol_cogs_target;
+        }
+        else if($category == 'Beverage'){
+            return $sales->beverage_cogs_target;
+        }
+        
+    }
 
     //This should only set the cogs target for a specified category
     public function cogsCategoryTarget($category = null)
@@ -85,7 +131,7 @@ class Budget
         //$result = 0.0;
         if ($category == 'Food'){
             
-            $this->weekly_food = ($this->forecast->sevenDay($category) * ($this->categoryTarget[$category] / 100));
+            $this->weekly_food = (($this->forecast->sevenDay($category)) * ($this->categoryTarget[$category] / 100));
             $this->result = $this->weekly_food;
         } else if ($category == 'Alcohol') {
             $this->weekly_alcohol = ($this->forecast->sevenDay($category) * ($this->categoryTarget[$category] / 100));

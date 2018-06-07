@@ -47,7 +47,7 @@ class Site
             ->orderBy('date', 'desc')
             ->first();
 
-        return $sales->twenty_eight_day_average;
+        return $sales->twenty_eight_day_average/100;
     } 
 
     public function salesOn($date){
@@ -70,7 +70,6 @@ class Site
         $total_sales = $food_sales + $alcohol_sales + $beverage_sales;
         //decides which COGS to use depending on what the $category was
         if($category == 'Food'){
-            
             return round($food_sales/$total_sales, 3);
         }else if($category == 'Alcohol'){
             

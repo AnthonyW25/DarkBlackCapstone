@@ -16,7 +16,7 @@
         <th colspan="3">Sales Forecast</th>
     </tr>
     <tr>
-        <th>Average Daily Sales Over Previous 7 Days</th>
+        <th>Average Daily Sales Over Previous 28 Days</th>
         <th>Sales Forecast Adjustment</th>
         <th>Projected Sales </th>
     </tr>
@@ -44,7 +44,7 @@
         ?>
         <td><form name="form" action="" method="get">
                 <input type="number" name="subject" id="subject" value="{{$fore_percent}}">
-                <input type="submit" name="my_form_submit_button"
+                <input type="submit" name="forecast_button"
                        value="SCALE"/>
             </form>
         </td>
@@ -54,13 +54,13 @@
                 $forecast->growth($fore_percent);
                 $forecast->date();
                 $forecast->forecastCalculation();
-                echo "$" . number_format((float)($forecast->seven_day  /100), 2, '.', '');
+                echo "$" . number_format((float)$forecast->seven_day, 2, '.', '');
             }
             else{
                 $forecast->getPercentage();
                 $forecast->forecastCalculation();
                 $fore_percent = $forecast->growth_rate;
-                echo "$" . number_format((float)($forecast->seven_day  /100), 2, '.', '');
+                echo "$" . number_format((float)$forecast->seven_day, 2, '.', '');
             }?>
         </td>
     </tr>
