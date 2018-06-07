@@ -30,7 +30,6 @@
     </thead>
     <tbody>
     <tr>
-
         <th>Food</th>
         <td><b>
                 {{"$"}}{{isset($totals['Food']) ? $totals['Food']:0}}
@@ -60,18 +59,17 @@
            <?php
             if(isset($_GET['food_cogs'])){
                 $food_budget_total = number_format((float)($budget->weekly_food) * 7, 2, '.', '');
-                echo $food_budget_total;
+                echo "$" . $food_budget_total;
                 
             }
             else{
                 $budget->cogsTarget($food_cogs,'Food');
                $food_budget_total = number_format((float)($budget->weekly_food) * 7, 2, '.', '');
-                echo $food_budget_total;
+                echo "$" . $food_budget_total;
             }?> 
         </td>
-        <td></td>
-        <td></td>
-
+        <td>{{"$"}}{{$food_actual = (isset($weekly_totals['Food']) ? $weekly_totals['Food']:0)}}</td>
+        <td>{{"$"}}{{number_format((float)($food_budget_total - $food_actual), 2, '.', '')}}</td>
     </tr>
     <tr>
         <th>Alcohol</th>
@@ -103,18 +101,18 @@
            <?php
             if(isset($_GET['alcohol_cogs'])){
                 $alcohol_budget_total = number_format((float)($budget->weekly_alcohol) * 7, 2, '.', '');
-                echo $alcohol_budget_total;
+                echo "$" . $alcohol_budget_total;
                 
             }
             else{
                 $budget->cogsTarget($alcohol_cogs,'Alcohol');
-               $alcohol_budget_total = number_format((float)($budget->weekly_alcohol) * 7, 2, '.', '');
-                echo $alcohol_budget_total;
+                $alcohol_budget_total = number_format((float)($budget->weekly_alcohol) * 7, 2, '.', '');
+                echo "$" . $alcohol_budget_total;
                 
             }?> 
         </td>
-        <td></td>
-        <td></td>
+        <td>{{"$"}}{{$alcohol_actual = (isset($weekly_totals['Alcohol']) ? $weekly_totals['Alcohol']:0)}}</td>
+        <td>{{"$"}}{{number_format((float)($alcohol_budget_total - $alcohol_actual), 2, '.', '')}}</td>
     </tr>
     <tr>
         <th>Beverages</th>
@@ -146,22 +144,31 @@
            <?php
             if(isset($_GET['beverage_cogs'])){
                 $beverage_budget_total = number_format((float)($budget->weekly_beverage) * 7, 2, '.', '');
-                echo $beverage_budget_total;
+                echo "$" . $beverage_budget_total;
                 
             }
             else{
                 $budget->cogsTarget($beverage_cogs,'Beverage');
                $beverage_budget_total = number_format((float)($budget->weekly_beverage) * 7, 2, '.', '');
-                echo $beverage_budget_total;
+                echo "$" . $beverage_budget_total;
                 
             }?> 
-        <td></td>
-        <td></td>
+        <td>{{"$"}}{{$beverage_actual = (isset($weekly_totals['Beverage']) ? $weekly_totals['Beverage']:0)}}</td>
+        <td>
+            {{"$"}}{{number_format((float)($beverage_budget_total - $beverage_actual), 2, '.', '')}}
+        </td>
     </tr>
     <tr>
         <th>Total</th>
         <td><b>{{"$" . array_sum($totals)}}</b></td>
         <td><b>{{"$" . (($site->alcoholSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) + $site->foodSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) +  $site->beverageSales($twenty_eight_days_ago->toDateString(), $today->toDateString())) / 100)}}</b></td>
+        <td></td>
+        <td></td>
+        <td>{{"$"}}{{$total_budget = ($food_budget_total + $alcohol_budget_total + $beverage_budget_total)}}</td>
+        <td>{{"$"}}{{$total_actual = ($food_actual + $alcohol_actual + $beverage_actual)}}</td>
+        <td>
+            {{"$"}}{{number_format((float)($total_budget - $total_actual), 2, '.', '')}}
+        </td>
     </tr>
 
     </tbody>
