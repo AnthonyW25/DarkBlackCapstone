@@ -25,6 +25,10 @@ class CreateSalesTable extends Migration
             $table->decimal('forecast_rate')->default('0')->nullable();
             $table->integer('receipts')->default('0')->nullable();
             $table->date('date')->nullable();
+            $table->float('cogs_target')->default('33');
+            $table->float('food_cogs_target')->default('33');
+            $table->float('alcohol_cogs_target')->default('33');
+            $table->float('beverage_cogs_target')->default('33');
             $table->timestamps();
         });
     }
