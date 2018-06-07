@@ -200,7 +200,8 @@ class ExpenseController extends Controller
     public function itemEdit($id)
     {
         $expense_item = ExpenseItem::find($id);
-        return view('expense_item.edit', compact('expense_item'));
+        $expense_id = $expense_item->expense_id;
+        return view('expense_item.edit', compact('expense_item','expense_id'));
     }
 
     /**

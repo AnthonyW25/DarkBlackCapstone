@@ -1,3 +1,4 @@
+
 <h2>Add Expense</h2>
 {!! Form::open(['url'=>'expense']) !!}
 <table>
@@ -17,11 +18,11 @@
     <tr>
         <td></td>
         <td></td>
-        <td>{!! Form::submit('Save', ['class'=>'btn btn-primary']) !!}</td>
         <td></td>
         <td></td>
         <td></td>
         <td></td>
+        <td><input type="image" src="images/save-files.png" alt="Save" /> </td>
     </tr>
 </table>
 
