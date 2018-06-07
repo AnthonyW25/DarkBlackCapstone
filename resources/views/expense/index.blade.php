@@ -5,7 +5,7 @@
     use App\Forecast;
     use App\COGS;
     use App\Site;  
-
+    use App\Budget;
     $site = new Site();
     $today = Carbon::now();
     $seven_days_ago = $today->copy()->subDay(7);
@@ -14,6 +14,7 @@
 
     $cogs = new COGS($site);
     $forecast = new Forecast($site);
+    $budget = new Budget($forecast);
     $cogs->calculate();
 ?>
 @section('content')
@@ -119,8 +120,9 @@
         </tbody>
     </table>
 
-
     {{--SPLIT LARGE VIEWS INTO SUB VIEWS AND THEN INCLUDE THEM--}}
-@include('expense._cogs')
-@include('expense._forecast')
+
+    @include('expense._cogs')
+    @include('expense._forecast')
+
 @endsection
