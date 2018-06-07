@@ -11,7 +11,6 @@
     $seven_days_ago = $today->copy()->subDay(7);
     $twenty_eight_days_ago = $today->copy()->subDay(28);
     
-
     $cogs = new COGS($site);
     $forecast = new Forecast($site);
     $budget = new Budget($forecast);
