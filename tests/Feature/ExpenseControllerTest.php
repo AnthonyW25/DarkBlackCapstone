@@ -67,7 +67,7 @@ class ExpenseControllerTest extends TestCase
                 // other post variables
             ])
 
-            ->assertRedirect('expenseitemadd?expense_id=1');
+            ->assertRedirect('expenseitemadd?expense_id=2');
 
 
         //we should now have records in the expenses and expense_items table
