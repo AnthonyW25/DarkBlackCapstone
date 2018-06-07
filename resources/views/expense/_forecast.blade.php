@@ -10,7 +10,7 @@
 <!------------------------------------ Forecast Table ------------------------>
 <br>
 <h1>Upcoming Sales Forecast</h1>
-<table class="table table-bordered table-responsive" style="margin-top: 10px;">
+<table class="table table-responsive" style="margin-top: 10px;">
     <thead>
     <tr>
         <th colspan="3">Sales Forecast</th>
