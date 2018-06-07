@@ -42,7 +42,7 @@ Route::post('/expense/{id}/delete', 'ExpenseController@destroy');
 Route::get('/expenseitem', 'ExpenseController@itemIndex')->name('expenseitem.index');
 Route::get('/expenseitem/create', 'ExpenseController@itemCreate')->name('expenseitem.create');
 Route::post('/expenseitem', 'ExpenseController@itemStore')->name('expenseitem.store');
-Route::get('/expenseitem/{id}', 'ExpenseController@itemShow')->name('expenseitem.show');
+Route::get('/expenseitemadd/', 'ExpenseController@itemShow')->name('expenseitem.show');
 Route::get('/expenseitem/{id}/edit', 'ExpenseController@itemEdit')->name('expenseitem.edit');
 Route::post('/expenseitem/{id}/edit', 'ExpenseController@itemUpdate')->name('expenseitem.update');
 Route::delete('/expenseitem/{id}/delete', 'ExpenseController@itemDestroy')->name('expenseitem.destroy');

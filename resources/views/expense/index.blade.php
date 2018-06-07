@@ -121,6 +121,8 @@
     </table>
 
     {{--SPLIT LARGE VIEWS INTO SUB VIEWS AND THEN INCLUDE THEM--}}
+
     @include('expense._cogs')
     @include('expense._forecast')
+
 @endsection
