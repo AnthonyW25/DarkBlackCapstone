@@ -2,8 +2,8 @@
 
 @section('content')
     {!! Form::open(['method'=>'delete', 'route'=>['expense.destroy', $expense_id]]) !!}
-                    {!! Form::submit('Cancel', ['class'=>'btn btn-danger', 'onclick'=>'return confirm("Do you want to Cancel ?")']) !!}
-                    {!! Form::close() !!}
+    <input type="image" src="images/close.png" alt="Manage Items" onclick="return confirm('Do you want to Cancel?')" data-toggle="tooltip" data-placement="right" title="Cancel"/>
+    {!! Form::close() !!}
     <table class="table table-bordered table-responsive" style="margin-top: 10px;">
         <thead>
             <tr>
@@ -18,7 +18,7 @@
                 <th colspan="3"><form method="get" action="/expenseitem/create">
                     <input type="hidden" name = "expense_id" value='{{$expense_id
                     }}'><!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addItem">Add Item</button>
+                        <button type="button"  data-toggle="modal" data-target="#addItem" data-toggle="tooltip" data-placement="right" title="Add an Item"><img src="images/add.png"></button>
                     </form></th>
             </tr>
         </thead>
@@ -49,14 +49,11 @@
     
       <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" data-toggle="tooltip" data-placement="right" title="Cancel"><img src="images/close.png"></button>
         
       </div>
       <div class="modal-body modal-xl">
         @include('expense_item.create')  
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

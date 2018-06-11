@@ -7,7 +7,8 @@
             <div class="card">
                 <div class="card-header">Manage Expense Item</div>
                 <div class="card-body">
-                    <a href="{{ url('/expense') }}"><img src="images/left-arrow.png"></a>
+                    <a href="{{ url('/expense') }}" data-toggle="tooltip" data-placement="right" title="Back to Expenses"><img src="images/left-arrow.png"></a><br>
+                    <br>
                     <table class="table table-hover table-striped table-responsive" style="margin-top: 10px;">
                         <thead>
                             <tr>
@@ -19,7 +20,7 @@
                                 <th colspan="2"><form method="get" action="/expenseitem/create">
                                     <input type="hidden" name = "expense_id" value='{{$expense_id
                                     }}'><!-- Button trigger modal -->
-                                        <button type="button"  data-toggle="modal" data-target="#addItem"><img src="images/add.png"></button>
+                                        <button type="button"  data-toggle="modal" data-target="#addItem" data-toggle="tooltip" data-placement="right" title="Add an Item"><img src="images/add.png"></button>
                                     </form></th>
                             </tr>
                         </thead>
@@ -33,9 +34,9 @@
                                 <td>{{ "$" . $expense_item->pst }}</td>
 
                                 <td>
-                                    <a href="{{ route('expenseitem.edit', $expense_item->id) }}" ><img src="images/edit-button.png"></a></td>
+                                    <a href="{{ route('expenseitem.edit', $expense_item->id) }}" data-toggle="tooltip" data-placement="right" title="Edit an Item" ><img src="images/edit-button.png"></a></td>
                                    <td> {!! Form::open(['method'=>'delete', 'route'=>['expenseitem.destroy', $expense_item->id]]) !!}
-                                    <input type="image" src="images/remove-file.png" alt="Manage Items" onclick="return confirm('Do you want to delete this record?')" />
+                                    <input type="image" src="images/remove-file.png" alt="Manage Items" onclick="return confirm('Do you want to delete this item?')" data-toggle="tooltip" data-placement="right" title="Delete Item"/>
                                     {!! Form::close() !!}
                                 </td>
                             </tr>
@@ -48,7 +49,7 @@
 
                       <div class="modal-content">
                       <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><img src="images/close.png"></button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" data-toggle="tooltip" data-placement="right" title="Cancel"><img src="images/close.png"></button>
 
                       </div>
                       <div class="modal-body modal-xl">

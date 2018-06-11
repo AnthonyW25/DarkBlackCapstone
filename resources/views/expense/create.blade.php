@@ -22,7 +22,7 @@
         <td></td>
         <td></td>
         <td></td>
-        <td><input type="image" src="images/save-files.png" alt="Save" /> </td>
+        <td><input type="image" src="images/save-files.png" alt="Save" data-toggle="tooltip" data-placement="right" title="Save" /> </td>
     </tr>
 </table>
 

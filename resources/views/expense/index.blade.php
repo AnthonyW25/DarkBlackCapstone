@@ -18,12 +18,8 @@
 ?>
 @section('content')
 <!-------Tabs----->
-<button class="tablink" onclick="openPage('Expense', this, 'darkslategray')" id="defaultOpen">Expense</button>
-<button class="tablink" onclick="openPage('COGS', this, 'darkslategray')">COGS</button>
-<button class="tablink" onclick="openPage('Forecast', this, 'darkslategray')">Forecast</button>
-<button class="tablink" onclick="openPage('About', this, 'darkslategray')">About</button>
-
-<div id="Expense" class="tabcontent">
+    <div class="row">
+        <div class="col-sm-6">
     <h1><b>Expense List</b></h1>
     <table class="table table-hover table-striped table-responsive" style="margin-top: 10px;">
         <thead>
@@ -39,7 +35,7 @@
                 <th>PST</th>
                 
                 <th colspan="3"><!-- Button trigger modal -->
-                        <button type="button" style="background-color: darkgray;" data-toggle="modal" data-target="#myModal"><img src="images/add.png"></button></th>
+                        <button type="button" style="background-color: darkgray;" data-toggle="modal" data-target="#myModal" data-toggle="tooltip" data-placement="right" title="Add an Expense"><img src="images/add.png"></button></th>
             </tr>
         </thead>
         <tbody>
@@ -86,61 +82,36 @@
                 
 
                 <td>
-                    <a href="{{ route('expense.edit', $expense->id) }}"><img src="images/edit-button.png"></a>
+                    <a href="{{ route('expense.edit', $expense->id) }}" data-toggle="tooltip" data-placement="right" title="Edit an Expense"><img src="images/edit-button.png"></a>
                 </td>
 
                 <td>
                     {!! Form::open(['method'=>'delete', 'route'=>['expense.destroy', $expense->id]]) !!}
-                    <input type="image" src="images/remove-file.png" alt="Manage Items" onclick="return confirm('Do you want to delete this record?')" />
+                    <input type="image" src="images/remove-file.png" alt="Manage Items" onclick="return confirm('Do you want to delete this record?')" data-toggle="tooltip" data-placement="right" title="Delete an Expense"/>
                     {!! Form::close() !!}
                 </td>
 
                 <td>
                     <form method="get" action="/expenseitem">
                         <input type="hidden" name="expense_id" value="{{ $expense->id }}">
-                        <input type="image" src="images/chest.png" alt="Manage Items" /> 
+                        <input type="image" src="images/chest.png" alt="Manage Items" data-toggle="tooltip" data-placement="right" title="Manage Expense"/> 
                     </form>
                 </td>
             </tr>
       @endforeach
         </tbody>
     </table>
+        </div>
+        <div class="col-sm-6">
+            @include('expense._forecast')
+            @include('expense._cogs')
+        </div>
 </div>
-
-<div id="COGS" class="tabcontent">
-  @include('expense._cogs')
-</div>
-
-<div id="Forecast" class="tabcontent">
-  @include('expense._forecast')
-</div>
-
-<div id="About" class="tabcontent">
-  <h3>About</h3>
-  <p>Who we are and what we do.</p>
-</div>
-<!---------Scripts-------------->
 <script>
-function openPage(pageName,elmnt,color) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablink");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].style.backgroundColor = "";
-    }
-    document.getElementById(pageName).style.display = "block";
-    elmnt.style.backgroundColor = color;
-
-}
-// Get the element with id="defaultOpen" and click on it
-document.getElementById("defaultOpen").click();
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
+});
 </script>
-<!--------- end Scripts-------------->
-<!-------endTabs----->
-
 
 
 <!-- Modal -->
@@ -148,7 +119,7 @@ document.getElementById("defaultOpen").click();
   <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><img src="images/close.png"></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" data-toggle="tooltip" data-placement="right" title="Cancel"><img src="images/close.png"></button>
       </div>
       <div class="modal-body modal-xl">
         @include('expense.create')
