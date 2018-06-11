@@ -164,14 +164,14 @@ class ForecastTest extends TestCase
 
 
         // default is 0% growth
-        $this->assertEquals($sales->twenty_eight_day_average, $forecast->seven_day);
+        $this->assertEquals($sales->twenty_eight_day_average/100, $forecast->seven_day);
 
         // Change the rate and recalculate
         $growth_rate = 1.23;
         $forecast->growth($growth_rate);
         $forecast->forecastCalculation();
         
-        $this->assertEquals($sales->twenty_eight_day_average * (1 + $growth_rate / 100), $forecast->seven_day);
+        $this->assertEquals($sales->twenty_eight_day_average/100 * (1 + $growth_rate / 100), $forecast->seven_day);
     }
 
     /** @test */

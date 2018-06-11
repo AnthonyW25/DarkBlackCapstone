@@ -5,15 +5,15 @@
     use App\Forecast;
     use App\COGS;
     use App\Site;  
-
+    use App\Budget;
     $site = new Site();
     $today = Carbon::now();
     $seven_days_ago = $today->copy()->subDay(7);
     $twenty_eight_days_ago = $today->copy()->subDay(28);
     
-
     $cogs = new COGS($site);
     $forecast = new Forecast($site);
+    $budget = new Budget($forecast);
     $cogs->calculate();
 ?>
 @section('content')
@@ -129,8 +129,6 @@ $(document).ready(function(){
 </div>
 <!---<div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>  --->  
 
-
     {{--SPLIT LARGE VIEWS INTO SUB VIEWS AND THEN INCLUDE THEM--}}
-
 
 @endsection

@@ -63,7 +63,7 @@ class Forecast
     			->where('site_id', '=', $this->site->id)
     			->update(['forecast_rate' => $this->growth_rate]);
 
-    		$twenty_eight_day_avg = $sales->twenty_eight_day_average;
+    		$twenty_eight_day_avg = ($sales->twenty_eight_day_average/100);
            
     		$this->seven_day = ($twenty_eight_day_avg + ($twenty_eight_day_avg * ($this->growth_rate/100)));//the total forecast 
     }
@@ -87,6 +87,7 @@ class Forecast
         //twenty_eight_day_average * sales ratio for that category
         if($category == 'Food'){
             //dd($this->seven_day);
+            //dd($site->salesRatio('Food'));
             return $this->seven_day * $site ->salesRatio('Food');
         }else if($category == 'Alcohol'){
              

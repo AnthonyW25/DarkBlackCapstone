@@ -32,10 +32,17 @@ class ExpenseController extends Controller
             'Beverage' => 100,
             'Alcohol' => 100,
         ];
+        $weekly_totals = [
+            'Food' => 100,
+            'Beverage' => 100,
+            'Alcohol' => 100,
+        ];
+        
         $totals = self::categoryTotal($twenty_eight_days_ago->toDateString(), $today->toDateString());
+        $weekly_totals=self::Actual();
         $expense_id = Expense::orderBy('id', 'DESC')->pluck('id')->first();
         
-        return view('expense.index', compact('expenses', 'totals','expense_id'));
+        return view('expense.index', compact('expenses', 'totals','expense_id', 'weekly_totals'));
     }
 
     /**
@@ -269,6 +276,27 @@ class ExpenseController extends Controller
             }
         }
 
+        return $expense_holder;
+    }
+
+
+    public function Actual(){
+        $current_day = Carbon::now();
+        $monday = Carbon::now()->startOfWeek();
+        $expense_holder = [];
+        $expense_items = DB::table('expenses')
+            ->join('expense_items', 'expenses.id', '=', 'expense_items.expense_id')
+            ->select('expense_items.*')
+            ->whereBetween('date', array($monday, $current_day))
+            ->get();
+        foreach ($expense_items as $item){
+            if (isset($expense_holder[$item->category])) {
+                    $expense_holder[$item->category] += $item->amount;
+            }
+            else {
+                $expense_holder[$item->category] = $item->amount;
+            }
+        }
         return $expense_holder;
     }
 
