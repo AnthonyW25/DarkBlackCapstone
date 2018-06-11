@@ -9,8 +9,9 @@
 
 <!------------------------------------ COGS Table ------------------------>
 <br>
-<h1>Cost Of Goods Sold (COGS)</h1>
-<table class="table table-responsive" style="margin-top: 10px;">
+<br>
+<h1>Cost Of Goods Sold (COGS) ||Expense Budget</h1>
+<table class="table table-hover table-striped table-responsive" style="margin-top: 10px;">
     <thead>
     <tr>
         <th  bgcolor="#b3b3b3" >DARKBlack</th>
@@ -23,7 +24,7 @@
         <th>Sales</th>
         <th>Target COGS</th>
         <th>Actual COGS</th>
-        <th>Budget</th>
+        <th class="border-left">Budget</th>
         <th>Actual</th>
         <th>Remaining</th>
     </tr>
@@ -55,7 +56,7 @@
         <td>
             {{ (int)($cogs->twenty_eight_day_food * 100) . "%"}}
         </td>
-        <td>
+        <td class="border-left border-dark">
            <?php
             if(isset($_GET['food_cogs'])){
                 $food_budget_total = number_format((float)($budget->weekly_food) * 7, 2, '.', '');
@@ -97,7 +98,7 @@
         <td>
             {{ (int)($cogs->twenty_eight_day_alcohol * 100) . "%"}}
         </td>
-        <td>
+        <td class="border-left border-dark">
            <?php
             if(isset($_GET['alcohol_cogs'])){
                 $alcohol_budget_total = number_format((float)($budget->weekly_alcohol) * 7, 2, '.', '');
@@ -140,7 +141,7 @@
         <td>
             {{ (int)($cogs->twenty_eight_day_beverage * 100) . "%"}}
         </td>
-        <td>
+        <td class="border-left border-dark">
            <?php
             if(isset($_GET['beverage_cogs'])){
                 $beverage_budget_total = number_format((float)($budget->weekly_beverage) * 7, 2, '.', '');
@@ -164,7 +165,7 @@
         <td><b>{{"$" . (($site->alcoholSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) + $site->foodSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) +  $site->beverageSales($twenty_eight_days_ago->toDateString(), $today->toDateString())) / 100)}}</b></td>
         <td></td>
         <td></td>
-        <td>{{"$"}}{{$total_budget = ($food_budget_total + $alcohol_budget_total + $beverage_budget_total)}}</td>
+        <td class="border-left border-dark">{{"$"}}{{$total_budget = ($food_budget_total + $alcohol_budget_total + $beverage_budget_total)}}</td>
         <td>{{"$"}}{{$total_actual = ($food_actual + $alcohol_actual + $beverage_actual)}}</td>
         <td>
             {{"$"}}{{number_format((float)($total_budget - $total_actual), 2, '.', '')}}
