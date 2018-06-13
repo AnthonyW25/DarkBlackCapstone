@@ -18,24 +18,28 @@
 ?>
 @section('content')
 <!-------Tabs----->
-    <div class="row">
-        <div class="col-sm-6">
-    <h1><b>Expense List</b></h1>
-    <table class="table table-hover table-striped table-responsive" style="margin-top: 10px;">
+    <div class="mh-100 row">
+        <div id="expense" class="pre-scrollable border col-xs-12 col-sm-12 col-lg-6 col-centered">
+    <br>
+    <table class="table table-hover border border-dark table-striped table-responsive " style="margin-top: 10px; ">
         <thead>
             <tr>
-                
+                <th colspan="11">
+                    <h1>Expense List</h1>
+                </th>
+            </tr>
+            <tr>
                 <th>Invoice</th>
                 <th>Date</th>
                 <th>Supplier</th>
-                <th>Expense Items</th>
-                <th>Item Category</th>
+                <th>Item</th>
+                <th>Category</th>
                 <th>Total</th>
                 <th>GST</th>
                 <th>PST</th>
-                
                 <th colspan="3"><!-- Button trigger modal -->
-                        <button type="button" style="background-color: darkgray;" data-toggle="modal" data-target="#myModal" data-toggle="tooltip" data-placement="right" title="Add an Expense"><img src="images/add.png"></button></th>
+                        <button class="btn btn-success btn-block btn-hover" style="" data-toggle="modal" data-target="#myModal" data-toggle="tooltip" data-placement="right" title="Add an Expense"><img src="images/add.png"></button></th>
+                
             </tr>
         </thead>
         <tbody>
@@ -70,31 +74,34 @@
                     {{ "$" . number_format(($item->gst) / 100, 2, '.', '') }}<br>
                 @endforeach
                     <b>$ {{ number_format(($expense->gst()), 2, '.', '') }}</b><br>
+
                 </td>
 
                 <td><br>
                 @foreach($expense->items as $item)
                     {{ "$" . number_format(($item->pst) / 100, 2, '.', '') }}<br>
                 @endforeach
+
                     <b>$ {{ number_format(($expense->pst()), 2, '.', '') }}</b><br>
+
                 </td>
 
                 
 
                 <td>
-                    <a href="{{ route('expense.edit', $expense->id) }}" data-toggle="tooltip" data-placement="right" title="Edit an Expense"><img src="images/edit-button.png"></a>
+                    <a href="{{ route('expense.edit', $expense->id) }}" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Edit an Expense"><img src="images/edit-button.png"></a>
                 </td>
 
                 <td>
                     {!! Form::open(['method'=>'delete', 'route'=>['expense.destroy', $expense->id]]) !!}
-                    <input type="image" src="images/remove-file.png" alt="Manage Items" onclick="return confirm('Do you want to delete this record?')" data-toggle="tooltip" data-placement="right" title="Delete an Expense"/>
+                    <input type="image" class="btn btn-danger" src="images/remove-file.png" alt="Manage Items" onclick="return confirm('Do you want to delete this record?')" data-toggle="tooltip" data-placement="right" title="Delete an Expense"/>
                     {!! Form::close() !!}
                 </td>
 
                 <td>
                     <form method="get" action="/expenseitem">
                         <input type="hidden" name="expense_id" value="{{ $expense->id }}">
-                        <input type="image" src="images/chest.png" alt="Manage Items" data-toggle="tooltip" data-placement="right" title="Manage Expense"/> 
+                        <input type="image" class="btn btn-info" src="images/chest.png" alt="Manage Items" data-toggle="tooltip" data-placement="right" title="Manage Expense"/> 
                     </form>
                 </td>
             </tr>
@@ -102,11 +109,11 @@
         </tbody>
     </table>
         </div>
-        <div class="col-sm-6">
+        <div id="cogs" class="border col-xs-12 col-sm-12 col-lg-6 col-centered">
             @include('expense._forecast')
             @include('expense._cogs')
-        </div>
 </div>
+</div>     
 <script>
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();   
@@ -119,7 +126,7 @@ $(document).ready(function(){
   <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" data-toggle="tooltip" data-placement="right" title="Cancel"><img src="images/close.png"></button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close" data-toggle="tooltip" data-placement="right" title="Cancel"><img src="images/cancel-button.png"></button>
       </div>
       <div class="modal-body modal-xl">
         @include('expense.create')

@@ -29,12 +29,9 @@
                             </tr>
                             <tr>
                                 <td></td>
-                                <td></td>
-                                <td>{!! Form::submit('Save', ['class'=>'btn btn-primary']) !!}<a href="/expense" class="btn btn-danger">Cancel</a></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td><button class="btn btn-info" style="width:172px;"><input type="image" src="/images/save-files.png" alt="Save" data-toggle="tooltip" data-placement="right" title="Save" /></button></td>
+                                <td><button class="btn btn-danger" style="width:140px; height:52px;"><a href="/expense" ><img src="/images/cancel-button.png"></a></button>
+                                    </td>
                             </tr>
                         </table>
                     </form>

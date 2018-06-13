@@ -10,13 +10,13 @@
 <!------------------------------------ COGS Table ------------------------>
 <br>
 <br>
-<h1>Cost Of Goods Sold (COGS) ||Expense Budget</h1>
-<table class="table table-hover table-striped table-responsive" style="margin-top: 10px;">
+
+<table class="table table-hover table-striped table-responsive border border-dark" style="margin-top: 10px;">
     <thead>
+        <tr><th colspan="5"><h1>Cost Of Goods Sold (COGS)</h1></th><th colspan="4" class="border-left"><h1>Expense Budget</h1></th></tr>
     <tr>
-        <th  bgcolor="#b3b3b3" >DARKBlack</th>
-        <th colspan="4"><center>COGS for the Last 4 Weeks</center></th>
-        <th colspan="3">Expenses This Week</th>
+        <th colspan="5"><center>COGS for the Last 4 Weeks</center></th>
+        <th colspan="4" class="border-left">Expenses This Week</th>
     </tr>
     <tr>
         <th>Category</th>
@@ -34,6 +34,7 @@
     <!-- All Food Row Columns-->
     <tr>
         <th>Food</th>
+
         <td><b>
 
                 <?php
@@ -53,21 +54,22 @@
             $food_cogs = $_GET['food_cogs'];
             $budget->cogsTarget($food_cogs,'Food');
 
-        }
-        else
-        {
-            $food_cogs = $budget->getCOGS('Food');
-        }
-        ?>
-        <td><form name="form" action="" method="get">
+
+            }
+            else
+            {
+                $food_cogs = $budget->getCOGS('Food');
+            }
+            ?>
+            <td><form name="form" action="" method="get">
                 <input type="number" name="food_cogs" id="food_cogs" value="{{$food_cogs}}">
-                <input type="submit" name="cogs_button" value="SET"/>
+                <input class="btn btn-outline-info btn-sm" type="submit" name="cogs_button" value="SET"/>
             </form>
-        </td>
-        <td>
+            </td>
+            <td>
             {{ (int)($cogs->twenty_eight_day_food * 100) . "%"}}
-        </td>
-        <td class="border-left border-dark">
+            </td>
+            <td class="border-left border-dark">
            <?php
             if(isset($_GET['food_cogs'])){
                 $food_budget_total = (round(number_format((int)($budget->weekly_food) * 7, 0, '.', '') / 50) * 50);
@@ -88,6 +90,7 @@
     <!-- All Alcohol Row Columns-->
     <tr>
         <th>Alcohol</th>
+
         <td><b>
                 <?php
                 if(isset($totals['Alcohol'])  ? $totals['Alcohol']:0){
@@ -99,6 +102,7 @@
                 {{"$"}}{{$roundedAlcoholTotal}}
             </b></td>
         <td><b>{{"$" . (round((int)($site->alcoholSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) / 100) / 50)) * 50   }}</b></td>
+
         <?php
         if (isset($_GET['alcohol_cogs']))
         {
@@ -113,7 +117,7 @@
         ?>
         <td><form name="form" action="" method="get">
                 <input type="number" name="alcohol_cogs" id="alcohol_cogs" value="{{$alcohol_cogs}}">
-                <input type="submit" name="cogs_button" value="SET"/>
+                <input class="btn btn-outline-info btn-sm" type="submit" name="cogs_button" value="SET"/>
             </form>
         </td>
         <td>
@@ -140,6 +144,7 @@
     <!-- All Beverage Row Columns-->
     <tr>
         <th>Beverages</th>
+
         <td><b>
                 <?php
                 if(isset($totals['Beverage'])  ? $totals['Beverage']:0){
@@ -151,6 +156,7 @@
                 {{"$"}}{{$roundedBeverageTotal}}
             </b></td>
         <td><b>{{"$" . (round((int)($site->beverageSales($twenty_eight_days_ago->toDateString(), $today->toDateString()) / 100) / 50)) * 50}}</b></td>
+
         <?php
         if (isset($_GET['beverage_cogs']))
         {
@@ -165,7 +171,7 @@
         ?>
         <td><form name="form" action="" method="get">
                 <input type="number" name="beverage_cogs" id="beverage_cogs" value="{{$beverage_cogs}}">
-                <input type="submit" name="cogs_button" value="SET"/>
+                <input class="btn btn-outline-info btn-sm" type="submit" name="cogs_button" value="SET"/>
             </form>
         </td>
         <td>
