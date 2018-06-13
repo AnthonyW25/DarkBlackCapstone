@@ -51,9 +51,9 @@ class Expense extends Model
         $this->load('items');
 
         foreach ($this->items as $item) {
-            $this->_total += $item->amount;
-            $this->_gst += $item->gst;
-            $this->_pst += $item->pst;
+            $this->_total += ($item->amount) / 100;
+            $this->_gst += ($item->gst) / 100;
+            $this->_pst += ($item->pst) / 100;
         }
 
         $this->computed = true;
