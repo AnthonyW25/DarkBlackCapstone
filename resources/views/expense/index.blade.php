@@ -60,23 +60,23 @@
                 </td>
                 <td><br>
                 @foreach($expense->items as $item)
-                    {{ "$" . $item->amount }}<br>
+                    {{ "$" . number_format(($item->amount) / 100, 2, '.', '') }}<br>
                 @endforeach
-                    <b>$ {{ $expense->total() }}</b><br>
+                    <b>$ {{ number_format(($expense->total()), 2, '.', '') }}</b><br>
                 </td>
 
                 <td><br>
                 @foreach($expense->items as $item)
-                    {{ "$" . $item->gst }}<br>
+                    {{ "$" . number_format(($item->gst) / 100, 2, '.', '') }}<br>
                 @endforeach
-                    <b>$ {{ $expense->gst() }}</b><br>
+                    <b>$ {{ number_format(($expense->gst()), 2, '.', '') }}</b><br>
                 </td>
 
                 <td><br>
                 @foreach($expense->items as $item)
-                    {{ "$" . $item->pst }}<br>
+                    {{ "$" . number_format(($item->pst) / 100, 2, '.', '') }}<br>
                 @endforeach
-                    <b>$ {{ $expense->pst() }}</b><br>
+                    <b>$ {{ number_format(($expense->pst()), 2, '.', '') }}</b><br>
                 </td>
 
                 

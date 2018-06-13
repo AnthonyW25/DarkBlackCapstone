@@ -29,9 +29,9 @@
                             <tr>
                                 <td>{{ $expense_item->description }}</td>
                                 <td>{{ $expense_item->category }}</td>
-                                <td>{{ "$" . $expense_item->amount }}</td>
-                                <td>{{ "$" . $expense_item->gst }}</td>
-                                <td>{{ "$" . $expense_item->pst }}</td>
+                                <td>{{ "$" . number_format(($expense_item->amount) / 100, 2, '.', '') }}</td>
+                                <td>{{ "$" . ($expense_item->gst) / 100 }}</td>
+                                <td>{{ "$" . ($expense_item->pst) / 100 }}</td>
 
                                 <td>
                                     <a href="{{ route('expenseitem.edit', $expense_item->id) }}" data-toggle="tooltip" data-placement="right" title="Edit an Item" ><img src="images/edit-button.png"></a></td>
