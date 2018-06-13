@@ -14,15 +14,12 @@
         <td>{!! Form::text('invoice', null)!!}
             {!! $errors->has('invoice')?$errors->first('invoice'):'' !!}</td>
         <td>{!! Form::date('date', now()) !!} </td>
+        <td></td>
     </tr>
     <tr>
         <td></td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td><input type="image" src="images/save-files.png" alt="Save" data-toggle="tooltip" data-placement="right" title="Save" /> </td>
+        <td><button class="btn btn-info" style="width:140px;"><input type="image" src="images/save-files.png" alt="Save" data-toggle="tooltip" data-placement="right" title="Save" /></button></td>
     </tr>
 </table>
 

@@ -33,10 +33,9 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
-                                <td>{!! Form::submit('Save', ['class'=>'btn btn-primary']) !!}<a href="/expenseitem?expense_id={{ $expense_id }}" class="btn btn-danger">Cancel</a></td>
-                                <td></td>
-                                <td></td>
+                                <td><button class="btn btn-info" style="width:172px;"><input type="image" src="/images/save-files.png" alt="Save" data-toggle="tooltip" data-placement="right" title="Save" /></button></td>
+                                <td><button class="btn btn-danger" style="width:172px; height:52px;"><a href="/expenseitem?expense_id={{ $expense_id }}" ><img src="/images/cancel-button.png"></a></button>
+                                    </td>
                             </tr>
                         </table>
                 </div>

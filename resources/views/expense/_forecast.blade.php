@@ -9,14 +9,14 @@
 
 <!------------------------------------ Forecast Table ------------------------>
 <br>
-<h1>Upcoming Sales Forecast</h1>
-<table class="table table-responsive" style="margin-top: 10px;">
+
+<table class="table table-responsive border border-dark" style="margin-top: 10px;" >
     <thead>
     <tr>
-        <th colspan="3">Sales Forecast</th>
+        <th colspan="3"><h1>Upcoming Sales Forecast</h1></th>
     </tr>
     <tr>
-        <th>Average Daily Sales Over Previous 28 Days</th>
+        <th>Average Daily Sales</th>
         <th>Sales Forecast Adjustment</th>
         <th>Projected Sales </th>
     </tr>
@@ -44,7 +44,7 @@
         ?>
         <td><form name="form" action="" method="get">
                 <input type="number" name="subject" id="subject" value="{{$fore_percent}}">
-                <input type="submit" name="forecast_button"
+                <input class="btn btn-outline-info btn-sm" type="submit" name="forecast_button"
                        value="SCALE"/>
             </form>
         </td>

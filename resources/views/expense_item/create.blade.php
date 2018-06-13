@@ -27,8 +27,7 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td><input type="image" src="images/save-files.png" alt="Save" data-toggle="tooltip" data-placement="right" title="Save" /> </td>
-                <td></td>
+                <td><button class="btn btn-info" style="width:172px;"><input type="image" src="images/save-files.png" alt="Save" data-toggle="tooltip" data-placement="right" title="Save" /> </button></td>
             </tr>
         </table>
 {!! Form::close() !!}
