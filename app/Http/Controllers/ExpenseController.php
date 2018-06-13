@@ -65,6 +65,9 @@ class ExpenseController extends Controller
     {
         $user_info = Auth::user();
 
+        if(is_null($user_info)){
+        	return redirect('/login');
+        }
         $this->validate($request, [
             'date' => 'Required',
             'supplier' => 'Required',
