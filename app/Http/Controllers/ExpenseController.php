@@ -177,9 +177,18 @@ class ExpenseController extends Controller
         $this->validate($request, [
             'description'=>'Required',
             'category'=>'Required']);
-        $expense_item = $request->all();
+        //$expense_item = $request->all();
+
+        //$expense_item_price = (ExpenseItem::create($request->amount) * 100);
+
+        $request['amount'] = $request->amount * 100;
+        $request['gst'] = $request->gst * 100;
+        $request['pst'] = $request->pst * 100;
 
         $expense_item = ExpenseItem::create($request->all());
+
+
+        //dd($request->all());
 
         return redirect('expenseitem?expense_id=' . $expense_item->expense_id);
     }
@@ -272,10 +281,10 @@ class ExpenseController extends Controller
 
         foreach ($expense_items as $item) {
             if (isset($expense_holder[$item->category])) {
-                $expense_holder[$item->category] += $item->amount;
+                $expense_holder[$item->category] += $item->amount / 100;
             }
             else {
-                $expense_holder[$item->category] = $item->amount;
+                $expense_holder[$item->category] = $item->amount / 100;
             }
         }
 

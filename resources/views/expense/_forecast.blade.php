@@ -16,15 +16,17 @@
         <th colspan="3"><h1>Upcoming Sales Forecast</h1></th>
     </tr>
     <tr>
+
         <th>Average Daily Sales</th>
         <th>Sales Forecast Adjustment</th>
         <th>Projected Sales </th>
+
     </tr>
     </thead>
     <tbody>
     <tr>
         <!-- This displays the 7 day average of the past week -->
-        <td rowspan="3">{{"$" . number_format((float)($cogs->twenty_eight_day_avg /100), 2, '.', '')}}</td>
+        <td rowspan="3">{{"$" . (round((int)number_format((float)($cogs->twenty_eight_day_avg /100), 2, '.', '') / 50 )) * 50}}</td>
 
         <?php
         if (isset($_GET['subject']))
@@ -54,13 +56,13 @@
                 $forecast->growth($fore_percent);
                 $forecast->date();
                 $forecast->forecastCalculation();
-                echo "$" . number_format((float)$forecast->seven_day, 2, '.', '');
+                echo "$" . (int)number_format((float)$forecast->seven_day, 0, '.', '');
             }
             else{
                 $forecast->getPercentage();
                 $forecast->forecastCalculation();
                 $fore_percent = $forecast->growth_rate;
-                echo "$" . number_format((float)$forecast->seven_day, 2, '.', '');
+                echo "$" . (int)number_format((float)$forecast->seven_day, 0, '.', '');
             }?>
         </td>
     </tr>
