@@ -66,14 +66,14 @@
                 @foreach($expense->items as $item)
                     {{ "$" . number_format(($item->amount) / 100, 2, '.', '') }}<br>
                 @endforeach
-                    <b>$ {{ number_format(($expense->total()), 2, '.', '') }}</b><br>
+                    <b>${{ number_format(($expense->total()), 2, '.', '') }}</b><br>
                 </td>
 
                 <td><br>
                 @foreach($expense->items as $item)
                     {{ "$" . number_format(($item->gst) / 100, 2, '.', '') }}<br>
                 @endforeach
-                    <b>$ {{ number_format(($expense->gst()), 2, '.', '') }}</b><br>
+                    <b>${{ number_format(($expense->gst()), 2, '.', '') }}</b><br>
 
                 </td>
 
@@ -82,13 +82,13 @@
                     {{ "$" . number_format(($item->pst) / 100, 2, '.', '') }}<br>
                 @endforeach
 
-                    <b>$ {{ number_format(($expense->pst()), 2, '.', '') }}</b><br>
+                    <b>${{ number_format(($expense->pst()), 2, '.', '') }}</b><br>
 
                 </td>
 
                 
 
-                <td>
+                <td >
                     <a href="{{ route('expense.edit', $expense->id) }}" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Edit an Expense"><img src="images/edit-button.png"></a>
                 </td>
 
