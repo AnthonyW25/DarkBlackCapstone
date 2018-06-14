@@ -52,6 +52,11 @@ class ExpenseController extends Controller
      */
     public function create()
     {
+    	$user_info = Auth::user();
+
+        if(is_null($user_info)){
+        	return redirect('/login');
+        }
         return view('/expense.create');
     }
 
@@ -100,6 +105,11 @@ class ExpenseController extends Controller
      */
     public function edit($id)
     {
+    	$user_info = Auth::user();
+
+        if(is_null($user_info)){
+        	return redirect('/login');
+        }
         $expense = Expense::find($id);
 
         return view('expense.edit', compact('expense'));
@@ -114,6 +124,11 @@ class ExpenseController extends Controller
      */
     public function update(Request $request, $id)
     {
+    	$user_info = Auth::user();
+
+        if(is_null($user_info)){
+        	return redirect('/login');
+        }
         $this->validate($request, [
             'date' => 'Required',
             'supplier' => 'Required',
@@ -134,6 +149,11 @@ class ExpenseController extends Controller
      */
     public function destroy($id)
     {
+    	$user_info = Auth::user();
+
+        if(is_null($user_info)){
+        	return redirect('/login');
+        }
         Expense::destroy($id);
         $this->site->id;
         ExpenseItem::where('expense_id', '=', $id)
@@ -146,6 +166,11 @@ class ExpenseController extends Controller
     //--------------------------------item controller--------------------------------------------------------------------------
      public function itemIndex(Request $request)
     {
+    	$user_info = Auth::user();
+
+        if(is_null($user_info)){
+        	return redirect('/login');
+        }
         $expense_id = $request->get('expense_id');
 
         $expense_items = ExpenseItem::orderBy('updated_at','DESC')
