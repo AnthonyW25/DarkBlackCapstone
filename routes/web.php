@@ -20,14 +20,7 @@ Auth::routes();
 
 Route::resource('expense', 'ExpenseController');
 
-Route::get('/home', 'HomeController@index')->name('home');
-
-Route::get('dashboard', 'HomeController@dashboard')->name('dashboard');
-
 Route::get('create', 'HomeController@create')->name('create');
-
-
-
 
 Route::get('/expense', 'ExpenseController@index');
 Route::get('/expense/create', 'ExpenseController@create');
