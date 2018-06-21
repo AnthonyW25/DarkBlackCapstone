@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Forecast;
 use App\Site;
+use App\COGS;
 use Carbon\Carbon;
 use Tests\TestCase;
 
@@ -163,13 +164,32 @@ class ForecastTest extends TestCase
 
 
         // default is 0% growth
-        $this->assertEquals($sales->twenty_eight_day_average, $forecast->seven_day);
+        $this->assertEquals($sales->twenty_eight_day_average/100, $forecast->seven_day);
 
         // Change the rate and recalculate
         $growth_rate = 1.23;
         $forecast->growth($growth_rate);
         $forecast->forecastCalculation();
         
-        $this->assertEquals($sales->twenty_eight_day_average * (1 + $growth_rate / 100), $forecast->seven_day);
+        $this->assertEquals($sales->twenty_eight_day_average/100 * (1 + $growth_rate / 100), $forecast->seven_day);
+    }
+
+    /** @test */
+    public function provides_forecast_by_category()
+    {
+        // Setup some Sales Data
+        // The Site will provide all the necessary Sales Data
+        $site = new Site();
+        $cogs = new COGS($site);
+        $cogs->calculate();
+        $forecast = new Forecast($site);
+        $forecast->forecastCalculation();// we have to run this function to set the seven_day -- for now
+
+        // The Food Forecast is the total forecast times the ratio (or sales mix) of the site
+        // because the forecast defaults to a straight line it will just be the most recent 28 day \average
+        
+        $this->assertEquals($site->mostRecent28DayAverage() * $site->salesRatio('Food'), $forecast->sevenDay('Food'));
+        $this->assertEquals($site->mostRecent28DayAverage() * $site->salesRatio('Beverage'), $forecast->sevenDay('Beverage'));
+        $this->assertEquals($site->mostRecent28DayAverage() * $site->salesRatio('Alcohol'), $forecast->sevenDay('Alcohol'));
     }
 }

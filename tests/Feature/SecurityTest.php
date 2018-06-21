@@ -14,9 +14,9 @@ class SecurityTest extends TestCase
         // turn this on, because exception handling is what does the redirect in this case
         $this->withExceptionHandling();
 
-        $this->get('/home')
-            ->assertRedirect('/login')
-            ->assertStatus(302);
+        $this->get('/expense')
+            ->assertSee('Expenses')
+            ->assertStatus(200);
     }
 
     /** @test */
@@ -25,8 +25,8 @@ class SecurityTest extends TestCase
         $user = $this->createUser();
 
         $this->actingAs($user)
-            ->get('/home')
-            ->assertSee('Dashboard')
+            ->get('/expense')
+            ->assertSee('Expenses')
             ->assertSee($user->name);
     }
 }

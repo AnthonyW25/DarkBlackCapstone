@@ -23,7 +23,7 @@ class ExpenseControllerTest extends TestCase
 
         // Create an Expense we can expect to see
         $expense = Expense::create([
-            'id' => '1',
+            'id' => '2',
             'user_id' => '1',
             'site_id' => '1',
             'supplier' => 'Test Supplier',
@@ -43,7 +43,7 @@ class ExpenseControllerTest extends TestCase
 
         $this->actingAs($this->user)
             ->get('/expense')
-            ->assertSee('Expense Items');
+            ->assertSee('Expenses');
     }
 
     /*/**
@@ -66,7 +66,9 @@ class ExpenseControllerTest extends TestCase
                 'date' => '2018-05-23'
                 // other post variables
             ])
-            ->assertRedirect('/expense');
+
+            ->assertRedirect('expenseitemadd?expense_id=2');
+
 
         //we should now have records in the expenses and expense_items table
         $this->assertDatabaseHas('expenses', [
